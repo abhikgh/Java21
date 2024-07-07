@@ -404,14 +404,18 @@ public class ListEx {
         List<String>  reversedListWithoutNull = listTest2.stream().sorted(Comparator.reverseOrder()).toList();
         System.out.println("reversedListWithoutNull :: " + reversedListWithoutNull); //[Papaya, Mango, Grapes, Banana, Apple]
 
-        /*//reverse list
-        List<Integer> integersList = List.of(23, 34, 56,231, 36);
-        List<Integer> reverseList = integersList.reversed();
-        System.out.println("reverseList : " +  reverseList);
+        //reverse list
+        List<Integer> abcList = new ArrayList<>();
+        abcList.add(223);abcList.add(333);abcList.add(324);abcList.add(3423);
+        Collections.reverse(abcList);
+        System.out.println("reverseList : " +  abcList);
 
         //reverse array
         Integer[] integersArr = new Integer[]{34,99,9393,8282,93};
-        Integer[] reversedArr = Arrays.asList(integersArr).reversed().toArray(new Integer[integerList.size()]);
+        abcList = Arrays.asList(integersArr);
+        Collections.reverse(abcList);
+        Integer[] reversedArr = abcList.toArray(new Integer[integerList.size()]);
+        System.out.println("reversedArr");
         for(int i =0;i<reversedArr.length; i++){
             System.out.println(reversedArr[i]);
         }
@@ -421,7 +425,7 @@ public class ListEx {
         System.out.println("reversedArrCopy");
         for(int i =0;i<reversedArrCopy.length; i++){
             System.out.println(reversedArrCopy[i]);
-        }*/
+        }
 
         //remove specific elements from a list
         List<String> list32 = new ArrayList<>();
