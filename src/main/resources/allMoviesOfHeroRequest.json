@@ -1,0 +1,65 @@
+[
+  {
+    "movieId": 100,
+    "movieName": "Sonar Kella",
+    "director": "Satyajit Ray",
+    "genre": "Thriller",
+    "hero": "Feluda",
+    "year": "1978",
+    "nationalAward": true
+  },
+  {
+    "movieId": 101,
+    "movieName": "Joy Baba Felunath",
+    "director": "Satyajit Ray",
+    "genre": "Thriller",
+    "hero": "Feluda",
+    "year": "1981",
+    "nationalAward": true
+  },
+  {
+    "movieId": 102,
+    "movieName": "Gupi Gayen Bagha Bayen",
+    "director": "Satyajit Ray",
+    "genre": "Family",
+    "hero": "GupiBagha",
+    "year": "1968",
+    "nationalAward": true
+  },
+  {
+    "movieId": 103,
+    "movieName": "Hirok Raja r Deshe",
+    "director": "Satyajit Ray",
+    "genre": "Family",
+    "hero": "GupiBagha",
+    "year": "1972",
+    "nationalAward": true
+  },
+  {
+    "movieId": 104,
+    "movieName": "Golmaal",
+    "director": "Hrishikesh Mukherjee",
+    "genre": "Family",
+    "hero": "Ramprasad",
+    "year": "1979",
+    "nationalAward": true
+  },
+  {
+    "movieId": 105,
+    "movieName": "Guptodhoner Sandhane",
+    "director": "Dhrubo Bannerjee",
+    "genre": "Family",
+    "hero": "Sonada",
+    "year": "2018",
+    "nationalAward": false
+  },
+  {
+    "movieId": 106,
+    "movieName": "Durgeshgorer Guptodhon",
+    "director": "Dhrubo Bannerjee",
+    "genre": "Family",
+    "hero": "Sonada",
+    "year": "2019",
+    "nationalAward": false
+  }
+]

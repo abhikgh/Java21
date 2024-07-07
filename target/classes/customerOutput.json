@@ -1,0 +1,11 @@
+[ {
+  "familyId" : "fam123",
+  "customerId" : "XXXXXXX",
+  "customerName" : "cusName123",
+  "customerDept" : "XXXXXXX"
+}, {
+  "familyId" : "fam234",
+  "customerId" : "XXXXXXX",
+  "customerName" : "cusName234",
+  "customerDept" : "XXXXXXX"
+} ]

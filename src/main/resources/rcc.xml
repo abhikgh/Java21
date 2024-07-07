@@ -1,0 +1,9 @@
+<RenderClaimCorrespondence>
+    <Control>
+        <transactionId>12323</transactionId>
+        <transactionType>add</transactionType>
+    </Control>
+    <Body>
+        <action>update</action>
+    </Body>
+</RenderClaimCorrespondence>

@@ -1,0 +1,19 @@
+{
+  "sfgOrgId": "fdslkjs",
+  "subOrgTxt": "sadfsf",
+  "sfgId": "132esf",
+  "personId": "13123",
+  "testBoolean": true,
+  "validFromDate": "1993-12-13\u0027T14:56:23",
+  "discount": "Familyff",
+  "map": {
+    "mapKey2": "3222",
+    "mapKey1": "332"
+  },
+  "list": [
+    "33333",
+    "11111",
+    "22222",
+    "44444"
+  ]
+}

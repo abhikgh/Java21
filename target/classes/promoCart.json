@@ -1,0 +1,25 @@
+{
+  "lineItems": [
+    {
+      "lineId": "1",
+      "isLocked": true,
+      "isRefund": true,
+      "itemNo": "2233",
+      "itemType": "ART"
+    },
+    {
+      "lineId": "2",
+      "isLocked": true,
+      "isRefund": true,
+      "itemNo": "8383",
+      "itemType": "ART",
+      "savings": [
+        {
+
+        }
+      ]
+    }
+
+  ]
+
+}

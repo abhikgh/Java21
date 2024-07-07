@@ -1,0 +1,15 @@
+{
+  "rules": [
+    {
+      "targetRules": {
+        "service": [
+          {
+            "include": {
+              "items": [ "939393", "3939293" ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

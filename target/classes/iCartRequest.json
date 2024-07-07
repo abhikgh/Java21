@@ -1,0 +1,266 @@
+{
+  "cartType": "New",
+  "clientSystem": "OneWeb",
+  "salesChannel": "web",
+  "businessUnit": {
+    "buCode": "US",
+    "buType": "RU"
+  },
+  "currencyCode": "EUR",
+  "cartPriceValidity": "2012-12-01'T'12:33:32",
+  "customer": {
+    "customerType": "Private",
+    "familyId": "12345,jdjhdj,838djdh!@$#%#%#%#^@"
+  },
+  "serviceArea": {
+    "countryCode": "US",
+    "stateCode": "USMN",
+    "taxRegistrations": [
+      {
+        "taxType": "TIM",
+        "taxRegistrationNumber": "344"
+      },
+      {
+        "taxType": "TIM",
+        "taxRegistrationNumber": "344"
+      }
+    ]
+  },
+  "items": [
+    {
+      "lineId": "1",
+      "itemNo": "03938280",
+      "itemType": "ART",
+      "quantity": 2,
+      "unitPrice": [
+        {
+          "currentPrice": {
+            "priceExclTax": 59
+          },
+          "discountedPrice": {
+            "priceExclTax": 59
+          },
+          "type": "RegularSalesUnitPrice"
+        }
+      ],
+      "discountedUnitPrice": [
+        {
+          "priceExclTax": 59,
+          "viewType": "Family",
+          "priceType": "RegularSalesUnitPrice"
+        }
+      ],
+      "subtotals": {
+        "prices": [
+          {
+            "viewType": "Family",
+            "priceType": "RegularSalesUnitPrice",
+            "inclSavings": {
+              "priceExclTax": 198.0
+            },
+            "exclSavings": {
+              "priceExclTax": 198.0
+            }
+          },
+          {
+            "viewType": "Private",
+            "priceType": "RegularSalesUnitPrice",
+            "inclSavings": {
+              "priceExclTax": 298.0
+            },
+            "exclSavings": {
+              "priceExclTax": 298.0
+            }
+          }
+        ]
+      }
+    },
+    {
+      "lineId": "2",
+      "itemNo": "03938581",
+      "itemType": "ART",
+      "quantity": 2,
+      "unitPrice": [
+        {
+          "currentPrice": {
+            "priceExclTax": 59
+          },
+          "discountedPrice": {
+            "priceExclTax": 59
+          },
+          "type": "RegularSalesUnitPrice"
+        }
+      ],
+      "discountedUnitPrice": [
+        {
+          "priceExclTax": 59,
+          "viewType": "Family",
+          "priceType": "RegularSalesUnitPrice"
+        }
+      ],
+      "subtotals": {
+        "prices": [
+          {
+            "viewType": "Family",
+            "priceType": "RegularSalesUnitPrice",
+            "inclSavings": {
+              "priceExclTax": 198.0
+            },
+            "exclSavings": {
+              "priceExclTax": 198.0
+            }
+          },
+          {
+            "viewType": "Private",
+            "priceType": "RegularSalesUnitPrice",
+            "inclSavings": {
+              "priceExclTax": 345.0
+            },
+            "exclSavings": {
+              "priceExclTax": 298.0
+            },
+            "savings": [
+              {}
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "lineId": "3",
+      "itemNo": "03938582",
+      "itemType": "ART",
+      "quantity": 2,
+      "unitPrice": [
+        {
+          "currentPrice": {
+            "priceExclTax": 59
+          },
+          "discountedPrice": {
+            "priceExclTax": 59
+          },
+          "type": "RegularSalesUnitPrice"
+        }
+      ],
+      "discountedUnitPrice": [
+        {
+          "priceExclTax": 22,
+          "viewType": "Family",
+          "priceType": "RegularSalesUnitPrice"
+        }
+      ],
+      "subtotals": {
+        "prices": [
+          {
+            "viewType": "Family",
+            "priceType": "RegularSalesUnitPrice",
+            "inclSavings": {
+              "priceExclTax": 198.0
+            },
+            "exclSavings": {
+              "priceExclTax": 450
+            },
+            "savings": [
+              {
+                "amount": 234.34,
+                "id": "104",
+                "code": "PROMO-F2-23",
+                "discountType": "Voucher"
+              }
+            ]
+          },
+          {
+            "viewType": "Private",
+            "priceType": "RegularSalesUnitPrice",
+            "inclSavings": {
+              "priceExclTax": 198.0
+            },
+            "exclSavings": {
+              "priceExclTax": 278.0
+            },
+            "savings": [
+              {
+                "amount": 234.34,
+                "id": "104",
+                "code": "PROMO-F2-24",
+                "discountType": "Voucher"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "lineId": "4",
+      "itemNo": "03938583",
+      "itemType": "SPR",
+      "quantity": 2,
+      "unitPrice": [
+        {
+          "currentPrice": {
+            "priceExclTax": 59
+          },
+          "discountedPrice": {
+            "priceExclTax": 59
+          },
+          "type": "RegularSalesUnitPrice"
+        }
+      ],
+      "discountedUnitPrice": null,
+      "subtotals": {
+        "prices": [
+          {
+            "viewType": "Contractor",
+            "priceType": "RegularSalesUnitPrice",
+            "inclSavings": {
+              "priceExclTax": 198.0
+            },
+            "exclSavings": {
+              "priceExclTax": 198.0
+            }
+          },
+          {
+            "viewType": "Private",
+            "priceType": "RegularSalesUnitPrice",
+            "inclSavings": {
+              "priceExclTax": 345.0
+            },
+            "exclSavings": {
+              "priceExclTax": null
+            },
+            "savings": [
+              {
+                "amount": 234.34,
+                "id": "104",
+                "code": "PROMO-F2-34",
+                "discountType": "Voucher"
+              },
+              {
+                "amount": 234.34,
+                "id": "104",
+                "code": "PROMO-F2-35",
+                "discountType": "Coupons"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "orderSummary": {
+    "summary": [
+      {
+        "viewType": "Family",
+        "inclSavings": {
+          "priceInclTax": 116.2
+        }
+      },
+      {
+        "viewType": "Private",
+        "inclSavings": {
+          "priceInclTax": 126.2
+        }
+      }
+    ]
+  }
+}

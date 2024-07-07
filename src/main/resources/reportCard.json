@@ -1,0 +1,249 @@
+{
+  "students": [
+    {
+      "fullName": "Student 1",
+      "standard": 10,
+      "rollNumber": "1R",
+      "house": "Red",
+      "marks": {
+        "maths": 90,
+        "english": 90,
+        "science": 80,
+        "history": 90
+      },
+      "totalMarks": 350,
+      "sports": [
+        {
+          "sportName": "karate",
+          "status": "purple-belt"
+        },
+        {
+          "sportName": "swimming",
+          "status": "swimmer"
+        },
+        {
+          "sportName": "karate",
+          "status": "green-belt"
+        }
+      ],
+      "hobbies": [
+        "programming",
+        "reading"
+      ]
+    },
+    {
+      "fullName": "Student 2",
+      "standard": 10,
+      "rollNumber": "2R",
+      "house": "Blue",
+      "marks": {
+        "maths": 90,
+        "english": 90,
+        "science": 90,
+        "history": 90
+      },
+      "totalMarks": 360,
+      "sports": [
+        {
+          "sportName": "cricket",
+          "status": "all-rounder"
+        }
+      ],
+      "hobbies": [
+        "gaming"
+      ]
+    },
+    {
+      "fullName": "Student 3",
+      "standard": 10,
+      "rollNumber": "3R",
+      "house": "Green",
+      "marks": {
+        "maths": 90,
+        "english": 90,
+        "science": 80,
+        "history": 90
+      },
+      "totalMarks": 350,
+      "sports": [
+        {
+          "sportName": "karate",
+          "status": "brown-belt"
+        }
+      ],
+      "hobbies": [
+        "programming",
+        "reading"
+      ]
+    },
+    {
+      "fullName": "Student 4",
+      "standard": 8,
+      "rollNumber": "4R",
+      "house": "Yellow",
+      "marks": {
+        "maths": 90,
+        "english": 90,
+        "science": 90,
+        "history": 90
+      },
+      "totalMarks": 360,
+      "sports": [
+        {
+          "sportName": "karate",
+          "status": "brown-belt"
+        }
+      ],
+      "hobbies": [
+        "programming",
+        "reading"
+      ]
+    },
+    {
+      "fullName": "Student 5",
+      "standard": 6,
+      "rollNumber": "5R",
+      "house": "Red",
+      "marks": {
+        "maths": 90,
+        "english": 90,
+        "science": 90,
+        "history": 90
+      },
+      "totalMarks": 360,
+      "sports": [
+        {
+          "sportName": "karate",
+          "status": "brown-belt"
+        }
+      ],
+      "hobbies": [
+        "programming",
+        "reading",
+        "photography"
+      ]
+    },
+    {
+      "fullName": "Student 6",
+      "standard": 9,
+      "rollNumber": "6R",
+      "house": "Blue",
+      "marks": {
+        "maths": 90,
+        "english": 90,
+        "science": 90,
+        "history": 90
+      },
+      "totalMarks": 360,
+      "sports": [
+        {
+          "sportName": "karate",
+          "status": "blue-belt"
+        }
+      ],
+      "hobbies": [
+        "programming",
+        "reading"
+      ]
+    },
+    {
+      "fullName": "Student 7",
+      "standard": 10,
+      "rollNumber": "7R",
+      "house": "Green",
+      "marks": {
+        "maths": 90,
+        "english": 95,
+        "science": 90,
+        "history": 98
+      },
+      "totalMarks": 373,
+      "sports": [
+        {
+          "sportName": "karate",
+          "status": "blue-belt"
+        }
+      ],
+      "hobbies": [
+        "programming",
+        "reading"
+      ]
+    },
+    {
+      "fullName": "Student 8",
+      "standard": 10,
+      "rollNumber": "8R",
+      "house": "Yellow",
+      "marks": {
+        "maths": 100,
+        "english": 95,
+        "science": 90,
+        "history": 98
+      },
+      "totalMarks": 383,
+      "sports": [
+        {
+          "sportName": "footballer",
+          "status": "goalkeeper"
+        }
+      ],
+      "hobbies": [
+        "puzzles",
+        "science"
+      ]
+    },
+    {
+      "fullName": "Student 9",
+      "standard": 10,
+      "rollNumber": "9R",
+      "house": "Red",
+      "marks": {
+        "maths": 100,
+        "english": 95,
+        "science": 90,
+        "history": 98
+      },
+      "totalMarks": 383,
+      "sports": [
+        {
+          "sportName": "footballer",
+          "status": "goalkeeper"
+        }
+      ],
+      "hobbies": [
+
+      ]
+    },
+    {
+      "fullName": "Student 11",
+      "standard": 8,
+      "rollNumber": "11R",
+      "house": "Blue",
+      "marks": {
+        "maths": 98,
+        "english": 95,
+        "science": 99,
+        "history": null
+      },
+      "totalMarks": 390,
+      "sports": [
+        {
+          "sportName": "footballer",
+          "status": "striker"
+        },
+        {
+          "sportName": "karate",
+          "status": "brown-belt"
+        }
+      ],
+      "hobbies": [
+        "chess",
+        "music",
+        "gaming"
+      ]
+    }
+  ]
+
+
+
+}

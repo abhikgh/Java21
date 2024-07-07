@@ -1,0 +1,1390 @@
+List Sort
+=============
+
+list.stream()
+        .sorted(Compartor.comparing(x))
+        .sorted(Compartor.comparing(x, Comparator.reverseOrder()))
+        .sorted(Compartor.comparing(x).thenComparing(y))
+        .sorted(Compartor.comparing(x).thenComparing(y, Comparator.reverseOrder())
+        .sorted(Compartor.comparing(x, Comparator.reverseOrder()).thenComparing(y, Comparator.reverseOrder())
+	.sorted(Compartor.comparing(x, Comparator.nullsLast(Comparator.naturalOrder()))
+	.sorted(Compartor.comparing(x, Comparator.nullsLast(Comparator.reverseOrder()))
+	.sorted(Compartor.comparingInt(x))
+        .sorted(Compartor.comparingInt(x).reversed()))
+.toList();
+
+Max
+====
+	List<Integer> integerList = List.of(23, 34, 56,231, 36);
+        Integer highestInt = integerList.stream().max(Integer::compareTo).get();
+        System.out.println("highestInt :: "  +highestInt);  //231
+
+        List<Number> numberList = List.of(23.09f, 23L, 123.34d);
+        Number highestNumber = numberList.stream().map(Number::doubleValue).max(Double::compareTo).get();
+        System.out.println("highestNumber :: " + highestNumber);  //123.34
+
+
+Java 9
+=============
+
+Factory methods for collections
+-------------------------------
+List immutableList = List.of("Abc", "Def", "Ghi");
+Map immutableMap = Map.of(1, "one", 2, "two", 3, "three");
+
+Private Interface Methods
+------------------------------
+private static method (can be called from within Interface default/static methods)
+private method        (can be called from within Interface default/private methods)
+
+Reactive Streams
+------------------------------
+Asynchronous stream processing + backpressure
+
+<!-- RxJava -->
+    <dependency>
+        <groupId>io.reactivex.rxjava3</groupId>
+        <artifactId>rxjava</artifactId>
+        <version>3.1.7</version>
+    </dependency>
+
+    String[] letters = {"a", "b", "c", "d", "e", "f", "g", "h", "i"};
+
+    Observable.fromArray(letters)
+    .map(String::toUpperCase)
+    .subscribe(st -> System.out.println(st), //onNext
+    Throwable::printStackTrace,      //onError
+    () -> {});                       //onComplete
+    // A B C D E F G H I
+
+    Observable.fromArray(letters)
+    .scan(new StringBuilder(), StringBuilder::append) //scan(R initialValue, accumulator)
+    .subscribe(st -> System.out.println(st),
+    Throwable::printStackTrace,
+    () -> {});
+    //a ab abc abcd abcde abcdef abcdefg abcdefgh abcdefghi
+
+    Observable.fromArray(letters)
+    .defaultIfEmpty("Observable is empty")
+    .firstElement()
+    .subscribe(st -> System.out.println(st),
+    Throwable::printStackTrace,
+    () -> {}); //a
+
+    Integer[] numbers = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+
+    Observable.fromArray(numbers)
+    .groupBy(i -> i % 2 == 0 ? "EVEN" : "ODD")
+    .subscribe(group -> group.subscribe((number) -> {
+        System.out.print(number + "-" + group.getKey() + " ");
+    },
+    Throwable::printStackTrace,
+    () -> {}
+    ));
+    //0-EVEN 1-ODD 2-EVEN 3-ODD 4-EVEN 5-ODD 6-EVEN 7-ODD 8-EVEN 9-ODD
+
+    System.out.println();
+    List<Integer> listEven = Observable.fromArray(numbers)
+    .filter(i -> i%2==0)
+    .collect(Collectors.toList()).blockingGet();
+    System.out.println(listEven);
+    //[0, 2, 4, 6, 8]
+
+    List<Integer> firstFiveNos = Observable.fromArray(numbers)
+    .takeWhile(i -> i<5)
+    .collect(Collectors.toList()).blockingGet();
+    System.out.println(firstFiveNos);
+    //[0, 1, 2, 3, 4]
+
+    String[] result = {""};
+    ConnectableObservable<Long> connectableObservable = Observable.interval(200, TimeUnit.MILLISECONDS).publish();
+    connectableObservable.subscribe(i -> result[0] += i);
+    System.out.println(result[0]);
+
+    connectableObservable.connect();
+    Thread.sleep(500);
+
+    System.out.println(result[0]); //01
+
+    List<String> lettersString = Arrays.asList("a", "b", "c", "d", "e", "f", "g", "h", "i");
+    Observable.fromIterable(lettersString)
+    .map(String::toUpperCase)
+    .subscribe(System.out::println);
+
+    System.out.println("//------------------- fromIterable :: Custom function ----------------------------");
+
+    Observable.fromIterable(lettersString)
+    .map(s->updateLetter(s))
+    .subscribe(System.out::println);
+
+    System.out.println("//------------------- Cold Observable ----------------------------");
+
+    Observable observable = Observable.create(source -> {
+    source.onNext(Math.random());
+    });
+    observable.subscribe(System.out::println);
+    observable.subscribe(System.out::println);
+
+    System.out.println("//------------------- Hot Observable ----------------------------");
+
+    var i = Math.random();
+    Observable observable2 = Observable.create(source -> {
+    source.onNext(i);
+    });
+    observable2.subscribe(System.out::println);
+    observable2.subscribe(System.out::println);
+
+    System.out.println("//------------------- concatArrayDelayError ----------------------------");
+
+    AtomicReference<String> ipAddress = new AtomicReference<>("");
+    Map<String,String> map1 = new HashMap<>();
+    map1.put("net-ip","333");map1.put("ip-address","132333");
+    Map<String,String> map2 = new HashMap<>();
+    map2.put("hostname","kekdkd");map2.put("ip-address","232233");map2.put("operating-system","win11");
+
+    /*
+    Single-thread
+    By default, Rx is single-threaded which implies that an Observable and the chain of operators that we can apply to it will notify its observers on the same thread on which its subscribe() method is called
+    */
+    //concatArrayDelayError
+    //Concatenates a variable number of ObservableSource sources and delays errors from any of them till all terminate
+
+    //concatArrayEagerDelayError
+    //Concatenates an array of ObservableSources eagerly into a single stream of values and delaying any errors until all sources terminate
+    Observable.concatArrayEagerDelayError(getIpFromMap1(map1), getIpFromMap2(map2))
+    .subscribe(ipAddressVal -> ipAddress.set(ipAddressVal));
+    System.out.println(ipAddress.get()); //232233
+
+Java 10
+=============
+
+var
+---------
+method local variable type inference
+var won’t work without the initializer and with null
+var won't work with lambda and array as they need specific type
+
+var list = new ArrayList<String>();  // infers ArrayList<String>
+
+String[] strArr = {"a","b","c"};
+var strArr = {"a","b","c"}; // Won't work
+
+var expression = (String s) -> s.length() > 10;  // Won't work
+
+Java 11
+==============
+String :: isBlank, lines, strip, stripLeading, stripTrailing, and repeat
+-----------------------------------------------------------------------------------
+
+//String :: isEmpty/isBlank
+String strTest = " ";
+System.out.println("isEmpty :: " + strTest.isEmpty()); //false
+System.out.println("isBlank :: " + strTest.isBlank()); //true
+
+//String :: lines : to get all words in a paragraph
+strTest =  "Hi All. \nThis is a new line.\nThis is another line.\n Thank you.";
+String words = strTest.lines().collect(Collectors.joining());
+System.out.println("All words in paragraph are :: ");
+System.out.println(words);
+
+//String :: strip
+strTest =  "   Hi   ";
+ans = strTest.strip();
+System.out.println("after strip :: " + ans);
+
+//String :: repeat
+String abc = "abc";
+abc = abc.repeat(10);
+System.out.println(abc);  //abcabcabcabcabcabcabcabcabcabc
+
+Files :: readString, writeString
+-----------------------------------------------------------------------------------
+Path path = Paths.get("src/main/resources/abc.txt");
+
+//Read file
+String data = Files.readString(path);
+System.out.println("File contents :: ");
+System.out.println(data);
+
+//Create file
+path = Paths.get("src/main/resources/abc2.txt");
+Files.deleteIfExists(path);
+Files.createFile(path);
+
+//Write to file
+Files.writeString(path, "Sample text again", StandardOpenOption.APPEND);
+
+Predicate.not
+--------------------
+//Remove all null and blanks and join the strings by ;
+str = "abhik, rahul, joy, ,1,  ";
+ans = Arrays.asList(str.split(",")).stream().map(String::trim).filter(Predicate.not(String::isBlank)).collect(Collectors.joining(";"));
+System.out.println(ans); //abhik;rahul;joy;1
+
+Java 12
+=============
+
+improved switch-case
+--------------------------
+
+//switch-case
+inputStr = "test";
+
+switch (inputStr.toUpperCase()) {
+    case "XYZ":
+    case "ABC":
+        ans = inputStr;
+        break;
+    case "TEST":
+        ans = "testing";
+        break;
+    default:
+        System.out.println("none");
+        break;
+}
+System.out.println("switch-case :: " + ans);  //abc  -> abc , test -> testing
+
+switch (inputStr.toUpperCase()) {
+    case "XYZ", "ABC" ->  ans = inputStr;
+    case "TEST" -> ans = "testing";
+    default -> ans = "none";
+}
+System.out.println("switch-case 2 :: " + ans);  //abc  -> abc , test -> testing
+
+return switch (inputStr.toUpperCase()) {
+    case "XYZ", "ABC" ->  inputStr;
+    case "TEST" -> "testing";
+    default -> "none";
+}
+
+//If the word starts with b,c,d,e make it lowercase, if starts with a,f,s,t make it uppercase
+finalList = Arrays.stream(strArr).filter(Objects::nonNull).map(val -> checkValSwitch(val)).toList();
+private static String checkValSwitch(String val) {
+    return switch (val.charAt(0)){
+        case 'b','c','d','e' -> val.toLowerCase();
+        case 'a','f','s','t' -> val.toUpperCase();
+        default -> val;
+    };
+}
+
+Java 14
+=============
+
+record
+--------------------------
+
+//Imutable data objects (so no setters, only AllArgsConstructors)
+//replaces POJOs
+//Requires only field type and name
+//AllArgsConstructor, equals, hashCode, toString are generated by the Compiler
+record NewPerson (String name, String address){
+}
+
+//Record ex
+NewPerson newPerson = new NewPerson("John", "little avenue");
+System.out.println(newPerson.name());
+System.out.println(newPerson.address());
+
+Java 15
+==============
+
+String Text Blocks
+--------------------------
+
+String json = """
+         {
+          "name": "John",
+          "address": "little avenue"
+         }
+        """;
+ObjectMapper objectMapper = new ObjectMapper();
+NewPerson2 np2 = objectMapper.readValue(json, NewPerson2.class);
+System.out.println(np2.getName() + "--" + np2.getAddress());
+
+inputStr = """
+        This is the first line \n
+        This is the second line \\r
+        This is the third line
+        This is the fourth line      \s
+        This is the %s line
+        """.formatted("fifth");
+System.out.println(inputStr);
+/*This is the first line
+
+This is the second line \r
+This is the third line
+This is the fourth line------
+This is the fifth line*/
+
+.collect(Collectors.toList()) -> .toList()
+
+Java 16
+==============
+
+pattern matching for instanceof
+----------------------------------
+
+if (person instanceof Employee e) {
+   return e.getEmployeeId();
+}
+
+Vector API
+--------------
+  -for complex mathematical functions
+
+Foreign functions and Memory API
+----------------------------------
+  -provides classes and methods to interact with native code
+
+ZGC
+-------------
+ZGC is a low-latency GC used for large heaps.
+Concurrent, region-based GC.
+
+Java 17
+=======================
+
+Sealed Class and Interface
+-------------------------------
+-  restricts the subclasses that can implement an interface or extend a class
+
+public sealed interface SealedEx permits ChildInt {
+
+}
+public non-sealed interface ChildInt extends SealedEx {
+}
+
+public class ChildIntImpl implements ChildInt{
+
+}
+
+
+SOLID Principles in Java
+===============================
+
+S — Single Responsibility Principle
+O — Open-Closed Principle
+L — Liskov Substitution Principle
+I — Interface Segregation Principle
+D — Dependency Inversion Principle
+
+Single Responsibility Principle : every class should have Single responsibility
+
+Open-Closed Principle : open for extension, closed for modification
+
+    public class DiscountCalculator {
+        public double calculateDiscount(Order order) {
+            // Discount calculation logic
+        }
+    }
+
+    public abstract class DiscountCalculator {
+        public abstract double calculateDiscount(Order order);
+    }
+
+    public class VIPDiscountCalculator extends DiscountCalculator {
+        @Override
+        public double calculateDiscount(Order order) {
+            // VIP discount calculation logic
+        }
+    }
+
+Liskov Substitution Principle : super class object can be replaced by sub class object
+
+    public class Bird {
+        public void fly() {
+            // Flying logic
+        }
+    }
+
+    public class Ostrich extends Bird {
+        // Ostriches cannot fly, but they inherit the fly method
+    }
+
+
+    public abstract class Bird {
+        public abstract void move();
+    }
+
+    public class Sparrow extends Bird {
+        @Override
+        public void move() {
+            // Flying logic
+        }
+    }
+
+    public class Ostrich extends Bird {
+        @Override
+        public void move() {
+            // Running logic
+        }
+    }
+
+Interface Segregation Principle :  segregate interfaces into smaller interfaces
+
+
+Dependency Inversion Principle :
+        1. High-level modules should not depend on low-level modules. Both should depend on abstractions.
+        2. Abstractions should not depend on details. Details should depend on abstractions.
+
+It introduces an interface abstraction between higher-level and lower-level software components to remove the dependencies between them.
+You only need to consequently apply the Open/Closed and the Liskov Substitution principles to your code base
+
+    public class LightBulb {
+        public void turnOn() {
+            // Turn on logic
+        }
+    }
+
+    public interface Switchable {
+        void turnOn();
+    }
+
+    public class LightBulb implements Switchable {
+
+        @Override
+        public void turnOn() {
+            // Turn on logic
+        }
+    }
+
+ // --------------------------- Remove if-else-if ----------------------------------//
+
+        String aa = "abc";
+
+        if(check1(aa)!=null){
+            doAction(check1(aa));
+        } else if (check2(aa)!=null) {
+            doAction(check2(aa));
+        } else if (check3(aa) != null) {
+            doAction(check3(aa));
+        }
+
+        Optional.ofNullable(check1(aa))
+                .or(() -> Optional.ofNullable(check2(aa)))
+                .or(() -> Optional.of(check3(aa)))
+                .ifPresent(checkResult -> doAction(checkResult));
+
+
+  // --------------------------- Agile ----------------------------------//
+
+ Agile Manifesto
+ -----------------------
+
+  1. Individuals and Interactions over processes and tools
+  2. Working software over comprehensive documentation
+  3. Customer collaboration over contract negotiation
+  4. Responding to change over following a plan
+
+ Agile Methodology
+ --------------------
+   1. Continuous Iteration
+   2. Continuous Improvement
+   3. Continuous Interaction
+   4. Fast release
+   5. Regular stand-ups
+   6. Proper tools
+
+Continuous Integration, Continuous Delivery, Continuous Deployment
+----------------------------------------------------------------------
+
+Continuous Integration : Developers merge their change to release branch as much as possible. Each check-in is then verified by an Automated build, allowing teams to detect problems early.
+Continuous Delivery : Automated Testing + Automated Release
+Continuous Deployment : Every change that passes all stages of the production pipeline is deployed at the customer end.
+
+
+Domain Driven Design
+--------------------------------
+A design approach where the business domain is mapped to technical objects and evolved over time.
+
+Agile Framework
+------------------
+Scrum
+    Product Vision
+    Product Backlog
+    Burndown Charts
+    Regular Stand-Ups
+
+Kanban
+    Workflow Dashboard (‘to-do’, 'in-progress','on-hold','in-review','in-acceptance','done')
+    Continuous Feedback
+
+
+Lean Development Model
+------------------------------
+Identifying Value
+Reducing Waste
+Continuous Improvement
+
+DevOps
+----------------
+DevOps is a software development model which focuses on constant collaboration
+ among Development and Operations Team which allows deploying code to production faster and in an automated way.
+
+
+Agile  vs DevOps
+------------------------
+
+Customer                    Developer                   IT Ops
+        ------------->                  ------------>
+         Agile                           DevOps
+
+        . Continuous Iteration          Constant collaboration among Dev and Ops to promote code faster to Production in a automated way
+          Continuous Improvement        Constant testing and delivery
+          Continuous Feedback
+          Small rapid release
+          Regular stand-ups
+          Usage of proper tools
+
+          Target :: Software Delivery   Target :: End-to-end business solutions
+          Functional readiness          Operational readiness
+
+
+Simplicity Criteria
+------------------------
+no duplicate code
+passes automated tests
+expresses each idea separately
+minimum number of components
+
+Test Driven Development
+---------------------------------
+
+write a “single” unit test describing an aspect of the program
+run the test, which should fail because the program lacks that feature
+write “just enough” code, the simplest possible, to make the test pass
+“refactor” the code until it conforms to the simplicity criteria
+repeat, “accumulating” unit tests over time
+
+Behaviour Driven Development
+--------------------------------
+refinement to TDD
+implement only those behaviors which contribute most directly to these business outcomes, so as to minimize waste
+
+Product Owner                                       vs                  Scrum Master
+---------------------------------------------------------------------------------------------------
+Prioritizing Product stories                                    Agile methodology is followed
+Collaboration with the Development team                         Clears obstacles
+Business knowledge of the product                               Communication between team and the PO
+
+
+// -------------------------- Inner class --------------------------- //
+
+Inner Class							                                Nested Class
+----------------------------------------------------------------------------------------
+
+non-static				                                            -static
+can access ALL outer class members                                  -can access only static members of the Outer class members
+OuterClass.InnerClass inner = new OuterClass().new InnerClass();    -OuterClass.InnerClass inner = new  OuterClass.InnerClass();
+
+//Inner class
+Miscellaneous.InnerStatic.Private sip = new Miscellaneous.InnerStatic().new Private();
+String ans = sip.evenOdd(5);
+System.out.println("evenOdd :: " + ans + ":: i="+sip.i +" ::j="+ InnerStatic.Private.j);
+//evenOdd :: odd:: i=10 ::j=20
+
+static class InnerStatic {
+    private class Private {
+        private int i = 10;
+        private static int j = 20;
+        private String evenOdd(int num) {
+            return ((num%2 == 0) ? "even" : "odd");
+        }
+    }
+}
+
+Anonymous inner class
+--------------------------
+Anonymous inner class is an inner class without a name and for which only a single object is created. It is used when override a method of a class or interface.
+
+//Anonymous Inner class
+ABCD abcd = new ABCD(){
+    @Override
+    public void print() {
+        System.out.println("ABCD...");
+    }
+};
+abcd.print();
+
+// -------------------------- Coding Checklist--------------------------- //
+
+1. Does the code solve the problem 
+2. Can the code be bettered  - more performance, security, maintainability, readability, reusability
+3. Is any library used that was not needed OR an library thatcould have been used
+4. SOLID principles
+
+Java Memory Management
+===============================
+
+JVM Memory = Heap memory + Stack memory + Metaspace + Others(GC, JIT Compiler, Socket Buffer...)
+
+Heap memory - Objects, Arrays, String Pool
+
+	        1.        By default, the maximum heap size is 64 Mb.
+
+	                     -Xms<size> - to set the initial Java Heap memory
+                         -Xmx<size> - to set the maximum Java Heap memory
+
+	        2.  Managed by the Garbage Collector
+                3.  Threads access the Heap
+                4.  If objects are moved more than 5 times , those objects are placed in old generation
+
+            Heap memory
+            ----------------
+
+            YOUNG                       OLD
+
+            -Eden
+            -S0
+            -S1
+
+Stack memory  - Object references, Local variables
+
+            1. LIFO structure
+            2. Every thread has its own stack
+
+Metaspace - Classes, metadata, static data
+
+            1. Can grow dynamically as against PermGen ( so no OutOfMemoryError)
+            2. This is why static keyword is accessible from anywhere because they are held in metaspace so every thread can reach it easily.
+
+Memory Management
+========================
+
+# dev.jvm.conf
+# Override Application Property
+SERVER_TOMCAT_ACCEPT_COUNT=3
+SERVER_TOMCAT_MAX_CONNECTIONS=3
+SERVER_TOMCAT_THREADS_MAX=3
+SERVER_TOMCAT_THREADS_MIN_SPARE=1
+SPRING_MAIN_LAZY_INITIALIZATION=true
+
+# Set JVM Parameters
+JAVA_TOOL_OPTIONS=-XX:+UseSerialGC -Xss512k -XX:MaxRAM=200m
+
+# docker-compose.yml
+services:
+  service1:
+    image: service1:dev
+    env_file:
+      - dev.jvm.conf
+
+SERVER_TOMCAT_ACCEPT_COUNT: maximum queue length for incoming connection requests when all possible request processing
+                            threads are in use (100)
+
+SERVER_TOMCAT_MAX_CONNECTIONS: maximum number of connections that can be handled concurrently by the Tomcat server (8192)
+
+SERVER_TOMCAT_THREADS_MAX: maximum number of request processing threads that the Tomcat server will create (200)
+
+SERVER_TOMCAT_THREADS_MIN_SPARE: minimum number of spare threads (10)
+
+SPRING_MAIN_LAZY_INITIALIZATION: beans will be initialized lazily (true)
+
+JAVA_TOOL_OPTIONS :
+        -XX:+UseSerialGC: inline GC
+        -Xss512k: threads stack memory = 512KB
+        -XX:MaxRAM=200m: maximum memory usage = 200MiB
+
+Memory Leak
+=========================
+Program does not release the memory after use
+
+Over time, these accumulated memory leaks can lead to the exhaustion of available memory resources, causing the program to slow down or eventually crash due to insufficient memory
+    DB Connections not closed
+    File not closed
+    Large Objects
+    Loading full data sets (use streaming instead)
+    Static references
+    Cached Objects
+    Improper use of Collections
+
+
+Detect
+------------
+Heap Dumps  - A heap dump is a snapshot of all the objects in Heap at a particular moment.
+JProfiler - monitor memory allocation and garbage collection in real-time
+
+OutOfMemoryError
+---------------------
+Heap memory is full
+Surround the code with try-catch block
+
+Ex of OutOfMemoryError: Integer[] array = new Integer[10000 * 10000];
+
+Object-Oriented Programming             vs              Functional Programming             vs              Reactive Programming
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Classes and objects
+Classes and objects to model real-world entities and their behavior.
+Encapsulation, Inheritance, Polymorphism, and Abstraction (EIPA)
+Encapsulation :: Containing the data and the accessors to the data in a single class thereby
+                hiding the internal state of the object from the outside world
+Code perspective : state-change and verbose
+
+
+
+                                                       Functions - data transformation
+                                                       Immutability, Transparency, Higher-order functions, Recursion (ITHR)
+                                                       FP uses Immutability to ensure that data cannot be modified after it is created,
+                                                             Transparency to ensure that a function will always produce the same outputs given the same inputs
+                                                             Higher-order functions to accept 1/more functions as input and/or return a function as output
+                                                             Recursion for iteration
+                                                       Code perspective : No state-change and compact
+
+
+                                                                                                Event-driven, non-blocking programming that communicates over asynchronous data streams
+                                                                                                pub-sub mode (Subscriber -----> Publisher)
+                                                                                                High-concurrency scenarios
+
+Functional Interface
+------------------------------
+Interface with only 1 abstract method (can have default,static, overridden methods)
+
+1. Supplier
+@FunctionalInterface
+public interface Supplier <R> {
+    R get();
+}
+int a = list.stream().findAny().orElseGet(()->40);
+
+2. Function
+@FunctionalInterface
+public interface Function<T, R> {
+    R apply(T t);
+}
+Function<Integer, Integer> functionA = x -> x.intValue()*10;
+int y = functionA.apply(10);
+
+3. Consumer
+@FunctionalInterface
+public interface Consumer<T> {
+    void accept(T t);
+}
+//Consumer<Integer> display = a -> System.out.println(a);
+//display.accept(10);
+
+4. Predicate
+@FunctionalInterface
+public interface Predicate <T> {
+    boolean test(T t);
+}
+List<Integer> list = list.stream().filter(a ->a%2==0).tolist();
+
+5. Runnable
+@FunctionalInterface
+public interface Runnable {
+    void run();
+}
+Runnable r1 = () -> {  
+         System.out.println("Runnable with Lambda Expression");
+      };
+new Thread(r1).start();
+    
+
+6. Callable
+@FunctionalInterface
+public interface Callable <V> {
+    V call() throws java.lang.Exception;
+}
+testInt(() -> {
+    System.out.println("From testInt method");
+    return 1;
+});
+
+testVoid(() -> {
+    System.out.println("From testVoid method");
+    return null;
+});
+
+public static void testInt(Callable<Integer> callable) throws Exception {
+	callable.call();
+}
+
+public static void testVoid(Callable<Void> callable) throws Exception {
+	callable.call();
+}
+
+Lambda
+------------------------------------------------------------
+
+
+//Interface with only 1 abstract method (can have default,static, overridden methods)
+
+@FunctionalInterface
+interface MathsOperation {
+	int mathsOp(int a, int b);
+}
+
+//Lambda is an anonymous function that implements FunctionalInterface
+
+public class LambdaEx {
+
+	public static void main(String[] args) {
+
+		//Lambda is an anonymous function that implements FunctionalInterface
+		MathsOperation addition = (a, b) -> a + b;  //addition :: Lambda
+		System.out.println(addition.mathsOp(10, 5)); // 15
+
+		//Lambda variables are final / effectively final - to reduce concurrency issues
+		List<String> list = Stream.of("abc", "def", "mno", "xyz").toList();
+		AtomicInteger i = new AtomicInteger(0);
+		list.forEach(s -> {
+			System.out.print(i + ":" + s + ":"); //0-abc:1-def:2-mno:3-xyz:
+			i.getAndIncrement();
+		});
+		System.out.println();
+
+		/*int[] arr = new int[]{0};
+		list.forEach(elm -> {
+			System.out.print(arr[0] + ":" + elm + ":"); //0:abc:1:def:2:mno:3:xyz:
+			arr[0]++;
+		});*/
+
+		//passing lambda to a function (which will accept FunctionalInterface)
+		Function<Integer, Integer> function1 = x -> x *10;
+		int j1 = testF(10, function1);
+		System.out.println("function1 ::" + j1);  //100
+		Function<Integer, Integer> function2 = x -> x+10;
+		int j2 = testF(10, function2);
+		System.out.println("function2 ::" + j2); //20
+		Function<Integer, Integer> function3 = x -> x+100;
+		int j3 = testF(10, function3);
+		System.out.println("function 3 :: " + j3); //110
+
+		//If the return type of a method is Functional Interface then it must return the lambda implementation
+		int lambdaOp = getAddition().mathsOp(20, 30);
+		System.out.println("lambdaOp :: " + lambdaOp); //320
+
+		//Function
+		Function<Integer, Integer> functionA = x -> x *10;
+		int y = functionA.apply(10);
+		System.out.println("function :: " + y); //100
+
+		//BiFunction :: Functional interface that uses 2 parameters
+		/*
+			@FunctionalInterface
+			public interface BiFunction<T, U, R> {
+				R apply(T t, U u);
+			}
+       */
+		BiFunction<Integer, Integer, Integer> biFunction = (x1, x2) -> x1 + x2;
+		Integer resultBF = biFunction.apply(2, 3);
+		System.out.println("resultBF :: " + resultBF); // 5
+
+		List<String> list1 = Arrays.asList("a", "b", "c");
+		List<Integer> list2 = Arrays.asList(1, 2, 3);
+		List<String> result = listCombiner(list1, list2, (str, num) -> str+num);
+		System.out.println("result 1 :: " + result); //result 1 :: [a1, b2, c3]
+
+		List<Double> list12 = Arrays.asList(1.0d, 2.1d, 3.3d);
+		List<Float> list22 = Arrays.asList(0.1f, 0.2f, 4f);
+		List<Boolean> result2 = listCombiner(list12, list22, (doN, flN) -> doN  > flN);
+		System.out.println("result2 :: " + result2); //result2 :: [true, true, false]
+
+		//BinaryOperator
+		/*
+			@FunctionalInterface
+			public interface BinaryOperator<T> extends BiFunction<T,T,T> {
+
+			}
+		 */
+		//Functional interface that extends BiFunction
+		//same-type
+		BinaryOperator<Integer> binaryOperator = (x1, x2) -> x1 + x2;
+		Integer resultBO = binaryOperator.apply(2, 3);
+		System.out.println("resultBO :: " + resultBO); // 5
+
+		//Higher-Order Function
+		//Function as input and/or Function as output
+		IntBinaryOperator add = (a, b) -> a + b;
+		IntBinaryOperator subtract = (a, b) -> a - b;
+		IntBinaryOperator multiply = (a, b) -> a * b;
+
+		int x1 = 10;
+		int y1 = 5;
+		int resultAdd = applyOperation(x1, y1, add);
+		int resultSubtract = applyOperation(x1, y1, subtract);
+		int resultMultiply = applyOperation(x1, y1, multiply);
+		System.out.println("Addition: " + resultAdd); // Output: Addition: 15
+		System.out.println("Subtraction: " + resultSubtract); // Output: Subtraction: 5
+		System.out.println("Multiplication: " + resultMultiply); // Output: Multiplication: 50
+
+		//Composite Function
+		//Function chaining - output of 1 function is input of the next function
+		//Function.andThen
+		Function<Integer, Integer> addTwo = xy -> xy+2;
+		Function<Integer, Integer> multiplyByThree = xy -> xy*3;
+		Function<Integer, Integer> compositeFunction = addTwo.andThen(multiplyByThree);
+		Integer resultComposite = compositeFunction.apply(5);
+		System.out.println("resultComposite :: " + resultComposite); //21
+
+		//Lambda and exceptions
+		//If a lambda throws a Exception, then the Functional Interface method must throw the same exception or supertype
+
+	}
+
+
+	public static MathsOperation getAddition(){
+		return (a,b) -> a+10*b;
+	}
+
+	// Higher-Order Function
+	 public static Integer testF(Integer x, Function<Integer, Integer> function){
+		return function.apply(x);
+	 }
+
+	// Higher-Order Function
+	public static int applyOperation(int a, int b, IntBinaryOperator operation) {
+		return operation.applyAsInt(a, b);
+	}
+
+	//BiFunction
+	private static <T,U, R> List<R> listCombiner(List<T> list1, List<U> list2, BiFunction<T,U,R> biFunction){
+		List<R> resultList = new ArrayList<>();
+		for(int i=0;i<list1.size();i++){
+			resultList.add(biFunction.apply(list1.get(i), list2.get(i)));
+		}
+		return resultList;
+	}
+
+}
+
+Intermediate             vs                     Terminal           operations in Stream
+--------------------------------------------------------------------------------------------
+-lazy
+-returns Stream
+
+map()								        count()
+flatMap()							        collect()
+filter()						    		reduce()
+sorted()						        	findFirst() / findAny()
+distinct()						        	allMatch() / anymatch()
+limit()
+peek() [for debugging]
+
+   Stateless        Stateful
+    map()           sorted()
+    filter()        distinct()
+
+Encapsulation                           vs                      Abstraction
+----------------------------------------------------------------------------------------
+Containing the data and the accessors to the data in a single class thereby
+                hiding the internal state of the object from the outside world
+private variables, getter/setter
+Implementation level
+
+                                                             Hiding unnecessary details from the user and showing only the necessary ones
+                                                             Interface, abstract class
+                                                             Design level
+
+
+Async Call
+---------------------------------
+
+public CompletableFuture<FinalResultMovie> getFinalResultMovieASync(String heroName) throws ExecutionException {
+
+        CompletableFuture<ResultHero> completableFuture1 = CompletableFuture.supplyAsync(()->{
+            ResultHero resultHero = new ResultHero();
+            resultHero.setAssistant1(Optional.ofNullable(heroesRepository.findByHeroNameIgnoreCase(heroName)).map(Heroes::getAssistant1).orElse("NA"));
+            return resultHero;
+        });
+        CompletableFuture<ResultMovie> completableFuture2 = CompletableFuture.supplyAsync(()->{
+            ResultMovie resultMovie = new ResultMovie();
+            resultMovie.setMovies(movieRepository.findByHero(heroName));
+            return resultMovie;
+        });
+
+        return CompletableFuture.allOf(completableFuture1, completableFuture2)
+                .thenApplyAsync(value -> {
+
+                    FinalResultMovie finalResultMovie = new FinalResultMovie();
+                    finalResultMovie.setHeroName(heroName);
+
+                    ResultHero resultHero = completableFuture1.join();
+                    if(Objects.nonNull(resultHero)){
+                        finalResultMovie.setAssistant1(resultHero.getAssistant1());
+                    }
+
+                    ResultMovie resultMovie = completableFuture2.join();
+                    if(Objects.nonNull(resultMovie)){
+                        finalResultMovie.setMovies(resultMovie.getMovies());
+                    }
+
+                    return  finalResultMovie;
+
+                });
+
+    }
+
+
+HashMap                           vs                      HashTable
+----------------------------------------------------------------------------------------
+1.5                                                        Legacy
+Non-synchronized                                           Synchronized
+Fail-fast                                                  Fail-safe
+Faster                                                     Slower
+Null key / Null value                                      No null key /value
+
+
+Fail-fast                        vs                         Fail-safe
+-----------------------------------------------------------------------------
+ConcurrentModificationException                             Slower
+                                                            More memory
+HashMap, ArrayList, HashSet                                 HashTable, ConcurrentHashMap, CopyOnWriteArrayList
+
+
+Java Collection Framework
+-------------------------------------
+
+- API to do operations on Collections
+- get(), add(), put(), remove(), size(), iterator(), clear()
+
+                 Iterable
+
+                 Collection                 Map
+
+             Set    List   Queue
+
+Interface           Class               Ordered             Sorted              Synchronized
+-----------------------------------------------------------------------------------------------
+Map               HashMap
+                  HashTable                                                         yes
+                  LinkedHashMap         yes
+                  TreeMap                                   yes
+                  ConcurrentHashMap                                                 yes
+
+Set               HashSet
+                  LinkedHashSet         yes
+                  TreeSet                                   yes
+
+List              ArrayList
+                  Vector                                                            yes
+                  LinkedList            yes
+                  Stack
+                  CopyOnWriteArrayList
+
+Queue             PriorityQueue                             yes
+
+
+How HashMap works
+-----------------------
+- buckets
+- hashCode
+- equals
+
+map.put(key, value)
+ Bucket b = hashCode(key)
+  Bucket		Entry<K,V>
+	---------		------------------
+	b1			Key1/Value1	Key2/Value2  (LinkedList)
+	b2			Key3/Value3	Key4/Value4
+
+map.get(key)
+Bucket b =  hashCode(key)
+In Bucket b, for each entry
+if (key.equals(key1)) {
+return value1
+}else{
+	go to next entry in bucket
+}
+
+Attributes of HashMap key
+- Immutable
+- Override hashCode() and equals()
+
+Eg: String and Wrapper class
+
+
+ArrayList				vs					LinkedList
+--------------------------------------------------------------------------------------------------------	
+
+1. Stores data in array							1. Stores data in doubly-linked nodes.
+2. implements RandomAccess Interface					2. 
+3. Search is fast							3. Search is slow
+4. Insert/Delete is slow						4. Insert/Delete is fast
+5. Lesser memory							5. More memory 
+
+
+-------------------------------------------------------------------------
+
+Cloning
+===============
+
+Shallow clone :: referenced Object is shared between clones
+Deep clone    :: referenced Object is not-shared between clones (exclusive) 
+			(referenced objects has to be set after cloning)
+
+@Getter
+@Setter
+@AllArgsConstructor
+@ToString
+@NoArgsConstructor
+public class Employee implements Cloneable{
+
+    private int employeeId;
+    private String employeeName;
+    private Department department;
+
+    //clone() has protected access in java.lang.Object
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        //return super.clone(); //Shallow clone
+
+        //Deep clone
+        Employee employee = (Employee) super.clone();
+        employee.setDepartment((Department) employee.getDepartment().clone());
+        return employee;
+    }
+}
+
+Department deptG = new Department(28383, "Geography", "Associate");
+Employee empG1 = new Employee(111, "John", deptG); //prototype object
+
+/*
+Employee empG2 = (Employee) empG1.clone();
+empG2.getDepartment().setDesignation("VP");
+System.out.println("designation empG2 : " + empG2.getDepartment().getDesignation()); //VP
+System.out.println("designation empG1 : " + empG1.getDepartment().getDesignation()); //VP
+*/
+
+//Deep clone
+Employee empG3 = (Employee) empG1.clone();
+empG3.getDepartment().setDesignation("VP");
+System.out.println("designation empG3 : " + empG3.getDepartment().getDesignation()); //VP
+System.out.println("designation empG1 : " + empG1.getDepartment().getDesignation()); //Associate
+
+//Shallow clone a list
+List<Employee> shallowCloneList = new ArrayList<>(empList);
+
+//Deep clone a list
+List<Employee> deepCloneList = empList.stream().forEach(emp -> {
+Employee empClone = (Employee) super.clone();
+empClone.setSkills(new ArrayList<>(empClone.getSkills().clone());
+return empClone;
+}).collect(Collectors.toList());
+
+//Deep clone a list using mapstruct
+@Mapper(mappingControl= Deepclone.class, componentModel="spring", unmappedTargetPolicy= ReportingPolicy.IGNORE,unmappedSourcePolicy= ReportingPolicy.IGNORE)
+public interface ABCMapper{
+
+	Set<Item> deeplCloneItems(List<Item> items);
+}
+
+-------------------------------------------------------------------------
+
+Exception Hierarchy
+================================
+
+                            THROWABLE
+
+        ERROR                                       EXCEPTIOON
+
+        OutOfMemoryError               RUNTIME EXCEPTION                    CHECKED EXCEPTION
+        NoClassDefFoundError           NullPointerException                 IOException
+                                       ClassCastException                       -FileNotFoundException
+                                       ArithmeticException                      -EOFException
+                                       NumberFormatException                ClassNotFoundException
+                                       IllegalArgumentException             SQLException
+                                       ArrayIndexOutOfBoundsException       InterruptedException
+        
+
+-------------------------------------------------------------------------
+
+Virtual Thread
+==========================
+
+Platform Thread				vs 						Virtual Thread
+-----------------------------------------------------------------------------------------------------------------
+										light-weight
+										high throughput concurrent applications
+Platform Thread runs on top of OS Thread and has a 1-1 mapping			Virtual Thread is managed by JVM
+wait for I/O									virtual threads mounts on a Platform thread 
+					and when gets a blocking I/O takes over the I/O job from the platform thread and when dome mounts to a new platform thread	
+									      
+Runnable r = () -> System.out.println("New virtual thread");
+Thread.ofVirtual().start(r);
+Thread.sleep(1000);
+
+try(ExecutorService executorService = Executors.newVirtualThreadPerTaskExecutor()){
+    Future<?> future = executorService.submit( () -> System.out.println("aaa"));
+    future.get();
+}catch (Exception e ){
+    e.printStackTrace();
+}
+
+Thread virtualThread = Thread.startVirtualThread(() -> {
+    System.out.println("Running task in a virtual thread: "
+	    + Thread.currentThread().getName());
+});
+try {
+    virtualThread.join();
+} catch (InterruptedException e) {
+    e.printStackTrace();
+}
+
+Record patterns
+==============================
+
+Task task = new Task("Tree climbing", "New");
+if(task instanceof Task(String taskName, String status)){
+    System.out.println(taskName);
+    System.out.println(status);
+}
+
+ Diamond problem in java
+============================
+If a class implements 2 interfaces with same method signature then it must override the method 
+
+interface InterfaceA {
+    default void display() {
+        System.out.println("Inside InterfaceA");
+    }
+}
+
+interface InterfaceB {
+    default void display() {
+        System.out.println("Inside InterfaceB");
+    }
+}
+
+class MyClass implements InterfaceA, InterfaceB {
+    // Here, we must provide our own implementation of display to resolve the ambiguity.
+    @Override
+    public void display() {
+        InterfaceA.super.display(); // calling InterfaceA's default implementation
+        InterfaceB.super.display(); // calling InterfaceB's default implementation
+    }
+}
+
+
+Immutable class
+----------------------
+
+// 1. final class
+// 2. private final fields
+// 3. no setters, only getters
+
+public final class MyImmutable {
+
+	private final int i;
+
+	//getters only
+	public int getI() {
+	   return i;
+	}
+	
+	public MyImmutable(int i){
+		this.i = i;
+	}
+	
+}
+
+Advantages:
+1. Thread safe
+2. Map key
+
+Immutable Objects in Java
+1. String
+2. Wrapper classes
+
+
+OverLoading 				vs  				OverRiding
+==========================================================================================
+
+1.  Same name								Same name
+
+2.  Same class								subclass
+
+3.  Argument list MUST CHANGE						Argument list EXACTLY MATCH / = erasure of superclass method signature
+
+4.  Return type CAN CHANGE						Return type must be same / subclass
+
+5.  									Cannot throw new or broader checked exceptions
+
+6. 									Access level : same / broader
+
+7. Compile-time	Polymorphism						Runtime Polymorphism
+
+
+Overloading  ---> Widening – Boxing – Var Args
+None of the wrapper classes widen from one to another.
+widening/lessening and Boxing is not allowed
+
+Comparator Interface vs Comparable Interface
+----------------------------------------------
+  
+ Comparator						Comparable
+-------------					       --------------
+java.util						java.lang
+public int compare(User u1, User u2){			public int compareTo(User u){
+   int x = u1name.compareTo(u2name);				return this.getId() - u.getId();
+}							}
+ balls = balls.stream().sorted(Comparator.comparing(Ball::getColour)).toList()
+
+
+Wrapper Classes 
+-----------------------------------
+
+1. Object representation of primitive data type.
+
+2. 9 Wrapper classes 
+
+3. Pkg : java.lang ; public, final
+
+
+byte - > short -> int -> long -> float-> double
+		   ^	
+		   |
+	          char		
+
+
+boolean	  java.lang.Boolean
+byte	  java.lang.Byte
+short	  java.lang.Short
+int	  java.lang.Integer
+char	  java.lang.Character
+long	  java.lang.Long
+float	  java.lang.Float
+double	  java.lang.Double
+void 	  java.lang.Void	
+
+
+3.
+
+Primitive type			Wrapper class			Constructor Arguments
+-------------------		---------------			------------------------
+
+byte				Byte				byte or String
+short				Short				short or String
+int				Integer				int or String
+long				Long				long or String
+float				Float				float, double or String
+double				Double				double or String
+char				Character			char
+boolean				Boolean				boolean or String
+
+
+4.
+
+Advantages 
+
+	1. Wrapper class can be returned/passed in methods as Objects
+	
+	2. Wrapper class can be used in collections
+	
+	3. Wrapper classes have overridden equals method.	
+
+	4. Utility Methods
+	
+		valueOf()     ---  to Wrapper
+			Integer i1 = Integer.valueOf("3");
+			Integer i2 = Integer.valueOf(123);
+			Float f =    Float.valueOf("2.2");
+				
+		parseXXX()    --- String to primitive
+					
+			int i = Integer.parseInt("345");
+			double d = Double.parseDouble("123.456");
+			byte b = Byte.parseByte("127");	
+		
+		

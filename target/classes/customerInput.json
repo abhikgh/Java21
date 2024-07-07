@@ -1,0 +1,14 @@
+[
+  {
+    "familyId": "fam123",
+    "customerId": "cust123",
+    "customerName": "cusName123",
+    "customerDept": "ADMIN"
+  },
+  {
+    "familyId": "fam234",
+    "customerId": "cust234",
+    "customerName": "cusName234",
+    "customerDept": "FINANCE"
+  }
+]

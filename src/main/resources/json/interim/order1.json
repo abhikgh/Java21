@@ -1,0 +1,12 @@
+{
+  "orderId" : "kdekdm23j3jd",
+  "country" : "SE",
+  "customerType" : "group",
+  "status" : 1,
+  "orderItems" : [ {
+    "cabinet" : 230.00,
+    "sofa" : 123.00,
+    "chairs" : 749.00,
+    "tables" : 189.00
+  } ]
+}
