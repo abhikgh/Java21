@@ -125,6 +125,38 @@ public class ThreadEx {
         t1.start();
         t2.start();
         t3.start();
+
+        Thread virtualThread = Thread.startVirtualThread(() -> {
+            System.out.println("Running task in a virtual thread: "
+                    + Thread.currentThread().getName());
+        });
+        try {
+            virtualThread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+
+       /* Runnable r = () -> System.out.println("New virtual thread");
+        Thread.ofVirtual().start(r);
+        Thread.sleep(1000);
+
+        try(ExecutorService executorService = Executors.newVirtualThreadPerTaskExecutor()){
+            Future<?> future = executorService.submit( () -> System.out.println("aaa"));
+            future.get();
+        }catch (Exception e ){
+            e.printStackTrace();
+        }
+
+        Thread virtualThread = Thread.startVirtualThread(() -> {
+            System.out.println("Running task in a virtual thread: "
+                    + Thread.currentThread().getName());
+        });
+        try {
+            virtualThread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }*/
     }
 
 }

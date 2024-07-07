@@ -405,16 +405,13 @@ public class ListEx {
         System.out.println("reversedListWithoutNull :: " + reversedListWithoutNull); //[Papaya, Mango, Grapes, Banana, Apple]
 
         //reverse list
-        List<Integer> abcList = new ArrayList<>();
-        abcList.add(223);abcList.add(333);abcList.add(324);abcList.add(3423);
-        Collections.reverse(abcList);
-        System.out.println("reverseList : " +  abcList);
+        List<Integer> abcList = List.of(123, 344, 993, 334);
+        List<Integer> reversedList = abcList.reversed();
+        System.out.println("reversedList : " +  reversedList);
 
         //reverse array
         Integer[] integersArr = new Integer[]{34,99,9393,8282,93};
-        abcList = Arrays.asList(integersArr);
-        Collections.reverse(abcList);
-        Integer[] reversedArr = abcList.toArray(new Integer[integerList.size()]);
+        Integer[] reversedArr = Arrays.asList(integersArr).reversed().toArray(new Integer[integerList.size()]);
         System.out.println("reversedArr");
         for(int i =0;i<reversedArr.length; i++){
             System.out.println(reversedArr[i]);
