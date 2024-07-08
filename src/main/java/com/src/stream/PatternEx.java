@@ -38,63 +38,73 @@ public class PatternEx {
 
     public static void main(String[] args) throws IOException {
 
-        //1.matcher = pattern.matcher(input) :: checks if pattern (Fully Matches) the string
+        //1. if(pattern.matcher(input).matches()) - checks if pattern Fully Matches the string
 
-        //todo : pattern.matcher.matches
         String input = "lkd22sA@3";
         Pattern pattern = Pattern.compile("[0-9a-zA-Z!@#]{4,10}");
-        Matcher matcher = pattern.matcher(input);
-        System.out.println("input matches pattern : " + matcher.matches()); //true
+        if (pattern.matcher(input).matches())
+            System.out.println("input matches pattern 1"); //true
 
         // Only 3,4 or 5 allowed
         input = "5";
         pattern = Pattern.compile("3|4|5");
-        matcher = pattern.matcher(input);
-        System.out.println("input matches pattern : " + matcher.matches()); //true
+        if (pattern.matcher(input).matches())
+            System.out.println("input matches pattern 2");
 
         input = "Hello World";
-        pattern  = Pattern.compile("Hello.*");
-        if(pattern.matcher(input).matches()){
+        pattern = Pattern.compile("Hello.*");
+        if (pattern.matcher(input).matches()) {
             System.out.println("matched");
-        } else{
+        } else {
             System.out.println("Non matched");
         }
 
         //Only 0-9 , min 8
         input = "59393939393";
         pattern = Pattern.compile("[0-9]{8,}");
-        matcher = pattern.matcher(input);
-        System.out.println("input matches pattern : " + matcher.matches()); //true
+        if (pattern.matcher(input).matches())
+            System.out.println("input matches pattern 3"); //true
 
         //firstName lastName/firstName
         input = "andn ndnd";
         pattern = Pattern.compile("[a-z]+\\s{0,1}[a-z]*");
-        matcher = pattern.matcher(input);
-        System.out.println("input matches pattern name : " + matcher.matches());
+        if (pattern.matcher(input).matches())
+            System.out.println("input matches pattern name 4");
 
         //contains at least 1 number
         input = "dhdhdjdjdj2jdjdjd";
         pattern = Pattern.compile(".*[0-9]+.*");
-        matcher = pattern.matcher(input);
-        System.out.println("input matches pattern number : " + matcher.matches());
+        if (pattern.matcher(input).matches())
+            System.out.println("input matches pattern 5");
 
-        //2. pattern.asPredicate().test(input) :: checks if pattern (Is Found) in the String
+        //2. if(pattern.asPredicate().test(input)) - checks if pattern Is Found in the String
 
         input = "aaeebbeecceeddee3223ddew23ddedsd";
         pattern = Pattern.compile("\\d{4}[a-z]{4}\\d{2}");
-        System.out.println("input contains pattern 1:: " + pattern.asPredicate().test(input)); //true
+        if (pattern.asPredicate().test(input))
+            System.out.println("input contains pattern 1"); //true
 
-        //3. pattern.asMatchPredicate().test(input) :: check if pattern (Matches) the string
+        //3. pattern.asMatchPredicate().test(input) :: check if pattern Fully Matches the string
+
+        input = "aaeebbeecceeddee3223ddew23ddedsd";
+        pattern = Pattern.compile("\\d{4}[a-z]{4}\\d{2}");
+        if (pattern.asMatchPredicate().test(input))
+            System.out.println("input matches pattern 11"); //false
+
+        input = "aaeebbeecceeddee3223ddew23ddedsd";
+        pattern = Pattern.compile(".*\\d{4}[a-z]{4}\\d{2}.*");
+        if (pattern.asMatchPredicate().test(input))
+            System.out.println("input matches pattern 12"); //true
+
 
         //4. while(matcher.find()) - matcher.group(0)
 
         //check if input String contains the pattern and get the group
         input = "93939skksk3000202kd23-23-34ipAddress:1203023fkfkfkkfk";
         pattern = Pattern.compile(".*(ipAddress:\\d{7}).*");
-        boolean matches = pattern.asMatchPredicate().test(input);
-        System.out.println("input contains ipAddress :: " + matches);
-        if (matches) {
-            matcher = pattern.matcher(input);
+        if (pattern.asMatchPredicate().test(input)) {
+            System.out.println("input contains ipAddress");
+            Matcher matcher = pattern.matcher(input);
             while (matcher.find()) {
                 System.out.println("ipAddress is :: " + matcher.group(1).split(":")[1]);
             }
@@ -104,21 +114,22 @@ public class PatternEx {
         //Find groups of 5-6 digit numbers in a String
         input = "ladslj12ldjalsd13mla678882ldsllkskdl907128j12345";
         pattern = Pattern.compile("\\d{5,6}");
-        matcher = pattern.matcher(input);
+        Matcher matcher = pattern.matcher(input);
         while (matcher.find()) {
             System.out.println("matcher group : " + matcher.group()); //678882 907128 12345
         }
 
         input = "93939skksk3000202kd23-23-34fkfkfkkfk";
         pattern = Pattern.compile("\\d{2}-\\d{2}-\\d{2}");
-        System.out.println("input contains pattern 2:: " + pattern.asPredicate().test(input)); //true
+        if(pattern.asPredicate().test(input))
+            System.out.println("input contains pattern 2"); //true
 
         input = "39838sstorejkfjfjjfstoresjfjfjfproductjfjjddj";
         pattern = Pattern.compile(".*store.*stores.*product.*");
-        matches = pattern.asMatchPredicate().test(input);
-        System.out.println("input contains pattern 4 :: " + matches); //true
-        matches = pattern.asPredicate().test(input);
-        System.out.println("input contains pattern 4 :: " + matches); //true
+        if(pattern.asMatchPredicate().test(input))
+             System.out.println("input contains pattern 4 :: "); //true
+        if(pattern.asPredicate().test(input))
+             System.out.println("input contains pattern 4"); //true
 
         //read the file line-by-line and check each line if the line contains the pattern and if so return the group
         pattern = Pattern.compile(".*(ipaddress:\\d{7}).*");
@@ -188,6 +199,8 @@ public class PatternEx {
             System.out.println(matcher.group(2)); //writes plays sings dances sleeps
         }
 
+        //5. matcher.results().count()
+
         //Count of a word in a sentence
         input = "John writes and John plays and john sings and John dances and JOHN sleeps";
         pattern = Pattern.compile("(?i)(John)");
@@ -226,6 +239,6 @@ public class PatternEx {
         System.out.println("replaced string :: " + input);
         //{"familyId":"fam123","customerId": "John","customerName":"cusName123","customerType":"Regular"}
 
-
     }
 }
+

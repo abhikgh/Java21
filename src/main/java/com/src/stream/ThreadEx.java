@@ -2,6 +2,9 @@ package com.src.stream;
 
 import java.io.File;
 import java.util.Scanner;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 class MyThread extends Thread{
@@ -20,7 +23,7 @@ class MyRunnbale implements Runnable{
 }
 public class ThreadEx {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         
         //Runnable is a FunctionalInterface - run()
         //Thread implements Runnable
@@ -136,8 +139,7 @@ public class ThreadEx {
             e.printStackTrace();
         }
 
-
-       /* Runnable r = () -> System.out.println("New virtual thread");
+        Runnable r = () -> System.out.println("New virtual thread");
         Thread.ofVirtual().start(r);
         Thread.sleep(1000);
 
@@ -148,15 +150,7 @@ public class ThreadEx {
             e.printStackTrace();
         }
 
-        Thread virtualThread = Thread.startVirtualThread(() -> {
-            System.out.println("Running task in a virtual thread: "
-                    + Thread.currentThread().getName());
-        });
-        try {
-            virtualThread.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }*/
+
     }
 
 }
