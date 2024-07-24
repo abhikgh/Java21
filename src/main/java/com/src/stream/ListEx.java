@@ -5,6 +5,7 @@ import com.src.model.Books;
 import com.src.model.Department;
 import com.src.model.Emp;
 import com.src.model.Employee;
+import com.src.model.Order;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -16,6 +17,8 @@ import org.springframework.util.CollectionUtils;
 
 import java.math.BigDecimal;
 //import java.math.RoundingMode;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -396,7 +399,7 @@ public class ListEx {
         System.out.println("orderedNullLastList :: " + orderedNullLastList); //[Apple, Banana, Grapes, Mango, Papaya, null]
 
         //sort the list by reverse order, with nulls last
-        List<String>  reversedNullLastList =listTest.stream().sorted(Comparator.nullsLast(Comparator.reverseOrder())).toList();
+        List<String>  reversedNullLastList = listTest.stream().sorted(Comparator.nullsLast(Comparator.reverseOrder())).toList();
         System.out.println("reversedNullLastList :: " + reversedNullLastList);
 
         //sort the list by reverse order if no null
@@ -677,6 +680,32 @@ public class ListEx {
             }
         }
         System.out.println("copyOnWriteArrayList :: " + copyOnWriteArrayList);
+
+        //Orders
+        System.out.println("-----------Orders---------------------------");
+        String inputDateTime = "2023-06-20T00:00:00Z";
+        LocalDateTime localDateDT = LocalDateTime.parse(inputDateTime, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'"));
+        Order order1 = new Order("A12SS23", 133,localDateDT);
+
+        inputDateTime = "2023-06-21T00:00:00Z";
+        localDateDT = LocalDateTime.parse(inputDateTime, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'"));
+        Order order2 = new Order("A2362662", 233,localDateDT);
+
+        inputDateTime = "2023-06-22T00:00:00Z";
+        localDateDT = LocalDateTime.parse(inputDateTime, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'"));
+        Order order3 = new Order("A2362662", 333,localDateDT);
+
+        inputDateTime = "2023-06-23T00:00:00Z";
+        localDateDT = LocalDateTime.parse(inputDateTime, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'"));
+        Order order4 = new Order("A2362662", 433,localDateDT);
+
+        List<Order> orders = new ArrayList<>();
+        orders.add(order2); orders.add(order3); orders.add(order4); orders.add(order1);
+
+        String checkDateTime = "2023-06-22T00:00:00Z";
+        LocalDateTime localDateDTToCheck = LocalDateTime.parse(checkDateTime, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'"));
+
+        orders.stream().filter(order -> order.getValidFrom().isBefore(localDateDTToCheck)).toList().stream().sorted(Comparator.comparing(Order::getValidFrom).reversed()).findFirst().ifPresent(filteredOrder -> System.out.println(filteredOrder.getOrderAmount() + "--" + filteredOrder.getOrderNumber() + "--" + filteredOrder.getValidFrom()));
 
 
         /*
