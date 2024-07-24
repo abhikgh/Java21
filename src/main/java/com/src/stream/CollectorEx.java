@@ -127,16 +127,16 @@ class Item {
             Collectors.reducing
             --------------------------
              If map Value has >1 values which has to be reduced to a single value - use Collectors.reducing
-                    java.util.stream.Collectors:reducing((U identity,
+                    java.util.stream.Collectors:reducing((U least,
                                 Function<? super T, ? extends U> mapper,
-                                BinaryOperator<U> op) {
+                                BinaryOperator<U> binaryOp) {
 
                                 }
                     If you want to just summarize the elements of an Integer stream into an integer, you could use
                           Collectors.reducing(0, x -> x, (x, y) -> x + y).
                     If you want to summarize the lengths of Strings in a String stream, you could use
                           Collectors.reducing(0, String::length, (x, y) -> x + y).
-                    If you want to get the maximum Double from a string of Doubles, but no less than Math.PI, you could use
+                    If you want to get the maximum Double from a stream of Doubles, but no less than Math.PI, you could use
                           Collectors.reducing(Math.PI, x -> x, Math::max).
 
             .collect(Collectors.groupingBy(Saving::getIsApplied, Collectors.reducing(BigDecimal.ZERO, Saving::getAmount, BigDecimal::add)));
@@ -275,6 +275,16 @@ public class CollectorEx {
         System.out.println("remove duplicates(itemType+itemCC) from a list--------------------");
         List<ItemX> uniqueItemXList = itemXList.stream().filter(itemX -> uniqueKeys.add(itemX.getItemType().concat(itemX.getItemCC()))).toList();
         System.out.println("uniqueItemXList :: " + uniqueItemXList);
+
+	//remove duplicates(itemType+itemCC) from a list
+        Map<String, ItemX> nodupsMap = new HashMap<>();
+        for(ItemX itemX: itemXList) {
+            if(!nodupsMap.containsKey(itemX.getItemType().concat(itemX.getItemCC()))){
+                nodupsMap.put(itemX.getItemType().concat(itemX.getItemCC()), itemX);
+            }
+        }
+        List<ItemX> noDupsList = nodupsMap.values().stream().toList();
+        System.out.println("noDupsList ::" + noDupsList);    
 
         //for each item type get all itemNos in that type in a String
         System.out.println("get each type of item and all the items in that type ----------------------");
