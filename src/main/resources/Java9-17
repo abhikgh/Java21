@@ -23,6 +23,8 @@ Max
         Number highestNumber = numberList.stream().map(Number::doubleValue).max(Double::compareTo).get();
         System.out.println("highestNumber :: " + highestNumber);  //123.34
 
+        servicePriceList.stream().flatMap(servicePrice -> servicePrice.getSavingList().stream()).filter(Saving::getIsApplied).collect(Collectors.maxBy(Comparator.comparing(Saving::getAmount))).get().getAmount();		
+
 
 Java 9
 =============
