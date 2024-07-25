@@ -31,10 +31,31 @@ public class CompletableFutureEx {
 
     public static void main(String[] args) {
 
-        CompletableFuture<String> completableFuture = new CompletableFuture<>();
-        boolean isComplete = completableFuture.complete("Hello Java"); //completes the future with the passed value if the future has not been completed already
-        System.out.println("CompletableFuture isComplete :: " + isComplete);
+        //--- CFs having SAME return type ---
+        
+        List<CompletableFuture<String>> completableFutures = new ArrayList<>();
+        completableFutures.add(CompletableFuture.supplyAsync( () -> {
+            return "aaa";
+        }));
+        completableFutures.add(CompletableFuture.supplyAsync( () -> {
+            return "bbb";
+        }));
+        completableFutures.add(CompletableFuture.supplyAsync( () -> {
+            return "ccc";
+        }));
 
+        //wait for all CFs to complete
+        CompletableFuture.allOf(completableFutures.toArray(new CompletableFuture[completableFutures.size()])).join();
+
+        //get each CF
+        List<String> stringList = new ArrayList<>();
+        for (CompletableFuture<String> cf:  completableFutures) {
+            stringList.add(cf.get());
+        }
+        System.out.println("stringList");
+        System.out.println(stringList); //[aaa, bbb, ccc]     
+
+      
         //----------------------------------------------------------------------------------------//
 
         CompletableFuture<String> cf1 = CompletableFuture.supplyAsync(() -> {
