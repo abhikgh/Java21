@@ -9,6 +9,7 @@ list.stream()
         .sorted(Compartor.comparing(x, Comparator.reverseOrder()).thenComparing(y, Comparator.reverseOrder())
         .sorted(Compartor.comparing(x, Comparator.nullsLast(Comparator.naturalOrder()))
         .sorted(Compartor.comparing(x, Comparator.nullsLast(Comparator.reverseOrder()))
+	.sorted(Comparator.reverseOrder())
         .sorted(Compartor.comparingInt(x))
         .sorted(Compartor.comparingInt(x).reversed()))
 .toList();
