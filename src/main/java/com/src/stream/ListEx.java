@@ -408,9 +408,12 @@ public class ListEx {
         System.out.println("reversedListWithoutNull :: " + reversedListWithoutNull); //[Papaya, Mango, Grapes, Banana, Apple]
 
         //reverse list
-        List<Integer> abcList = List.of(123, 344, 993, 334);
+        List<Integer> abcList = new ArrayList<>();
+        abcList.add(23);abcList.add(768);abcList.add(123);abcList.add(989);abcList.add(22);abcList.add(2300);
         List<Integer> reversedList = abcList.reversed();
-        System.out.println("reversedList : " +  reversedList);
+        System.out.println("reversedList : " +  reversedList); //[2300, 22, 989, 123, 768, 23]
+        Collections.reverse(abcList);
+        System.out.println("reversedList : " +  abcList); // [2300, 22, 989, 123, 768, 23]
 
         //reverse array
         Integer[] integersArr = new Integer[]{34,99,9393,8282,93};
