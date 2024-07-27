@@ -22,6 +22,8 @@ package com.src.stream;
  */
 
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
@@ -29,7 +31,7 @@ import java.util.stream.Stream;
 
 public class CompletableFutureEx {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ExecutionException, InterruptedException {
 
         //--- CFs having SAME return type ---
         
@@ -55,91 +57,46 @@ public class CompletableFutureEx {
         System.out.println("stringList");
         System.out.println(stringList); //[aaa, bbb, ccc]     
 
-      
         //----------------------------------------------------------------------------------------//
 
-        CompletableFuture<String> cf1 = CompletableFuture.supplyAsync(() -> {
-            return "Hello";
-        });
-        CompletableFuture<String> cf2 = CompletableFuture.supplyAsync(() -> {
-            return "Beautiful";
-        });
-        CompletableFuture<String> cf3 = CompletableFuture.supplyAsync(() -> {
-            return "World";
-        });
-
-        String completedResult = Stream.of(cf1, cf2, cf3).map(CompletableFuture::join).collect(Collectors.joining(" "));
-        System.out.println("CompletableFuture join :: " + completedResult); // Hello Beautiful World
-
-        //----------------------------------------------------------------------------------------//
-
-        CompletableFuture<String> welcomeText = CompletableFuture.supplyAsync(() -> {
-            return "Hello";
-        }).thenApplyAsync(x -> { // callback
-            return x.concat(" World");
-        }).thenApplyAsync(y -> { // callback
-            return y.toUpperCase();
-        });
-
-        try {
-            if (welcomeText.isDone()) {  // non-blocking
-                System.out.println("CompletableFuture thenApplyAsync :: " + welcomeText.get()); // blocking //HELLO WORLD
-            }
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-        }
-
-        //----------------------------------------------------------------------------------------//
-
-        //thenCombine :: combining 2 independent futures together and do something with the result after both of them are complete
-        CompletableFuture<Double> bmi = CompletableFuture.supplyAsync(() -> {
+        CompletableFuture<Double> height = CompletableFuture.supplyAsync(() -> {
             return 175.0;
-        }).thenCombine(CompletableFuture.supplyAsync(() -> {    //
+        });
+        CompletableFuture<Double> weight = CompletableFuture.supplyAsync(() -> {
             return 65.0;
-        }), (height, weight) -> { // independent
-            Double heightInMeter = height / 100;
-            return weight / (heightInMeter * heightInMeter);
         });
-
-        try {
-            System.out.println("CompletableFuture thenCombine :: " + bmi.get());   //blocking   //21.224489795918366
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-        }
+        //wait for all CFs to complete
+        CompletableFuture<Double> bmi = CompletableFuture.allOf(height, weight)
+                .thenApplyAsync(value -> {
+                    Double h = height.join();
+                    Double w = weight.join();
+                    Double heightInMeter = h / 100;
+                    return w / (heightInMeter * heightInMeter);
+                });
+        System.out.println("BMI :: " + bmi.get());
 
         //----------------------------------------------------------------------------------------//
 
-        //thenCompose :: combining 2 dependent futures together
-        String userName = "abc";
-        CompletableFuture<String> composed = CompletableFuture.supplyAsync(() -> {
-            return userName.toUpperCase();
-        }).thenCompose(x -> {
-            return CompletableFuture.supplyAsync(() -> {
-                return x.concat("def");
-            });
-        });
-
-        try {
-            System.out.println("CompletableFuture thenCompose :: " + composed.get());  // ABCdef
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-        }
-
-        //----------------------------------------------------------------------------------------//
-
-        //thenAcceptBoth :: working with 2 independent futures together but dont need to pass the result to a Future
-        CompletableFuture<Void> completableFuture1 = CompletableFuture.supplyAsync(() -> {
-            return 175.0;
-        }).thenAcceptAsync(x -> CompletableFuture.runAsync(() -> {
-            System.out.println(x);  //175
+        List<CompletableFuture<String>> completableFutureList = new ArrayList<>();
+        completableFutureList.add(CompletableFuture.supplyAsync(() -> {
+            return "Hello";
         }));
-
-        try {
-            System.out.println("CompletableFuture thenAcceptAsync :: " + completableFuture1.get());  //blocking   //null
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
+        completableFutureList.add(CompletableFuture.supplyAsync(() -> {
+            return "Beautiful";
+        }));
+        completableFutureList.add(CompletableFuture.supplyAsync(() -> {
+            return "World";
+        }));
+        //wait for all CFs to complete
+        CompletableFuture.allOf(completableFutureList.toArray(new CompletableFuture[0])).join();
+        //get each CF
+        String result = "";
+        for(CompletableFuture<String> completableFuture : completableFutureList){
+           result = result.concat(completableFuture.get()+" ");
         }
+        System.out.println("result : " + result);
 
+        //----------------------------------------------------------------------------------------//
 
     }
 }

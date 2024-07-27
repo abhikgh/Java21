@@ -3,6 +3,7 @@ package com.src.stream;
 import lombok.AllArgsConstructor;
 
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.Semaphore;
 
 
 /*
@@ -19,15 +20,16 @@ import java.util.concurrent.CountDownLatch;
 @AllArgsConstructor
 class Worker extends Thread {
 	private String name;
-	private CountDownLatch countdownLatch;
+	private Semaphore semaphore;
 
 	@Override
 	public synchronized void run() {
 		try {
+			semaphore.acquire();
 			Thread.sleep(1000);
-			System.out.println("Running thread :: " + Thread.currentThread().getName());
-			System.out.println("Completed thread :: " + Thread.currentThread().getName());
-			countdownLatch.countDown();
+			System.out.println("Running thread :: " + name);
+			System.out.println("Completed thread :: " + name);
+			semaphore.release();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -37,21 +39,24 @@ class Worker extends Thread {
 public class CountDownLatchEx {
 
 	public static void main(String[] args) {
-		CountDownLatch countDownLatch = new CountDownLatch(4);
-		Worker worker = new Worker("worker", countDownLatch);
-		Thread worker1 = new Thread(worker, "ws-1");
-		Thread worker2 = new Thread(worker, "ws-2");
-		Thread worker3 = new Thread(worker, "ws-3");
-		Thread worker4 = new Thread(worker, "ws-4");
+		Semaphore semaphore = new Semaphore(1);
+		Worker worker1 = new Worker("worker1", semaphore);
+		Worker worker2 = new Worker("worker2", semaphore);
+		Worker worker3 = new Worker("worker3", semaphore);
+		Worker worker4 = new Worker("worker4", semaphore);
 
+		//4 threads will complete in any order, but when 1 starts it will complete first
 		worker1.start();
 		worker2.start();
 		worker3.start();
 		worker4.start();
 
 		try {
-			countDownLatch.await(); //Causes the current thread to wait until the latch has counted down to zero
-			System.out.println("main thread starts");
+			worker1.join();
+			worker2.join();
+			worker3.join();
+			worker4.join();
+
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}

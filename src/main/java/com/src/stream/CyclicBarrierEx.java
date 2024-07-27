@@ -1,64 +1,56 @@
 package com.src.stream;
 
+import lombok.AllArgsConstructor;
+
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
+import java.util.concurrent.Semaphore;
 
 /*
    CyclicBarrier is when different threads wait for each other and when all have finished their execution, the result needs to be combined in the parent thread.
    CyclicBarrierEx.newBarrier.await() - on each of the threads and caller thread
 */
-
-class Computation1 extends Thread {
-    public static int product = 0;
-    public void run()
-    {
-        product = 2 * 3;
-        try {
-        	CyclicBarrierEx.newBarrier.await();
-        }
-        catch (InterruptedException 
-               | BrokenBarrierException e) {
-            e.printStackTrace();
-        }
-    }
-}
-
-class Computation2 extends Thread {
+@AllArgsConstructor
+class Computation extends Thread {
     public static int sum = 0;
-    public void run()
-    {
-        sum = 10 + 20;
+    public static int product = 0;
+
+    private String name;
+    private Semaphore semaphore;
+
+    public void run() {
         try {
-        	CyclicBarrierEx.newBarrier.await();
-        }
-        catch (InterruptedException
-               | BrokenBarrierException e) {
-            e.printStackTrace();
+            semaphore.acquire();
+
+            if (name.equals("sum")) {
+                sum = 10 + 20;
+            } else if (name.equals("product")) {
+                product = 2 * 3;
+            }
+            System.out.println("Thread :: " + name + " acquires lock.");
+            System.out.println("Sum of product and sum = " + (Computation.sum + Computation.product));
+            semaphore.release();
+        } catch (InterruptedException ex) {
+            throw new RuntimeException(ex);
         }
     }
 }
+
   
 public class CyclicBarrierEx {
 	
-	public static CyclicBarrier newBarrier = new CyclicBarrier(3);
-	
-	public static void main(String[] args) {
-		Computation1 client1 = new Computation1();
-		Computation2 client2 = new Computation2();
-		
-		Thread t1 = new Thread(client1, "t1"); //Thread(Runnable target, String name)
-		Thread t2 = new Thread(client2, "t2");
-		
-		t1.start();
-		t2.start();
-		
-		try {
-			CyclicBarrierEx.newBarrier.await(); //Waits until all parties have invoked await on this barrier.
-		} catch (InterruptedException | BrokenBarrierException e) {
-			e.printStackTrace();
-		}
-		
-		System.out.println("Sum of product and sum = " + (Computation1.product + Computation2.sum));
+	public static void main(String[] args) throws InterruptedException {
+        Semaphore semaphore = new Semaphore(1);
+		Computation sum = new Computation("sum", semaphore);
+        Computation product = new Computation("product", semaphore);
+
+        sum.start();
+        product.start();
+
+        sum.join();
+        product.join();
+
+		System.out.println("Sum of product and sum final = " + (Computation.sum + Computation.product));
 		
 	}
 
