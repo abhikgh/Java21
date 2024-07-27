@@ -21,6 +21,7 @@ class MyRunnbale implements Runnable{
         System.out.println("Run in myRunnable...");
     }
 }
+
 public class ThreadEx {
 
     public static void main(String[] args) throws InterruptedException {

@@ -1,5 +1,7 @@
 package com.src.stream;
 
+import lombok.AllArgsConstructor;
+
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.RecursiveTask;
 
@@ -38,13 +40,10 @@ public class ForkJoinEx {
 
 }
 
+@AllArgsConstructor
 class CustomRecursiveTask extends RecursiveTask<String> {
 
     private final String input;
-
-    public CustomRecursiveTask(String input) {
-        this.input = input;
-    }
 
     @Override
     protected String compute() {
