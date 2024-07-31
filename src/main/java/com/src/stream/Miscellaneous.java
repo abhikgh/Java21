@@ -335,7 +335,7 @@ public class Miscellaneous {
         System.out.println(listS); //[red, blue, green, yellow, Kite, Marble, Ball, Balloon]
 
         //----------------------------------- Reflections -----------------------------//
-        //Gets attributes of a class in runtime
+        //Reflections :: Gets attributes of a class at runtime; also instantiate objects, call methods and set field values using reflection.
 
         Field[] fArr = FieldTest.class.getDeclaredFields();
         for(int i=0;i<fArr.length;i++) {
@@ -351,6 +351,17 @@ public class Miscellaneous {
         for(int i=0;i<cArr.length;i++) {
             System.out.println(cArr[i].getName());
         }
+
+        Package package = Field.class.getPackage();
+
+        Interface[] interfaceArr = Field.class.getInterfaces();
+
+        Class superClass = Field.class.getSuperClass();
+
+        //Invoke method from outside of class
+         Method m = Field.clas.getDeclaredMethod("bar");
+         m.setAccessible(true);
+         Object result = m.invoke(null);
 
         //-------------------------------- SHA-256 (Standard Hashing Algorithm) ---------------------------------------//
         //It undergoes 64 rounds of hashing and calculates a hash code that is a 64-digit hexadecimal number.
