@@ -18,6 +18,10 @@ public class FieldTest {
 
     private void somePrivateMethod(){}
 
+    private void somePrivateMethod2(String string){
+        System.out.println(string.toUpperCase());
+    }
+
     class InnerFieldTest{
         private String str1;
     }

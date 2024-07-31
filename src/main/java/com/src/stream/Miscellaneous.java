@@ -402,30 +402,9 @@ public class Miscellaneous {
         Department deptG = new Department(28383, "Geography", "Associate");
         Employee empG1 = new Employee(111, "John", deptG,new BigDecimal(223)); //prototype object
 
-        @Getter
-        @Setter
-        class Employee implements Cloneable{
-
-            private int employeeId;
-            private String employeeName;
-            private Department department;
-            private BigDecimal salary;
-        
-        
-            //clone() has protected access in java.lang.Object
-            @Override
-            public Object clone() throws CloneNotSupportedException {
-                //return super.clone(); //Shallow clone
-        
-                //Deep clone
-                Employee employee = (Employee) super.clone();
-                employee.setDepartment((Department) employee.getDepartment().clone());
-                return employee;
-            }
-          }
-
         //Shallow clone :: referenced Object is shared between clones
-        //Deep clone    :: referenced Object is not-shared between clones (exclusive) (referenced objects has to be set after cloning them)
+        //Deep clone    :: referenced Object is not-shared between clones (exclusive)
+        //                 referenced objects has to be set after cloning them
 
         /*
         Employee empG2 = (Employee) empG1.clone();
@@ -435,11 +414,10 @@ public class Miscellaneous {
         */
 
         //Deep clone
-       /* Employee empG3 = (Employee) empG1.clone();
+        Employee empG3 = (Employee) empG1.clone();
         empG3.getDepartment().setDesignation("VP");
         System.out.println("designation empG3 : " + empG3.getDepartment().getDesignation()); //VP
         System.out.println("designation empG1 : " + empG1.getDepartment().getDesignation()); //Associate
-*/
         //------------------------------------ Inner class -----------------------------------------------//
 
         /*static class InnerStatic {
