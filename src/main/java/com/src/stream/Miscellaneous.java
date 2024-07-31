@@ -22,6 +22,7 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -76,7 +77,7 @@ class ASDF {
 
 public class Miscellaneous {
 
-    public static void main(String[] args) throws IOException, NoSuchAlgorithmException, CloneNotSupportedException {
+    public static void main(String[] args) throws IOException, NoSuchAlgorithmException, CloneNotSupportedException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
 
         // ---------------------------------- try-with-resources -----------------------------------//
 
@@ -352,16 +353,17 @@ public class Miscellaneous {
             System.out.println(cArr[i].getName());
         }
 
-        Package package = Field.class.getPackage();
+        Package aPackage = FieldTest.class.getPackage();
 
-        Interface[] interfaceArr = Field.class.getInterfaces();
+        Class[] interfaceArr = FieldTest.class.getInterfaces();
 
-        Class superClass = Field.class.getSuperClass();
+        Class superClass = FieldTest.class.getSuperclass();
 
-        //Invoke method from outside of class
-         Method m = Field.clas.getDeclaredMethod("bar");
-         m.setAccessible(true);
-         Object result = m.invoke(null);
+         System.out.println("Reflections to invoke private method from outside of class");
+         Method method = FieldTest.class.getDeclaredMethod("somePrivateMethod2",String.class);
+         method.setAccessible(true);
+         FieldTest fieldTest = new FieldTest();
+         method.invoke(fieldTest, "test");
 
         //-------------------------------- SHA-256 (Standard Hashing Algorithm) ---------------------------------------//
         //It undergoes 64 rounds of hashing and calculates a hash code that is a 64-digit hexadecimal number.
@@ -433,11 +435,11 @@ public class Miscellaneous {
         */
 
         //Deep clone
-        Employee empG3 = (Employee) empG1.clone();
+       /* Employee empG3 = (Employee) empG1.clone();
         empG3.getDepartment().setDesignation("VP");
         System.out.println("designation empG3 : " + empG3.getDepartment().getDesignation()); //VP
         System.out.println("designation empG1 : " + empG1.getDepartment().getDesignation()); //Associate
-
+*/
         //------------------------------------ Inner class -----------------------------------------------//
 
         /*static class InnerStatic {
