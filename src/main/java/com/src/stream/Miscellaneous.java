@@ -151,11 +151,10 @@ public class Miscellaneous {
                     Unbounded wildcards :<?>
 
 
-             List<Object>  vs               List<? extends Object>
-            ---------------------------------------------------------------
+             List<Object>  vs               List<?> , List<? extends Object> , List<? extends T>
+            ----------------------------------------------------------------------------------------
             anything can be added           cannot add anything to the list except null
-                                                - as ? extends Object = ? (anything)
-
+                                              
 
                     List<String> list = new ArrayList<String>();    //List of String
                     List<String> list = new ArrayList<>();   //List of String
@@ -164,9 +163,9 @@ public class Miscellaneous {
                     List list = new ArrayList<>();    // List of Objects
                     List<?> list = new ArrayList<?> ();  // compiler error
                     List<?> l   = new ArrayList<String>(); // ? = ? extends Object – cannot add to list when extends except null
-                    List<? extends T> l = new ArrayList<X>(); // X should be a subtype of T, cannot add to list except null
+                    List<? extends T> l = new ArrayList<X>(); // X should be a subclass of T, cannot add to list except null
                     List<? super T> l = new ArrayList<X>();  //
-                                            X should be a superType of T
+                                            X should be a superclass of T
                                             Added objects will have to be T/ subclass of T / null
                                             On retrieval, it has to be Object
 
@@ -230,6 +229,21 @@ public class Miscellaneous {
         String gfi3Result = gfi3.addValues("aaa",10);
         System.out.println("gfi3Result:: " + gfi3Result); //aaa10
 
+        //Generic Class
+        /*
+            public class GenericRental<T>{
+
+                private List<T> tList;
+            
+                public GenericRental(List<T> tList){
+                    this.tList = tList;
+                }
+            
+                public T getFirst(){
+                    return tList.get(0);
+                }
+            }
+        */
         //Generic Class
         List<String> list3 = Arrays.asList("828292","djjdjd","sgsgd","ndndn");
         GenericRental genericRental = new GenericRental(list3);
