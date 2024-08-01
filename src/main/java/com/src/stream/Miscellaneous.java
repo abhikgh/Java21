@@ -553,7 +553,7 @@ public class Miscellaneous {
         System.out.println(ans);
 
         //If the word starts with b make the word uppercase
-        finalList = Arrays.stream(strArr).filter(Objects::nonNull).map(val -> checkVal(val)).toList();
+       finalList = Arrays.stream(strArr).filter(s -> Objects.nonNull(s) && s.startsWith("b")).map(String::toUpperCase).toList();
         System.out.println(finalList);
 
         //If the word starts with b,c,d,e make the word lowercase, if starts with a,f,s,t make the word uppercase
