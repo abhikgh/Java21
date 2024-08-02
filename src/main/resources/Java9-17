@@ -619,6 +619,26 @@ abcd.print();
 Java Memory Management
 ===============================
 
+Physical memory is the RAM that our hardware provides
+Operating system allocates virtual memory space for each application.
+Virtual memory is stored in physical memory, and the OS is responsible for maintaining the mapping between the two. 
+
+multi-mapping
+				Physical memory
+
+	Virtual memory 1 	Virtual memory 2	Virtual memory 3
+
+Garbage Collector watches which objects can be reqched from our application through a chain of references and frees up the ones we can’t reach.
+
+Garbage Collector phases :
+
+1. parallel phase can run on multiple GC threads
+2. serial phase runs on a single GC thread
+3. stop-the-world phase can’t run concurrently with application code
+4. concurrent phase can run in the background, while our application does its work
+5. incremental phase can terminate before finishing all of its work and continue it later
+
+
 JVM Memory = Heap memory + Stack memory + Metaspace + Others(GC, JIT Compiler, Socket Buffer...)
 
 Heap memory - Objects, Arrays, String Pool
