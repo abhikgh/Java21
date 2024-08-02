@@ -343,6 +343,7 @@ ZGC
 -------------
 Concurrent, low-latency GC 
 -XX:+UseZGC.
+ZGC outperform G1GC :: reduced garbage collection time, lower memory usage, lower response times, higher throughput
 
 
 Java 17
@@ -643,6 +644,7 @@ ZGC
 ---------
 Concurrent, low-latency GC 
 -XX:+UseZGC.
+ZGC outperform G1GC :: reduced garbage collection time, lower memory usage, lower response times, higher throughput
 
 
 JVM Memory = Heap memory + Stack memory + Metaspace + Others(GC, JIT Compiler, Socket Buffer...)
