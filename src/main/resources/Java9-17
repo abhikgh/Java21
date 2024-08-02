@@ -363,6 +363,55 @@ public class ChildIntImpl implements ChildInt{
 
 }
 
+Java 21
+======================
+
+Virtual Threads
+==============================
+
+OS Thread
+Platform Thread :: Platform Thread runs on top of OS Thread and has a 1-1 mapping
+carrier Thread  :: Platform Thread which are carrying a Virtual Thread
+Virtual Thread  :: Virtual threads are a lightweight implementation of threads that is provided by the JDK rather than the OS
+	Power :: Virtual Threads can be ability to be suspended and resumed automatically 
+		 via continuations when blocking operations occur, 
+		 thus freeing the underlying OS threads to be reused for other operations
+	light-weight
+	concurrent applications 	
+									      
+Runnable r = () -> System.out.println("New virtual thread");
+Thread.ofVirtual().start(r);
+Thread.sleep(1000);
+
+try(ExecutorService executorService = Executors.newVirtualThreadPerTaskExecutor()){
+    Future<?> future = executorService.submit( () -> System.out.println("aaa"));
+    future.get();
+}catch (Exception e ){
+    e.printStackTrace();
+}
+
+Thread virtualThread = Thread.startVirtualThread(() -> {
+    System.out.println("Running task in a virtual thread: "
+	    + Thread.currentThread().getName());
+});
+try {
+    virtualThread.join();
+} catch (InterruptedException e) {
+    e.printStackTrace();
+}
+
+
+Record patterns
+==============================
+record Task(String x, String y) {}
+//before record pattern 
+
+//after record pattern
+Task task = new Task("Tree climbing", "New");
+if(task instanceof Task(String taskName, String status)){
+    System.out.println(taskName);
+    System.out.println(status);
+}
 
 SOLID Principles in Java
 ===============================
@@ -1220,51 +1269,7 @@ Exception Hierarchy
         
 
 -------------------------------------------------------------------------
-
-Virtual Thread
-==========================
-
-OS Thread
-Platform Thread :: Platform Thread runs on top of OS Thread and has a 1-1 mapping
-carrier Thread  :: Platform Thread which are carrying a Virtual Thread
-Virtual Thread  :: Virtual threads are a lightweight implementation of threads that is provided by the JDK rather than the OS
-	Power :: Virtual Threads can be ability to be suspended and resumed automatically 
-		 via continuations when blocking operations occur, 
-		 thus freeing the underlying OS threads to be reused for other operations
-	light-weight
-	concurrent applications 	
-									      
-Runnable r = () -> System.out.println("New virtual thread");
-Thread.ofVirtual().start(r);
-Thread.sleep(1000);
-
-try(ExecutorService executorService = Executors.newVirtualThreadPerTaskExecutor()){
-    Future<?> future = executorService.submit( () -> System.out.println("aaa"));
-    future.get();
-}catch (Exception e ){
-    e.printStackTrace();
-}
-
-Thread virtualThread = Thread.startVirtualThread(() -> {
-    System.out.println("Running task in a virtual thread: "
-	    + Thread.currentThread().getName());
-});
-try {
-    virtualThread.join();
-} catch (InterruptedException e) {
-    e.printStackTrace();
-}
-
-Record patterns
-==============================
-
-Task task = new Task("Tree climbing", "New");
-if(task instanceof Task(String taskName, String status)){
-    System.out.println(taskName);
-    System.out.println(status);
-}
-
- Diamond problem in java
+Diamond problem in java
 ============================
 If a class implements 2 interfaces with same method signature then it must override the method 
 
