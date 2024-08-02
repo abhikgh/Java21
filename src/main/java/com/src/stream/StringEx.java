@@ -153,11 +153,22 @@ public class StringEx {
         //switch-case
         inputStr = "test";
         switch (inputStr.toUpperCase()) {
+            case null -> throw new RuntimeException("null input");
             case "XYZ", "ABC" -> ans = inputStr;
             case "TEST" -> ans = "testing";
             default -> ans = "none";
         }
-        System.out.println("switch-case 2 :: " + ans);  //abc  -> abc , test -> testing
+        System.out.println("switch-case 2 :: " + ans);  //testing
+
+        //switch-case-when
+        final String inputStr2 = "yes";
+        switch(inputStr2){
+            case null -> throw new RuntimeException("its null value");
+            case String s when "Yes".equalsIgnoreCase(inputStr2) -> ans = "Yes its a yes";
+            case String s when "No".equalsIgnoreCase(inputStr2) -> ans = "No its a no";
+            case String s -> ans = inputStr2.toUpperCase(); //default
+        }
+        System.out.println("switch-case-when :: " + ans);  //Yes its a yes
 
         ans = getAnsSwitch(inputStr);
         System.out.println("switch-case 3 :: " + ans);

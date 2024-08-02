@@ -232,33 +232,36 @@ improved switch-case
 
 //switch-case
 inputStr = "test";
-
 switch (inputStr.toUpperCase()) {
-    case "XYZ":
-    case "ABC":
-        ans = inputStr;
-        break;
-    case "TEST":
-        ans = "testing";
-        break;
-    default:
-        System.out.println("none");
-        break;
-}
-System.out.println("switch-case :: " + ans);  //abc  -> abc , test -> testing
-
-switch (inputStr.toUpperCase()) {
-    case "XYZ", "ABC" ->  ans = inputStr;
+    case null -> throw new RuntimeException("null input");
+    case "XYZ", "ABC" -> ans = inputStr;
     case "TEST" -> ans = "testing";
     default -> ans = "none";
 }
-System.out.println("switch-case 2 :: " + ans);  //abc  -> abc , test -> testing
+System.out.println("switch-case 2 :: " + ans);  //testing
 
-return switch (inputStr.toUpperCase()) {
-    case "XYZ", "ABC" ->  inputStr;
-    case "TEST" -> "testing";
-    default -> "none";
-}
+            //switch-case
+            inputStr = "test";
+            switch (inputStr.toUpperCase()) {
+                case "XYZ":
+                case "ABC":
+                    ans = inputStr;
+                    break;
+                case "TEST":
+                    ans = "testing";
+                    break;
+                default:
+                    System.out.println("none");
+                    break;
+            }
+            System.out.println("switch-case :: " + ans);  //abc  -> abc , test -> testing
+
+
+            return switch (inputStr.toUpperCase()) {
+                case "XYZ", "ABC" ->  inputStr;
+                case "TEST" -> "testing";
+                default -> "none";
+            }
 
 //If the word starts with b,c,d,e make it lowercase, if starts with a,f,s,t make it uppercase
 finalList = Arrays.stream(strArr).filter(Objects::nonNull).map(val -> checkValSwitch(val)).toList();
@@ -291,7 +294,7 @@ System.out.println(newPerson.address());
 Java 15
 ==============
 
-String Text Blocks
+    String Text Blocks
 --------------------------
 
 String json = """
@@ -374,8 +377,11 @@ Platform Thread :: Platform Thread runs on top of OS Thread and has a 1-1 mappin
 carrier Thread  :: Platform Thread which are carrying a Virtual Thread
 Virtual Thread  :: Virtual threads are a lightweight implementation of threads that is provided by the JDK rather than the OS
 	Power :: Virtual Threads can be ability to be suspended and resumed automatically 
-		 via continuations when blocking operations occur, 
-		 thus freeing the underlying OS threads to be reused for other operations
+                 via continuations when blocking operations occur,
+                 thus freeing the underlying OS threads to be reused for other operations
+
+		     Virtual Threads runs on Platform Threads and hence do not capture the OS Thread
+		     So many Virtual Threads can share OS threads to run their code.
 	light-weight
 	concurrent applications 	
 									      
@@ -416,6 +422,29 @@ if(newPerson2 instanceof NewPerson(String name, String address)){
     System.out.println(name);
     System.out.println(address);
 }
+
+Switch - pattern matching
+================================
+
+//switch-case
+inputStr = "test";
+switch (inputStr.toUpperCase()) {
+    case null -> throw new RuntimeException("null input");
+    case "XYZ", "ABC" -> ans = inputStr;
+    case "TEST" -> ans = "testing";
+    default -> ans = "none";
+}
+
+//switch-case-when
+final String inputStr2 = "yes";
+switch(inputStr2){
+    case null -> throw new RuntimeException("its null value");
+    case String s when "Yes".equalsIgnoreCase(inputStr2) -> ans = "Yes its a yes";
+    case String s when "No".equalsIgnoreCase(inputStr2) -> ans = "No its a no";
+    case String s -> ans = inputStr2.toUpperCase(); //default
+}
+System.out.println("switch-case-when :: " + ans);  //Yes its a yes
+
 
 
 SOLID Principles in Java
