@@ -403,15 +403,20 @@ try {
 
 Record patterns
 ==============================
-record Task(String x, String y) {}
-//before record pattern 
+public record NewPerson(String name, String address) {}
 
-//after record pattern
-Task task = new Task("Tree climbing", "New");
-if(task instanceof Task(String taskName, String status)){
-    System.out.println(taskName);
-    System.out.println(status);
+//before Record pattern
+NewPerson newPerson = new NewPerson("John", "little avenue");
+System.out.println(newPerson.name());
+System.out.println(newPerson.address());
+
+//after Record pattern
+NewPerson newPerson2 = new NewPerson("John", "little avenue");
+if(newPerson2 instanceof NewPerson(String name, String address)){
+    System.out.println(name);
+    System.out.println(address);
 }
+
 
 SOLID Principles in Java
 ===============================
