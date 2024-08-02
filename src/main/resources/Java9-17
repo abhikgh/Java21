@@ -341,8 +341,9 @@ Foreign functions and Memory API
 
 ZGC
 -------------
-ZGC is a low-latency GC used for large heaps.
-Concurrent, region-based GC.
+Concurrent, low-latency GC 
+-XX:+UseZGC.
+
 
 Java 17
 =======================
@@ -637,6 +638,11 @@ Garbage Collector phases :
 3. stop-the-world phase can’t run concurrently with application code
 4. concurrent phase can run in the background, while our application does its work
 5. incremental phase can terminate before finishing all of its work and continue it later
+
+ZGC
+---------
+Concurrent, low-latency GC 
+-XX:+UseZGC.
 
 
 JVM Memory = Heap memory + Stack memory + Metaspace + Others(GC, JIT Compiler, Socket Buffer...)
