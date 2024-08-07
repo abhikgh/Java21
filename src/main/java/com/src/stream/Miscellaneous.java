@@ -574,6 +574,28 @@ public class Miscellaneous {
         finalList = Arrays.stream(strArr).filter(Objects::nonNull).map(val -> checkValSwitch(val)).toList();
         System.out.println(finalList);
 
+        //------------------------spliterator ----------------------------------------------------//
+
+        List<Integer> integerList2 = List.of(23, 34, 56,231, 36);
+        integerList2.spliterator().tryAdvance(elem -> System.out.println("tryAdvance :: " + elem)); //23
+        integerList2.spliterator().tryAdvance(elem -> System.out.println("tryAdvance :: " + elem)); //23
+        integerList2.spliterator().forEachRemaining(elem -> System.out.println("forEachRemaining :: " + elem)); //23, 34, 56,231, 36
+
+        Spliterator<Integer> spliterator = integerList2.spliterator();
+        Spliterator<Integer> spliterator2 = spliterator.trySplit();
+        spliterator.forEachRemaining(System.out::println);
+        System.out.println("-------------------------");
+        spliterator2.forEachRemaining(System.out::println);
+        
+        /*
+            56
+            231
+            36
+            -------------------------
+            23
+            34
+         */
+
     }
 
     private static boolean checkCorrectItems(List<Items> itemsList) {
