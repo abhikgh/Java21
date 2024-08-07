@@ -14,7 +14,6 @@ import org.testng.Assert;
 
 import java.util.stream.Stream;
 
-
 public class CalculatorTest {
 
     private Calculator calculator;
