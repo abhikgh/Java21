@@ -38,6 +38,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Random;
 import java.util.Spliterator;
 import java.util.StringJoiner;
 import java.util.function.Function;
@@ -594,6 +595,11 @@ public class Miscellaneous {
             23
             34
          */
+
+        //-----------------------Random -----------------------------
+        //int randomNum = rand.nextInt((max - min) + 1) + min;
+        int randomNum = new Random().nextInt((9000 - 1000) + 1) + 1000;
+        System.out.println("randomNum :: " + randomNum);
 
     }
 
