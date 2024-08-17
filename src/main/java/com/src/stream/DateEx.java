@@ -211,7 +211,7 @@ public class DateEx {
         //String to LocalDate
         input = "1990-12-12";
         localDate = LocalDate.parse(input, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-        System.out.println(localDate); //1990-12-12
+        System.out.println("localDate :: " + localDate); //1990-12-12
 
         //String to LocalDateTime
         inputDateTime = "2023-06-02T00:00:00Z";
