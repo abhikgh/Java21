@@ -37,6 +37,7 @@ import java.util.stream.LongStream;
 public class DateEx {
 
     //java.util.Date class was deprecated since introduction of java.time API in Java 8
+    //java.sql.Date is just java.util.Date with its time set to 00:00:00 but the point in design perspective is that java.sql.* is not meant for a front layer which clients interact with l
 
     public static void main(String[] args) throws ParseException, DatatypeConfigurationException {
 
@@ -147,6 +148,11 @@ public class DateEx {
         zonedDateTime = Instant.now().atZone(ZoneId.of("Europe/Berlin"));
         System.out.println("zonedDateTime ::" + zonedDateTime); //:2024-07-06T11:40:36.984765300+02:00[Europe/Berlin]
 
+        //util.Date to sql.Date
+        java.util.Date utilDate = new java.util.Date();
+        java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+        System.out.println("utilDate:" + utilDate);
+        System.out.println("sqlDate:" + sqlDate);
 
         //next day ZonedDateTime
         ZonedDateTime nextDayZonedDateTime = ZonedDateTime.now(ZoneId.of("US/Pacific")).plusDays(1).with(LocalTime.MIDNIGHT);
