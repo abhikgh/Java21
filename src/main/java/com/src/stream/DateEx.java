@@ -36,6 +36,8 @@ import java.util.stream.LongStream;
 
 public class DateEx {
 
+    //java.util.Date class was deprecated since introduction of java.time API in Java 8
+
     public static void main(String[] args) throws ParseException, DatatypeConfigurationException {
 
         /*
@@ -199,6 +201,12 @@ public class DateEx {
         dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         formattedZonedDateTime = dateTimeFormatter.format(zonedDateTime);
         System.out.println("formattedZonedDateTime :: " + formattedZonedDateTime); //2023-09-07 11:12:11
+
+        //String to date
+        input = "2023-03-22";
+        SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = simpleDateFormat2.parse(input);
+        System.out.println("date :: " + date);
 
         //String to LocalDate
         input = "1990-12-12";
