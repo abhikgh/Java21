@@ -477,7 +477,7 @@ Open-Closed Principle : open for extension, closed for modification
         }
     }
 
-Liskov Substitution Principle : super class object can be replaced by sub class object
+Liskov Substitution Principle : super class object can be substituted by sub class object
 
     public class Bird {
         public void fly() {
@@ -508,31 +508,53 @@ Liskov Substitution Principle : super class object can be replaced by sub class 
         }
     }
 
-Interface Segregation Principle :  segregate interfaces into smaller interfaces
+Interface Segregation Principle : segregate interfaces into smaller interfaces
 
 
-Dependency Inversion Principle :
-        1. High-level modules should not depend on low-level modules. Both should depend on abstractions.
-        2. Abstractions should not depend on details. Details should depend on abstractions.
+Dependency Inversion Principle :  Interface abstraction layer between high-level and low-level software components
 
-It introduces an interface abstraction between higher-level and lower-level software components to remove the dependencies between them.
-You only need to consequently apply the Open/Closed and the Liskov Substitution principles to your code base
-
-    public class LightBulb {
-        public void turnOn() {
-            // Turn on logic
+    //before DIP
+    public class SpellChecker {
+        public void checkSpelling(String text) {
+            // Spell checking logic
         }
     }
 
-    public interface Switchable {
-        void turnOn();
+    public class TextEditor {
+        private SpellChecker spellChecker;
+
+        public TextEditor() {
+            this.spellChecker = new SpellChecker();
+        }
+
+        public void processText(String text) {
+            spellChecker.checkSpelling(text);
+            // Other processing logic
+        }
     }
 
-    public class LightBulb implements Switchable {
+    //after DIP
+    public interface SpellChecker {
+        void checkSpelling(String text);
+    }
 
+    public class EnglishSpellChecker implements SpellChecker {
         @Override
-        public void turnOn() {
-            // Turn on logic
+        public void checkSpelling(String text) {
+            // Spell checking logic
+        }
+    }
+
+    public class TextEditor {
+        private SpellChecker spellChecker;
+
+        public TextEditor(SpellChecker spellChecker) {
+            this.spellChecker = spellChecker;
+        }
+
+        public void processText(String text) {
+            spellChecker.checkSpelling(text);
+            // Other processing logic
         }
     }
 
