@@ -34,6 +34,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -489,6 +490,13 @@ public class ListEx {
         System.out.println("employeesKA List---------");
         employeesKA.forEach(emp -> System.out.println(emp.getEmployeeName() + "-" + emp.getDepartment().getDepartmentName()));
 
+        //filter out employees with name starts with K and A using predicates
+        Predicate<Employee> predicate1 = employee -> employee.getEmployeeName().startsWith("K");
+        Predicate<Employee> predicate2 = employee -> employee.getEmployeeName().startsWith("A");
+        List<Predicate<Employee>> predicates = List.of(predicate1, predicate2);
+        List<Employee> employeesKA2 = employeeList.stream().filter(employee -> predicates.stream().anyMatch(predicate -> predicate.test(employee))).toList();
+        System.out.println("employeesKA2 List---------");
+        employeesKA2.forEach(emp -> System.out.println(emp.getEmployeeName() + "-" + emp.getDepartment().getDepartmentName()));
 
         //distinct service ids
         List<Service> serviceList = getAllServices();
@@ -873,8 +881,10 @@ public class ListEx {
         List<Emp> nMostSalariedEmployees = empList.stream().sorted(Comparator.comparing(Emp::getSalary, Comparator.reverseOrder())).toList().subList(0, Math.min(n, empList.size()));
         System.out.println("nMostSalariedEmployees :: " + nMostSalariedEmployees);
 
-        //get all the nth employee in the list of highest to lowest salary
-        empList.sort(Comparator.comparing(Emp::getSalary, Comparator.reverseOrder()));
+        //get employees in the list of highest to lowest salary
+        List<Emp> salaryReversed = empList.stream().sorted(Comparator.comparing(Emp::getSalary, Comparator.reverseOrder())).toList();
+        System.out.println("salaryReversed :: " + salaryReversed);
+
         List<Emp> allNthEmployee = IntStream.rangeClosed(0, empList.size() - 1)
                    .filter(i ->(i + 1) % n == 0)
                    .mapToObj(empList::get)
