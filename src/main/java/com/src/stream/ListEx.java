@@ -484,6 +484,12 @@ public class ListEx {
         //Print each employee's department
         employeeList.forEach(emp -> System.out.println(Optional.ofNullable(emp).map(Employee::getDepartment).map(Department::getDepartmentId).orElse(0)));
 
+        //filter out employees with name starts with K and A
+        List<Employee> employeesKA = employeeList.stream().filter(employee -> (employee.getEmployeeName().startsWith("K") || employee.getEmployeeName().startsWith("A"))).toList();
+        System.out.println("employeesKA List---------");
+        employeesKA.forEach(emp -> System.out.println(emp.getEmployeeName() + "-" + emp.getDepartment().getDepartmentName()));
+
+
         //distinct service ids
         List<Service> serviceList = getAllServices();
         Set<String> set = new HashSet<>();
@@ -540,6 +546,11 @@ public class ListEx {
         //check if list does not contain any fruit with name berries
         boolean matched6 = fruitList.stream().noneMatch("berries"::equalsIgnoreCase);
         System.out.println("matched6 :: " + matched6); //true
+
+        //if fruitList contains both mango and orange then true else false
+        boolean isFound = fruitList.containsAll(Stream.of("mango", "orange").toList());
+        System.out.println("isFound :: " + isFound);
+
 
         //------------------------anymatch ,allmatch, nonematch ends ----------------------------------------------------//
 
