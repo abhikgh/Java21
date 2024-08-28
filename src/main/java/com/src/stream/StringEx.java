@@ -71,7 +71,13 @@ public class StringEx {
         System.out.println("isBlank :: " + strTest.isBlank()); //true
 
         //String :: lines : to get all words in a paragraph
-        strTest = "Hi All. \nThis is a new line.\nThis is another line.\n Thank you.";
+        strTest = """
+                Hi All.
+                This is a new line.
+                This is another line.
+                Thank you.
+                """;
+
         String words = strTest.lines().collect(Collectors.joining());
         System.out.println("All words in paragraph are :: ");
         System.out.println(words);
