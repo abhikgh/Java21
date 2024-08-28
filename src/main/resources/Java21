@@ -3,15 +3,15 @@ List Sort
 
 list.stream()
         .sorted(Compartor.comparing(x))
-        .sorted(Compartor.comparing(x).reversed())
+        .sorted(Compartor.comparing(x, Comparator.reverseOrder())
+        .sorted(Compartor.comparing(x, Comparator.nullsLast(Comparator.naturalOrder()))
+        .sorted(Compartor.comparing(x, Comparator.nullsLast(Comparator.reverseOrder()))
+	    .sorted(Comparator.reverseOrder()) //1 field
+        .sorted(Compartor.comparingInt(x))
+        .sorted(Compartor.comparingInt(x, Comparator.reverseOrder()))
         .sorted(Compartor.comparing(x).thenComparing(y))
         .sorted(Compartor.comparing(x).thenComparing(y, Comparator.reverseOrder())
         .sorted(Compartor.comparing(x, Comparator.reverseOrder()).thenComparing(y, Comparator.reverseOrder())
-        .sorted(Compartor.comparing(x, Comparator.nullsLast(Comparator.naturalOrder()))
-        .sorted(Compartor.comparing(x, Comparator.nullsLast(Comparator.reverseOrder()))
-	.sorted(Comparator.reverseOrder())
-        .sorted(Compartor.comparingInt(x))
-        .sorted(Compartor.comparingInt(x).reversed()))
 .toList();
 
 Max
@@ -939,6 +939,16 @@ public static void testInt(Callable<Integer> callable) throws Exception {
 public static void testVoid(Callable<Void> callable) throws Exception {
 	callable.call();
 }
+
+Rule engine for multiple conditions (OR) - with multiple predicates
+---------------------------------------------------------------------------
+Predicate<Employee> predicate1 = employee -> employee.getEmployeeName().startsWith("K");
+Predicate<Employee> predicate2 = employee -> employee.getEmployeeName().startsWith("A");
+List<Predicate<Employee>> predicates = List.of(predicate1, predicate2);
+List<Employee> employeesKA2 = employeeList.stream().filter(employee -> predicates.stream().anyMatch(predicate -> predicate.test(employee))).toList(); //OR - AND - allMatch
+System.out.println("employeesKA2 List---------");
+employeesKA2.forEach(emp -> System.out.println(emp.getEmployeeName() + "-" + emp.getDepartment().getDepartmentName()));
+
 
 Lambda
 ------------------------------------------------------------
