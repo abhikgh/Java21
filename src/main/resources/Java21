@@ -6,12 +6,13 @@ list.stream()
         .sorted(Compartor.comparing(x, Comparator.reverseOrder())
         .sorted(Compartor.comparing(x, Comparator.nullsLast(Comparator.naturalOrder()))
         .sorted(Compartor.comparing(x, Comparator.nullsLast(Comparator.reverseOrder()))
-	    .sorted(Comparator.reverseOrder()) //1 field
-        .sorted(Compartor.comparingInt(x))
+	.sorted(Compartor.comparingInt(x))
         .sorted(Compartor.comparingInt(x, Comparator.reverseOrder()))
         .sorted(Compartor.comparing(x).thenComparing(y))
         .sorted(Compartor.comparing(x).thenComparing(y, Comparator.reverseOrder())
         .sorted(Compartor.comparing(x, Comparator.reverseOrder()).thenComparing(y, Comparator.reverseOrder())
+
+    	.sorted(Comparator.reverseOrder()) //1 field
 .toList();
 
 Max
@@ -949,22 +950,24 @@ employeesKA2.forEach(emp -> System.out.println(emp.getEmployeeName() + "-" + emp
 Lambda
 ------------------------------------------------------------
 
-
-//Interface with only 1 abstract method (can have default,static, overridden methods)
+//Functional nterface :: 1 abstract method (can have default,static, overridden methods)
+//Lambda is an anonymous function that implements FunctionalInterface
 
 @FunctionalInterface
 interface MathsOperation {
 	int mathsOp(int a, int b);
 }
 
-//Lambda is an anonymous function that implements FunctionalInterface
+
 
 public class LambdaEx {
 
 	public static void main(String[] args) {
 
 		//Lambda is an anonymous function that implements FunctionalInterface
-		MathsOperation addition = (a, b) -> a + b;  //addition :: Lambda
+
+		//assign Lambda to a variable
+		MathsOperation addition = (a, b) -> a + b;  //(a, b) -> a + b; :: Lambda 
 		System.out.println(addition.mathsOp(10, 5)); // 15
 
 		//Lambda variables are final / effectively final - to reduce concurrency issues
