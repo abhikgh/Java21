@@ -952,13 +952,16 @@ Lambda
 
 //Functional nterface :: 1 abstract method (can have default,static, overridden methods)
 //Lambda is an anonymous function that implements FunctionalInterface
+//Lambda is a first-class function : 
+	1. Function can be assigned to a variable 
+	2. Function can be passed to another function 
+	3. Function can be returned from another function
+	
 
 @FunctionalInterface
 interface MathsOperation {
 	int mathsOp(int a, int b);
 }
-
-
 
 public class LambdaEx {
 
@@ -996,7 +999,7 @@ public class LambdaEx {
 		int j3 = testF(10, function3);
 		System.out.println("function 3 :: " + j3); //110
 
-		//If the return type of a method is Functional Interface then it must return the lambda implementation
+		//return lambda
 		int lambdaOp = getAddition().mathsOp(20, 30);
 		System.out.println("lambdaOp :: " + lambdaOp); //320
 
@@ -1005,13 +1008,13 @@ public class LambdaEx {
 		int y = functionA.apply(10);
 		System.out.println("function :: " + y); //100
 
-		//BiFunction :: Functional interface that uses 2 parameters
+		//BiFunction :: Functional interface that accepts 2 parameters
 		/*
 			@FunctionalInterface
 			public interface BiFunction<T, U, R> {
 				R apply(T t, U u);
 			}
-       */
+                */
 		BiFunction<Integer, Integer, Integer> biFunction = (x1, x2) -> x1 + x2;
 		Integer resultBF = biFunction.apply(2, 3);
 		System.out.println("resultBF :: " + resultBF); // 5
@@ -1065,6 +1068,7 @@ public class LambdaEx {
 
 		//Lambda and exceptions
 		//If a lambda throws a Exception, then the Functional Interface method must throw the same exception or supertype
+//https://stackoverflow.com/questions/355167/how-are-anonymous-inner-classes-used-in-java
 
 	}
 
