@@ -1068,7 +1068,7 @@ public class LambdaEx {
 
 		//Lambda and exceptions
 		//If a lambda throws a Exception, then the Functional Interface method must throw the same exception or supertype
-//https://stackoverflow.com/questions/355167/how-are-anonymous-inner-classes-used-in-java
+
 
 	}
 
