@@ -19,6 +19,7 @@ import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -93,7 +94,7 @@ public class DateEx {
         System.out.println("localDateDT :: "   + localDateDT); //2024-11-27
 
         //LocalDate to sql.Date
-        Date date = Date.valueOf(localDateDT);
+        java.sql.Date date = java.sql.Date.valueOf(localDateDT);
         System.out.println("sql Date ::" + date); //2024-11-27
 
         // +- Date
@@ -219,20 +220,20 @@ public class DateEx {
         System.out.println("formattedZonedDateTime :: " + formattedZonedDateTime); //2023-09-07 11:12:11
 
         //String to date
-        input = "2023-03-22";
+        String input = "2023-03-22";
         SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("yyyy-MM-dd");
-        Date date = simpleDateFormat2.parse(input);
-        System.out.println("date :: " + date);
+        Date dateJava8 = simpleDateFormat2.parse(input);
+        System.out.println("date :: " + dateJava8);
 
         //String to LocalDate
         input = "1990-12-12";
-        localDate = LocalDate.parse(input, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        LocalDate localDate = LocalDate.parse(input, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         System.out.println("localDate :: " + localDate); //1990-12-12
 
         //String to LocalDateTime
         inputDateTime = "2023-06-02T00:00:00Z";
-        LocalDateTime localDateDT = LocalDateTime.parse(inputDateTime, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'"));
-        System.out.println("localDateDT = " + localDateDT); // 2023-06-02T00:00
+        LocalDateTime localDateTime = LocalDateTime.parse(inputDateTime, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'"));
+        System.out.println("localDateTime = " + localDateTime); // 2023-06-02T00:00
 
         //LocalDateTime to String
         String localDateDTStr = DateTimeFormatter.ofPattern("yyyy-MM-dd").format(LocalDateTime.now());
@@ -281,7 +282,7 @@ public class DateEx {
         //String in TZ Asia/Kolkata to time in UTC
         input =   "06-12-2015 02:10:10 am";
         dateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss a");
-        LocalDateTime localDateTime = LocalDateTime.parse(input, dateTimeFormatter);
+        localDateTime = LocalDateTime.parse(input, dateTimeFormatter);
         zonedDateTimeUTC = localDateTime.atZone(ZoneId.of("Asia/Kolkata")).withZoneSameInstant(ZoneId.of("UTC"));
         dateNowUTC = Date.from(zonedDateTimeUTC.toInstant());
         System.out.println("dateNowUTC from Asia/Kolkata :: " + dateNowUTC);
@@ -416,7 +417,7 @@ public class DateEx {
         System.out.println(outputFormatter3.format(LocalDateTime.parse("2018-11-05T12:23:14.789", inputFormatter3))); //2018-11-05 12:23:14.789
 
         //Check Date setLenient= false
-        String inputDate = "2001Nov05";
+        inputDate = "2001Nov05";
 
         Pattern pattern = Pattern.compile("^\\d{4}\\w{3}\\d{2}$");
         Matcher matcher = pattern.matcher(inputDate);
