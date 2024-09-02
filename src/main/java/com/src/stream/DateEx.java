@@ -79,10 +79,21 @@ public class DateEx {
         System.out.println(currentDateTime); //2021-08-04T15:27:28.180
 
         //String to LocalDate
-        String input = "1990-12-12";
-        DateTimeFormatter dateTimeFormatter11 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate localDate = LocalDate.parse(input, dateTimeFormatter11);
-        System.out.println(localDate); //1990-12-12
+        String inputDate = "27-11-2024";
+        LocalDate localDateDT = LocalDate.parse(inputDate, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+        System.out.println("localDateDT :: "   + localDateDT); //2024-11-27
+
+        inputDate = "1990-12-12";
+        localDateDT = LocalDate.parse(inputDate, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        System.out.println("localDateDT :: "   + localDateDT); //1990-12-12
+
+        inputDate = "27-Nov-2024";
+        localDateDT = LocalDate.parse(inputDate, DateTimeFormatter.ofPattern("dd-MMM-yyyy"));
+        System.out.println("localDateDT :: "   + localDateDT); //2024-11-27
+
+        inputDate = "27-NOV-2024";
+        localDateDT = LocalDate.parse(inputDate, new DateTimeFormatterBuilder().parseCaseInsensitive().appendPattern("dd-MMM-yyyy").toFormatter());
+        System.out.println("localDateDT :: "   + localDateDT); //2024-11-27
 
         // +- Date
         LocalDate oneMonthAfter = LocalDate.now().plusMonths(1);
