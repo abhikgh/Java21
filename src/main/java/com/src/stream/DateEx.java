@@ -47,7 +47,7 @@ public class DateEx {
 
                 ZoneOffset :: extends ZoneId and defines the fixed offset of the current time-zone w.r.t GMT/UTC, such as +02:00.
 
-            ZonedDateTime ::  ZonedDateTime = LocalDateTime + ZoneId + ZoneOffSet
+            ZonedDateTime = LocalDateTime + ZoneId + ZoneOffSet(from UTC)
                 ex: 2007-12-03T10:15:30+01:00 Europe/Paris
 
                 ZonedDateTime.now(zoneId);
@@ -56,18 +56,15 @@ public class DateEx {
                 ZonedDateTime withZoneSameInstant :: convert zonedDateTime from one TimeZone to another TimeZone
                 ZonedDateTime zonedDateTimeZ2 = zonedDateTime.withZoneSameInstant(ZoneId.of("Europe/Berlin"));
 
-            OffsetDateTime :: LocalDateTime + ZoneOffSet-UTC
-                OffsetDateTime offsetDateTime = OffsetDateTime.now(ZoneOffset.of("+02:00"));
+            Date = LocalDateTime + ZoneId    
 
-            ZonedDateTime  vs OffsetDateTime
-                Store OffsetDateTime in the database over the ZonedDateTime
-                problem with OffsetDateTime is does not match with any real time zone
+            OffsetDateTime = LocalDateTime + ZoneOffSet(from UTC)
+            
+               
+                Why OffsetDateTime for Database ?
+                 - No ZonedDateTime - because zone rules change
+                 - No LocalDateTime - becuae cannot get the Zone
 
-            Date ::  Date = LocalDateTime + ZoneId
-
-            Instant :: ZonedDateTime + ZoneId(UTC)
-
-            DateTimeFormatter.ofPattern
         */
 
         // Today's date
@@ -455,6 +452,11 @@ public class DateEx {
         //OffsetDateTime
         OffsetDateTime offsetDateTime = OffsetDateTime.now(ZoneOffset.of("+02:00"));
         System.out.println("offSetDateTime: " + offsetDateTime); // 2023-09-21T05:41:54.748054400+02:00
+
+        //LocalDate to OffsetDateTime
+        ZoneId zoneId = ZoneId.of("Europe/Madrid");
+        OffsetDateTime odt = localDateDT.atStartOfDay(zoneId).toOffsetDateTime();
+        System.out.println("odt :: " + odt); //2024-11-27T00:00+01:00
 
         //get Day_Of_Week from a date
         Calendar calendar = Calendar.getInstance();
