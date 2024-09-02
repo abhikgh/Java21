@@ -95,6 +95,10 @@ public class DateEx {
         localDateDT = LocalDate.parse(inputDate, new DateTimeFormatterBuilder().parseCaseInsensitive().appendPattern("dd-MMM-yyyy").toFormatter());
         System.out.println("localDateDT :: "   + localDateDT); //2024-11-27
 
+        //LocalDate to sql.Date
+        Date date = Date.valueOf(localDateDT);
+        System.out.println("sql Date ::" + date); //2024-11-27
+
         // +- Date
         LocalDate oneMonthAfter = LocalDate.now().plusMonths(1);
         System.out.println(oneMonthAfter); // 2021-09-04
