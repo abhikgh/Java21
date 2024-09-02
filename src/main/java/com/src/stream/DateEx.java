@@ -3,8 +3,6 @@ package com.src.stream;
 
 import com.src.model.Items;
 
-//java.time(Java 8) replaces java.util.Date
-
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
@@ -36,8 +34,8 @@ import java.util.stream.LongStream;
 
 public class DateEx {
 
-    //java.util.Date class was deprecated since introduction of java.time API in Java 8
-    //java.sql.Date is just java.util.Date with its time set to 00:00:00 but the point in design perspective is that java.sql.* is not meant for a front layer which clients interact with l
+    //java.time(Java 8) replaces java.util.Date
+    //java.sql.Date is just java.util.Date with its time set to 00:00:00 but it is not meant for front layer
 
     public static void main(String[] args) throws ParseException, DatatypeConfigurationException {
 
