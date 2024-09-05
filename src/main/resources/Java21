@@ -946,6 +946,14 @@ List<Employee> employeesKA2 = employeeList.stream().filter(employee -> predicate
 System.out.println("employeesKA2 List---------");
 employeesKA2.forEach(emp -> System.out.println(emp.getEmployeeName() + "-" + emp.getDepartment().getDepartmentName()));
 
+Reduce
+-----------------
+
+//check if all employees follow the rule
+boolean allEmpsFollowRule = employeeList.stream().map(employee -> predicates.stream().anyMatch(predicate -> predicate.test(employee)))
+		    .reduce(Boolean::logicalAnd)
+		    .orElse(false);
+System.out.println("allEmpsFollowRule :: " + allEmpsFollowRule);
 
 Lambda
 ------------------------------------------------------------
