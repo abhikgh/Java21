@@ -16,6 +16,7 @@ import static com.src.stream.JointAccount.BALANCE;
 //semaphore.acquire();
 //semaphore.release();
 
+//Class :: ThreadwithSemaphore
 @AllArgsConstructor
 @Getter
 @Setter

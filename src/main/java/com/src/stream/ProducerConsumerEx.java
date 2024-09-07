@@ -17,7 +17,7 @@ import java.util.concurrent.Semaphore;
 
 import static com.src.stream.PrintStringOrNumByCFES.randomInt;
 
-// So we need to have a Thread class that will have this Semaphore
+// Class -> ThreadWithSempahore
 @AllArgsConstructor
 class ThreadWithSempahore extends Thread{
 

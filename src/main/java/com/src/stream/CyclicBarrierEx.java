@@ -21,13 +21,14 @@ class Computation extends Thread {
     public void run() {
         try {
             semaphore.acquire();
-
+            System.out.println("Thread :: " + name + " acquires lock.");
             if (name.equals("sum")) {
+                System.out.println("Sum running...");
                 sum = 10 + 20;
             } else if (name.equals("product")) {
+                System.out.println("Product running...");
                 product = 2 * 3;
             }
-            System.out.println("Thread :: " + name + " acquires lock.");
             System.out.println("Sum of product and sum = " + (Computation.sum + Computation.product));
             semaphore.release();
         } catch (InterruptedException ex) {
@@ -44,10 +45,11 @@ public class CyclicBarrierEx {
 		Computation sum = new Computation("sum", semaphore);
         Computation product = new Computation("product", semaphore);
 
+        //first sum then product
         sum.start();
-        product.start();
-
         sum.join();
+
+        product.start();
         product.join();
 
 		System.out.println("Sum of product and sum final = " + (Computation.sum + Computation.product));
