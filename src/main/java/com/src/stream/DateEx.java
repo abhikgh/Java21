@@ -93,6 +93,12 @@ public class DateEx {
         localDateDT = LocalDate.parse(inputDate, new DateTimeFormatterBuilder().parseCaseInsensitive().appendPattern("dd-MMM-yyyy").toFormatter());
         System.out.println("localDateDT :: "   + localDateDT); //2024-11-27
 
+        inputDate = "27-DEC-2024";
+        localDateDT = LocalDate.parse(inputDate, new DateTimeFormatterBuilder().parseCaseInsensitive().appendPattern("dd-MMM-yyyy").toFormatter());
+        System.out.println("localDateDT2 :: "   + localDateDT); //2024-11-27
+
+
+
         //LocalDate to sql.Date
         java.sql.Date date = java.sql.Date.valueOf(localDateDT);
         System.out.println("sql Date ::" + date); //2024-11-27
