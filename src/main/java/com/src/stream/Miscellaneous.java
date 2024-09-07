@@ -1,6 +1,7 @@
 package com.src.stream;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -11,6 +12,7 @@ import com.src.model.Employee;
 import com.src.model.FieldTest;
 import com.src.model.Items;
 import lombok.Data;
+import lombok.SneakyThrows;
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 
 import java.io.BufferedOutputStream;
@@ -19,6 +21,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -351,30 +354,28 @@ public class Miscellaneous {
 
         //----------------------------------- Reflections -----------------------------//
         //Reflections :: Gets attributes of a class at runtime; also instantiate objects, call methods and set field values using reflection.
-
-        Field[] fArr = FieldTest.class.getDeclaredFields();
-        for(int i=0;i<fArr.length;i++) {
-            System.out.println(fArr[i].getName());
+        System.out.println("-------------Reflections-----------------------");
+        for(Field field : FieldTest.class.getDeclaredFields()){
+            System.out.println(field.getName());
         }
 
-        Method[] methods = FieldTest.class.getDeclaredMethods();
-        for(int i=0;i<methods.length;i++){
-            System.out.println(methods[i].getName());
+        for(Method method : FieldTest.class.getDeclaredMethods()){
+            System.out.println(method.getName());
+            if (method.isAnnotationPresent(JsonIgnore.class)) {   //@Retention(RetentionPolicy.RUNTIME)
+                System.out.println("Annotation present on method :: " + method.getName());
+            }
         }
 
-        Class[] cArr = FieldTest.class.getDeclaredClasses();
-        for(int i=0;i<cArr.length;i++) {
-            System.out.println(cArr[i].getName());
+        for(Class class0 : FieldTest.class.getDeclaredClasses()){
+            System.out.println(class0.getName());
         }
 
         Package aPackage = FieldTest.class.getPackage();
-
         Class[] interfaceArr = FieldTest.class.getInterfaces();
-
         Class superClass = FieldTest.class.getSuperclass();
 
          System.out.println("Reflections to invoke private method from outside of class");
-         Method method = FieldTest.class.getDeclaredMethod("somePrivateMethod2",String.class);
+         Method method = FieldTest.class.getDeclaredMethod("somePrivateMethod2",String.class); //String is input parameter
          method.setAccessible(true);
          FieldTest fieldTest = new FieldTest();
          method.invoke(fieldTest, "test");
