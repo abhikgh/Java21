@@ -230,7 +230,6 @@ Java 12
 
 improved switch-case
 --------------------------
-
 //switch-case
 inputStr = "test";
 switch (inputStr.toUpperCase()) {
@@ -241,28 +240,15 @@ switch (inputStr.toUpperCase()) {
 }
 System.out.println("switch-case 2 :: " + ans);  //testing
 
-            //switch-case
-            inputStr = "test";
-            switch (inputStr.toUpperCase()) {
-                case "XYZ":
-                case "ABC":
-                    ans = inputStr;
-                    break;
-                case "TEST":
-                    ans = "testing";
-                    break;
-                default:
-                    System.out.println("none");
-                    break;
-            }
-            System.out.println("switch-case :: " + ans);  //abc  -> abc , test -> testing
-
-
-            return switch (inputStr.toUpperCase()) {
-                case "XYZ", "ABC" ->  inputStr;
-                case "TEST" -> "testing";
-                default -> "none";
-            }
+//switch-case-when
+final String inputStr2 = "yes";
+switch(inputStr2){
+    case null -> throw new RuntimeException("its null value");
+    case String s when "Yes".equalsIgnoreCase(inputStr2) -> ans = "Yes its a yes";
+    case String s when "No".equalsIgnoreCase(inputStr2) -> ans = "No its a no";
+    case String s -> ans = inputStr2.toUpperCase(); //default
+}
+System.out.println("switch-case-when :: " + ans);  //Yes its a yes
 
 //If the word starts with b,c,d,e make it lowercase, if starts with a,f,s,t make it uppercase
 finalList = Arrays.stream(strArr).filter(Objects::nonNull).map(val -> checkValSwitch(val)).toList();

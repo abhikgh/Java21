@@ -43,7 +43,7 @@ public class StringEx {
                 .add(string1)
                 .add(string2)
                 .toString();
-        System.out.println("stringJoiner2 :: " + stringJoiner2);
+        System.out.println("stringJoiner2 :: " + stringJoiner2); //string1|string2
 
         //String.join (joiner)
         String stringJoin = String.join("|", string1, string2);
