@@ -211,7 +211,7 @@ public class Miscellaneous {
 
         // Write a function to add list of numbers, float, long and double
         BigDecimal sum = getAddedValues(10, 123.23f, 34349.34d, 20001L, 8782.83f, 3931.43d, 82828L);
-        System.out.println("Double sum :: " + sum);
+        System.out.println("getAddedValues :: " + sum); //150025.83
 
         //Generic Functional Interface
         /*
@@ -653,15 +653,15 @@ public class Miscellaneous {
     }
 
     private static <T> List<Integer> getPrimesGeneric(List<? extends Number> ts) {
-        return ts.stream().map(t -> t.intValue()).filter(t -> IntMath.isPrime(t)).collect(Collectors.toList());
+        return ts.stream().map(Number::intValue).filter(IntMath::isPrime).collect(Collectors.toList());
     }
 
     private static <T> BigDecimal getAddedValuesGeneric(List<? extends Number> ts) {
         return new BigDecimal(ts.stream().collect(Collectors.summingDouble(v -> v.doubleValue()))).setScale(2, RoundingMode.HALF_UP);
     }
 
-    private static BigDecimal getAddedValues(int i, float v, double v1, long l, float v2, double v3, long l1) {
-        return new BigDecimal(i + v + v1 + l + v2 + v3 + l1).setScale(2, RoundingMode.HALF_UP);
+    private static BigDecimal getAddedValues(Number... ns) {
+       return Arrays.asList(ns).stream().map(number -> new BigDecimal(String.valueOf(number))).reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
     private static <T> List<T> getList(T... ts) {
