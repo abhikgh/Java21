@@ -11,7 +11,6 @@ import com.src.model.Employee;
 import com.src.model.FieldTest;
 import com.src.model.Items;
 import lombok.Data;
-import lombok.SneakyThrows;
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 
 import java.io.BufferedOutputStream;
@@ -20,7 +19,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -35,7 +33,6 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -66,7 +63,7 @@ class XYZ implements AutoCloseable {
 }
 
 class ABCD {
-    public void print(){
+    public void print() {
         System.out.println("ABCD...");
     }
 }
@@ -174,7 +171,6 @@ public class Miscellaneous {
         */
 
 
-
         List<Object> list = new ArrayList<Object>();
         list.add("abc");
         list.add(new BigDecimal(1223));
@@ -219,16 +215,16 @@ public class Miscellaneous {
                 R addValues(T t, U u);
             }
          */
-        GenericFunctionalInterface<Integer, Integer, Integer> gfi1 = (x, y) -> x+y;
+        GenericFunctionalInterface<Integer, Integer, Integer> gfi1 = (x, y) -> x + y;
         int gfi1Result = gfi1.addValues(5, 10);
         System.out.println("gfi1Result:: " + gfi1Result); //15
 
         GenericFunctionalInterface<String, String, String> gfi2 = (x, y) -> x.concat(y);
-        String gfi2Result = gfi2.addValues("aaa","bbb");
+        String gfi2Result = gfi2.addValues("aaa", "bbb");
         System.out.println("gfi2Result:: " + gfi2Result); //aaabbb
 
         GenericFunctionalInterface<String, Integer, String> gfi3 = (x, y) -> x.concat(String.valueOf(y));
-        String gfi3Result = gfi3.addValues("aaa",10);
+        String gfi3Result = gfi3.addValues("aaa", 10);
         System.out.println("gfi3Result:: " + gfi3Result); //aaa10
 
         //Generic Class
@@ -247,7 +243,7 @@ public class Miscellaneous {
             }
         */
         //Generic Class
-        List<String> list3 = Arrays.asList("828292","djjdjd","sgsgd","ndndn");
+        List<String> list3 = Arrays.asList("828292", "djjdjd", "sgsgd", "ndndn");
         GenericRental genericRental = new GenericRental(list3);
         String firstElement = (String) genericRental.getFirst();
         System.out.println("firstElement :: " + firstElement);
@@ -285,9 +281,9 @@ public class Miscellaneous {
 
         //Encode String to Base64 and Decode
         String encodedString = java.util.Base64.getEncoder().encodeToString(str0.getBytes(StandardCharsets.UTF_8));
-        System.out.println("encodedString :: " +encodedString); //c29tZSBzYW1wbGUgdGVzdCBzdHJpbmc=
+        System.out.println("encodedString :: " + encodedString); //c29tZSBzYW1wbGUgdGVzdCBzdHJpbmc=
         String decodedString = new String(java.util.Base64.getDecoder().decode(encodedString.getBytes(StandardCharsets.UTF_8)));
-        System.out.println("decodedString :: " +decodedString); //some sample test string
+        System.out.println("decodedString :: " + decodedString); //some sample test string
 
         //Encode file to String and Decode
         Path path = Paths.get("src/main/resources/Flight Ticket.pdf");
@@ -335,37 +331,37 @@ public class Miscellaneous {
         listStr.add("corejava advancedjava oracle");
         listStr.add("nit kit nacre");
         listStr.add("abc sg hk");
-        List<String> words = listStr.stream().flatMap(x-> Arrays.asList(x.split(" ")).stream()).toList();
+        List<String> words = listStr.stream().flatMap(x -> Arrays.asList(x.split(" ")).stream()).toList();
         System.out.println(words); //[corejava, advancedjava, oracle, nit, kit, nacre, abc, sg, hk]
 
         //Combine lists
-        List<Integer> listInt1 = Arrays.asList(1,2,3);
-        List<Integer> listInt2 = Arrays.asList(4,5,6);
-        List<Integer> listInt3 = Arrays.asList(7,8,9);
-        List<Integer> listInt4 = List.of(listInt1, listInt2, listInt3).stream().flatMap(list0-> list0.stream()).toList();
+        List<Integer> listInt1 = Arrays.asList(1, 2, 3);
+        List<Integer> listInt2 = Arrays.asList(4, 5, 6);
+        List<Integer> listInt3 = Arrays.asList(7, 8, 9);
+        List<Integer> listInt4 = List.of(listInt1, listInt2, listInt3).stream().flatMap(list0 -> list0.stream()).toList();
         System.out.println(listInt4); //[1, 2, 3, 4, 5, 6, 7, 8, 9]
 
         //Combine arrays
-        String[] arr1 = new String[] {"red","blue","green","yellow"};
-        String[] arr2 = new String[] {"Kite","Marble","Ball","Balloon"};
+        String[] arr1 = new String[]{"red", "blue", "green", "yellow"};
+        String[] arr2 = new String[]{"Kite", "Marble", "Ball", "Balloon"};
         List<String> listS = List.of(arr1, arr2).stream().flatMap(array -> Arrays.asList(array).stream()).toList();
         System.out.println(listS); //[red, blue, green, yellow, Kite, Marble, Ball, Balloon]
 
         //----------------------------------- Reflections -----------------------------//
         //Reflections :: Gets attributes of a class at runtime; also instantiate objects, call methods and set field values using reflection.
         System.out.println("-------------Reflections-----------------------");
-        for(Field field : FieldTest.class.getDeclaredFields()){
+        for (Field field : FieldTest.class.getDeclaredFields()) {
             System.out.println(field.getName());
         }
 
-        for(Method method : FieldTest.class.getDeclaredMethods()){
+        for (Method method : FieldTest.class.getDeclaredMethods()) {
             System.out.println(method.getName());
             if (method.isAnnotationPresent(JsonIgnore.class)) {   //@Retention(RetentionPolicy.RUNTIME)
                 System.out.println("Annotation present on method :: " + method.getName());
             }
         }
 
-        for(Class class0 : FieldTest.class.getDeclaredClasses()){
+        for (Class class0 : FieldTest.class.getDeclaredClasses()) {
             System.out.println(class0.getName());
         }
 
@@ -373,22 +369,22 @@ public class Miscellaneous {
         Class[] interfaceArr = FieldTest.class.getInterfaces();
         Class superClass = FieldTest.class.getSuperclass();
 
-         System.out.println("Reflections to invoke private method from outside of class");
-         Method method = FieldTest.class.getDeclaredMethod("somePrivateMethod2",String.class); //String is input parameter
-         method.setAccessible(true);
-         FieldTest fieldTest = new FieldTest();
-         method.invoke(fieldTest, "test");
+        System.out.println("Reflections to invoke private method from outside of class");
+        Method method = FieldTest.class.getDeclaredMethod("somePrivateMethod2", String.class); //String is input parameter
+        method.setAccessible(true);
+        FieldTest fieldTest = new FieldTest();
+        method.invoke(fieldTest, "test");
 
         //-------------------------------- SHA-256 (Standard Hashing Algorithm) ---------------------------------------//
         //It undergoes 64 rounds of hashing and calculates a hash code that is a 64-digit hexadecimal number.
 
-       // String input = new BufferedReader(new InputStreamReader(System.in)).readLine(); //helloWorld
+        // String input = new BufferedReader(new InputStreamReader(System.in)).readLine(); //helloWorld
         String input = "helloWorld";
 
         Pattern pattern = Pattern.compile("[A-Za-z0-9]{6,20}");
         Matcher matcher = pattern.matcher(input);
 
-        if(matcher.matches()) {
+        if (matcher.matches()) {
             byte[] bArr = MessageDigest.getInstance("SHA-256").digest(input.getBytes(StandardCharsets.UTF_8));
 
             // Convert byte array into signum representation
@@ -398,23 +394,22 @@ public class Miscellaneous {
             StringBuilder hexString = new StringBuilder(number.toString(16));
 
             // Pad with leading zeros
-            while (hexString.length() < 64)
-            {
+            while (hexString.length() < 64) {
                 hexString.insert(0, '0');
             }
 
-            String hexSha256 =  hexString.toString();
+            String hexSha256 = hexString.toString();
             System.out.println("hexSha256 :: " + hexSha256); //11d4ddc357e0822968dbfd226b6e1c2aac018d076a54da4f65e1dc8180684ac3
 
 
-        }else {
+        } else {
             System.out.println("no match");
         }
 
         //------------------------------------ Cloning -----------------------------------------------//
 
         Department deptG = new Department(28383, "Geography", "Associate");
-        Employee empG1 = new Employee(111, "John", deptG,new BigDecimal(223)); //prototype object
+        Employee empG1 = new Employee(111, "John", deptG, new BigDecimal(223)); //prototype object
 
         //Shallow clone :: referenced Object is shared between clones
         //Deep clone    :: referenced Object is not-shared between clones (exclusive)
@@ -452,11 +447,11 @@ public class Miscellaneous {
 
         //Anonymous Inner class
         class ABCD {
-            public void print(){
+            public void print() {
                 System.out.println("ABCD...");
             }
         }
-        ABCD abcd = new ABCD(){
+        ABCD abcd = new ABCD() {
             @Override
             public void print() {
                 System.out.println("ABCD...");
@@ -487,41 +482,40 @@ public class Miscellaneous {
 
         String aa = "abc";
 
-        if(check1(aa)!=null){
+        if (check1(aa) != null) {
             doAction(check1(aa));
-        } else if (check2(aa)!=null) {
+        } else if (check2(aa) != null) {
             doAction(check2(aa));
         } else if (check3(aa) != null) {
             doAction(check3(aa));
         }
 
-       Optional.ofNullable(check1(aa))
-             .or(() -> Optional.ofNullable(check2(aa)))
-             .or(() -> Optional.ofNullable(check3(aa)))
-             .ifPresent(ss -> doAction(ss));
+        Optional.ofNullable(check1(aa))
+                .or(() -> Optional.ofNullable(check2(aa)))
+                .or(() -> Optional.ofNullable(check3(aa)))
+                .ifPresent(ss -> doAction(ss));
 
 
-        if(aa.equalsIgnoreCase("abc") || aa.equalsIgnoreCase("djdjjd") || aa.equalsIgnoreCase("kdkdkd")){
+        if (aa.equalsIgnoreCase("abc") || aa.equalsIgnoreCase("djdjjd") || aa.equalsIgnoreCase("kdkdkd")) {
             System.out.println("yes...");
         }
 
-        if(Stream.of("abc","dhdhdh","jdjdjd").anyMatch(allowedValues -> allowedValues.equalsIgnoreCase(aa))){
+        if (Stream.of("abc", "dhdhdh", "jdjdjd").anyMatch(allowedValues -> allowedValues.equalsIgnoreCase(aa))) {
             System.out.println("yes...");
         }
 
         Optional.ofNullable(aa)
-                .filter(val -> Stream.of("abc","dhdhdh","jdjdjd").anyMatch(allowedValues -> allowedValues.equalsIgnoreCase(val)))
+                .filter(val -> Stream.of("abc", "dhdhdh", "jdjdjd").anyMatch(allowedValues -> allowedValues.equalsIgnoreCase(val)))
                 .ifPresent(val -> System.out.println("yes.."));
 
         Optional.ofNullable(aa)
-                .filter(val -> List.of("abc","dhdhdh","jdjdjd").contains(val))
+                .filter(val -> List.of("abc", "dhdhdh", "jdjdjd").contains(val))
                 .ifPresent(val -> System.out.println("yes.."));
 
 
-
-        List<String> fruitList = Arrays.asList("mango","apple","guava","litchi","orange","yellow");
-        List<String> colourList = Arrays.asList("red","blue","green","yellow");
-        List<String> toyList = Arrays.asList("chess","carrom","puzzle","checker", "yellow");
+        List<String> fruitList = Arrays.asList("mango", "apple", "guava", "litchi", "orange", "yellow");
+        List<String> colourList = Arrays.asList("red", "blue", "green", "yellow");
+        List<String> toyList = Arrays.asList("chess", "carrom", "puzzle", "checker", "yellow");
 
         //check if all elements in list1 not in list2, list3
         boolean matched = fruitList.stream().allMatch(fruit -> !colourList.contains(fruit) && !toyList.contains(fruit));
@@ -535,11 +529,10 @@ public class Miscellaneous {
         boolean matched3 = fruitList.stream().anyMatch(fruit -> !colourList.contains(fruit) && toyList.contains(fruit));
         System.out.println("anyElementNotInListButIsInList3 :: " + matched3); //false
 
-        System.out.println("GUAVA found ::" + fruitList.stream().anyMatch(fruit->fruit.equalsIgnoreCase("GUAVA"))); //true
+        System.out.println("GUAVA found ::" + fruitList.stream().anyMatch(fruit -> fruit.equalsIgnoreCase("GUAVA"))); //true
         System.out.println("GUAVA found ::" + fruitList.stream().anyMatch("GUAVA"::equalsIgnoreCase)); //true
-        System.out.println("GUA found ::" + fruitList.stream().anyMatch(fruit->fruit.toUpperCase().contains("GUA"))); //true
+        System.out.println("GUA found ::" + fruitList.stream().anyMatch(fruit -> fruit.toUpperCase().contains("GUA"))); //true
         System.out.println("No BERRIES found ::" + fruitList.stream().noneMatch("berries"::equalsIgnoreCase)); //true
-
 
 
         //------------------------anymatch ,allmatch, nonematch ends ----------------------------------------------------//
@@ -555,7 +548,7 @@ public class Miscellaneous {
         boolean isCorrectItemsFound = checkCorrectItems(itemsList);
         System.out.println("isCorrectItemsFound :: " + isCorrectItemsFound);
 
-        String[] strArr = new String[]{null, null, "ball", "bed", "chair", "aeroplane", "fan", "toy","kite", "Mobile","car"};
+        String[] strArr = new String[]{null, null, "ball", "bed", "chair", "aeroplane", "fan", "toy", "kite", "Mobile", "car"};
 
         //whichever not null convert to upper case
         List<String> finalList = Arrays.stream(strArr).filter(Objects::nonNull).map(String::toUpperCase).toList();
@@ -563,11 +556,11 @@ public class Miscellaneous {
 
         //Check if null is present(anyMatch)
         boolean nullPresent = Arrays.stream(strArr).anyMatch(Objects::isNull);
-        String ans = nullPresent?"nullPresent":"nullNotPresent";
+        String ans = nullPresent ? "nullPresent" : "nullNotPresent";
         System.out.println(ans);
 
         //If the word starts with b make the word uppercase
-       finalList = Arrays.stream(strArr).filter(s -> Objects.nonNull(s) && s.startsWith("b")).map(String::toUpperCase).toList();
+        finalList = Arrays.stream(strArr).filter(s -> Objects.nonNull(s) && s.startsWith("b")).map(String::toUpperCase).toList();
         System.out.println(finalList);
 
         //If the word starts with b,c,d,e make the word lowercase, if starts with a,f,s,t make the word uppercase
@@ -576,7 +569,7 @@ public class Miscellaneous {
 
         //------------------------spliterator ----------------------------------------------------//
 
-        List<Integer> integerList2 = List.of(23, 34, 56,231, 36);
+        List<Integer> integerList2 = List.of(23, 34, 56, 231, 36);
         integerList2.spliterator().tryAdvance(elem -> System.out.println("tryAdvance :: " + elem)); //23
         integerList2.spliterator().tryAdvance(elem -> System.out.println("tryAdvance :: " + elem)); //23
         integerList2.spliterator().forEachRemaining(elem -> System.out.println("forEachRemaining :: " + elem)); //23, 34, 56,231, 36
@@ -606,13 +599,13 @@ public class Miscellaneous {
     private static boolean checkCorrectItems(List<Items> itemsList) {
         boolean artFound = false;
         boolean sgrFound = false;
-        for(Items item : itemsList){
-            if(!artFound && (item.getItemType().equalsIgnoreCase("ART") && "2339282,33444452".contains(item.getItemNo()))){
+        for (Items item : itemsList) {
+            if (!artFound && (item.getItemType().equalsIgnoreCase("ART") && "2339282,33444452".contains(item.getItemNo()))) {
                 artFound = true;
-            }else if (!sgrFound && (item.getItemType().equalsIgnoreCase("SGR") && "9393929,233".contains(item.getItemNo()))){
+            } else if (!sgrFound && (item.getItemType().equalsIgnoreCase("SGR") && "9393929,233".contains(item.getItemNo()))) {
                 sgrFound = true;
             }
-            if(artFound && sgrFound){
+            if (artFound && sgrFound) {
                 return true;
             }
         }
@@ -620,15 +613,15 @@ public class Miscellaneous {
     }
 
     private static String checkValSwitch(String val) {
-        return switch (val.charAt(0)){
-            case 'b','c','d','e' -> val.toLowerCase();
-            case 'a','f','s','t' -> val.toUpperCase();
+        return switch (val.charAt(0)) {
+            case 'b', 'c', 'd', 'e' -> val.toLowerCase();
+            case 'a', 'f', 's', 't' -> val.toUpperCase();
             default -> val;
         };
     }
 
     private static String checkVal(String val) {
-        if(val.startsWith("b")){
+        if (val.startsWith("b")) {
             return val.toUpperCase();
         }
         return val;
@@ -656,11 +649,11 @@ public class Miscellaneous {
     }
 
     private static <T> BigDecimal getAddedValuesGeneric(List<? extends Number> ts) {
-        return new BigDecimal(ts.stream().collect(Collectors.summingDouble(v -> v.doubleValue()))).setScale(2, RoundingMode.HALF_UP);
+        return BigDecimal.valueOf(ts.stream().collect(Collectors.summingDouble(v -> v.doubleValue()))).setScale(2, RoundingMode.HALF_UP);
     }
 
     private static BigDecimal getAddedValues(Number... ns) {
-       return Arrays.asList(ns).stream().map(number -> new BigDecimal(String.valueOf(number))).reduce(BigDecimal.ZERO, BigDecimal::add);
+        return Arrays.asList(ns).stream().map(number -> new BigDecimal(String.valueOf(number))).reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
     private static <T> List<T> getList(T... ts) {
@@ -675,10 +668,11 @@ public class Miscellaneous {
 
     static class InnerStatic {
         private class Private {
-            private int i = 10;
-            private static int j = 20;
+            private static final int j = 20;
+            private final int i = 10;
+
             private String evenOdd(int num) {
-                return ((num%2 == 0) ? "even" : "odd");
+                return ((num % 2 == 0) ? "even" : "odd");
             }
         }
     }
