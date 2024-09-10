@@ -185,8 +185,6 @@ public class JSONEx {
         list.add("44444");
         persistPersonResponse.setList(list);
 
-        //Jackson
-        //ObjectMapper to read jsonString/file to Object and writeValueAsString(object)
         ObjectMapper objectMapper =
                 JsonMapper
                         .builder()
@@ -203,7 +201,7 @@ public class JSONEx {
         String jsonRequest = objectMapper.writeValueAsString(persistPersonResponse);
         System.out.println(jsonRequest);
 
-        //JSON to Java
+        //JSON to Java object
         File file = new File("src/main/resources/Input.json");
         PersistPersonResponse persistPersonResponse2 = objectMapper.readValue(file, PersistPersonResponse.class);
         System.out.println(persistPersonResponse2);
@@ -211,7 +209,7 @@ public class JSONEx {
         persistPersonResponse2.getList().forEach(System.out::println);
         //PersistPersonResponse(sfgOrgId=fdslkjs, subOrgTxt=sadfsf, sfgId=132esf, personId=13123, test=null, testBoolean=true, testBoolean2=null, validFromDate=1993-12-13'T14:56:23, discount=Familyff, map={mapKey2=3222, mapKey1=332}, list=[33333, 11111, 22222, 44444])
 
-        //JSON to Java as List<Object>
+        //JSON array to Java list
         Path path = Paths.get("src/main/resources/allMoviesOfHeroRequest.json");
         String allMovies = Files.readString(path);
         List<Movie> movies = Arrays.asList(objectMapper.readValue(allMovies, Movie[].class));
@@ -250,6 +248,9 @@ public class JSONEx {
         Files.deleteIfExists(path);
         Files.createFile(path);
         Files.writeString(path, jsonNode.toPrettyString(), StandardOpenOption.APPEND);
+
+        //String sourceAsString = ((JSONObject) parser.parse(new FileReader(requestFilePath))).toJSONString();
+        //String sourceAsString = ((JSONArray) parser.parse(new FileReader(requestFilePath))).toJSONString();
 
         //GSON
         //Java to JSON
