@@ -219,6 +219,7 @@ public class StringEx {
         boolean isStringHavingAllCharacters = str1.toLowerCase().chars().mapToObj(i -> (char) i).filter(c -> c >= 'a' && c <= 'z').distinct().count() == 26;
         System.out.println("isStringHavingAllCharacters :: " + isStringHavingAllCharacters);
 
+        //public record NewPerson(String name, String address) {}
         //before Record pattern
         System.out.println("before Record pattern");
         NewPerson newPerson = new NewPerson("John", "little avenue");
@@ -232,8 +233,6 @@ public class StringEx {
             System.out.println(name);
             System.out.println(address);
         }
-
-
 
         //String :: Text block (start from next line)
         System.out.println("----Text block-----");
