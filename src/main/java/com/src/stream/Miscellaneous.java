@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.google.common.collect.Lists;
 import com.google.common.math.IntMath;
 import com.src.model.Department;
 import com.src.model.Employee;
@@ -45,6 +46,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static com.src.stream.EmployeeStream.getEmployeeList;
 
 class ABC implements AutoCloseable {
 
@@ -579,6 +582,14 @@ public class Miscellaneous {
         spliterator.forEachRemaining(System.out::println);
         System.out.println("-------------------------");
         spliterator2.forEachRemaining(System.out::println);
+
+        List<Employee1> employeeList= getEmployeeList();
+        List<String> designations = List.of("ADMIN","CODER","TESTER");
+        Lists.partition(employeeList,2).stream().map(partitionedList -> {
+            partitionedList.listIterator().forEachRemaining(employee -> employee.setName(designations.get((int)(Math.random()*designations.size()))));
+            return partitionedList;
+        }).flatMap(partitionedList -> partitionedList.stream().filter(employee -> employee.getName().equals("ADMIN"))).toList().forEach(System.out::println);
+
         
         /*
             56

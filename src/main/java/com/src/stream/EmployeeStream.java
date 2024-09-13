@@ -13,7 +13,7 @@ public class EmployeeStream {
 		List<Employee1> employeeList= getEmployeeList();
 		
 		//All employee whose age is greater than 20 and print the employee names
-		List<String> resultEmployeeList = employeeList.stream().filter(employee -> employee.getAge()>20).map(Employee1::getName).collect(Collectors.toList());
+		List<String> resultEmployeeList = employeeList.stream().filter(employee -> employee.getAge()>20).map(Employee1::getName).toList();
 		resultEmployeeList.forEach(System.out::println); //John,Mary,Gary 
 		
 		//Count number of employees with age 25
@@ -83,10 +83,9 @@ public class EmployeeStream {
 
 		List<String> designations = List.of("ADMIN","CODER","TESTER");
 		Lists.partition(employeeList,2).stream().map(partitionedList -> {
-			partitionedList.listIterator()
-					.forEachRemaining(employee -> employee.setName(designations.get((int)(Math.random()*designations.size()))));
+			partitionedList.listIterator().forEachRemaining(employee -> employee.setName(designations.get((int)(Math.random()*designations.size()))));
 			return partitionedList;
-		}).flatMap(partitionedList -> partitionedList.stream().filter(employee -> employee.getName().equals("ADMIN"))).collect(Collectors.toList()).forEach(System.out::println);
+		}).flatMap(partitionedList -> partitionedList.stream().filter(employee -> employee.getName().equals("ADMIN"))).toList().forEach(System.out::println);
 
 		
 	
