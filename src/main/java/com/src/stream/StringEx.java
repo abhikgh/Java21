@@ -70,7 +70,7 @@ public class StringEx {
         System.out.println("isEmpty :: " + strTest.isEmpty()); //false
         System.out.println("isBlank :: " + strTest.isBlank()); //true
 
-        //String :: lines : to get all words in a paragraph
+        //All words in a paragraph
         strTest = """
                 Hi All.
                 This is a new line.
@@ -83,16 +83,14 @@ public class StringEx {
         System.out.println(words);
         //Hi All. This is a new line.This is another line. Thank you.
 
-        strTest = """
-                Hi All.
-                This is a new line.
-                This is another line.
-                Thank you.
-                """;
-        words = strTest.lines().collect(Collectors.joining());
-        System.out.println("All words in paragraph are :: ");
-        System.out.println(words);
-        //Hi All. This is a new line.This is another line. Thank you.
+        //Count of words in a paragraph
+        long noOfWordsInParagraph = Arrays.asList(strTest.lines().collect(Collectors.joining()).split(" ")).stream().count();
+        System.out.println("noOfWordsInParagraph :: " + noOfWordsInParagraph);
+
+        //Count of words in a line
+        str = "Welcome to Java Hello World";
+        long noOfWordsInLine = Arrays.asList(str.split(" ")).stream().count();
+        System.out.println("noOfWordsInLine :: " + noOfWordsInLine);
 
         //String :: strip
         strTest = "   Hi   ";
