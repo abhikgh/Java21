@@ -124,9 +124,9 @@ public class LambdaEx {
 
 		//Higher-Order Function
 		//Function as input &/ output
-		IntBinaryOperator add = (a, b) -> a + b;
-		IntBinaryOperator subtract = (a, b) -> a - b;
-		IntBinaryOperator multiply = (a, b) -> a * b;
+		BinaryOperator<Integer> add = (a, b) -> a + b;
+		BinaryOperator<Integer> subtract = (a, b) -> a - b;
+		BinaryOperator<Integer> multiply = (a, b) -> a * b;
 
 		int x1 = 10;
 		int y1 = 5;
@@ -163,8 +163,8 @@ public class LambdaEx {
 	 }
 
 	// Higher-Order Function
-	public static int applyOperation(int a, int b, IntBinaryOperator operation) {
-		return operation.applyAsInt(a, b);
+	public static int applyOperation(int a, int b, BinaryOperator operation) {
+		return (int) operation.apply(a, b);
 	}
 
 	//BiFunction
