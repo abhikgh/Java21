@@ -28,7 +28,7 @@ public class FileEx {
 
     public static void main(String[] args) throws IOException {
 
-        Path path = Paths.get("src/main/resources/abc.txt");
+
 
 	// Files.readString(path)
 	// Files.writeString(path, stringContent, StandardOpenOption.APPEND)
@@ -42,7 +42,9 @@ public class FileEx {
 
 	 // Paths.get
 	 // Path.toFile
-         // Path.toFile.isFile   
+         // Path.toFile.isFile
+
+        Path path = Paths.get("src/main/resources/abc.txt");
 
         //Read file
         String data = Files.readString(path);
