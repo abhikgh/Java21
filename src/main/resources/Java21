@@ -691,10 +691,15 @@ Anonymous inner class
 Anonymous inner class is an inner class without a name and for which only a single object is created. It is used when override a method of a class or interface.
 
 //Anonymous Inner class
-ABCD abcd = new ABCD(){
+class ABCD {
+    public void print() {
+	System.out.println("ABCD...");
+    }
+}
+ABCD abcd = new ABCD() {
     @Override
     public void print() {
-        System.out.println("ABCD...");
+	System.out.println("ABCD...");
     }
 };
 abcd.print();
