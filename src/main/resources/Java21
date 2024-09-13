@@ -6,7 +6,7 @@ list.stream()
         .sorted(Compartor.comparing(x, Comparator.reverseOrder())
         .sorted(Compartor.comparing(x, Comparator.nullsLast(Comparator.naturalOrder()))
         .sorted(Compartor.comparing(x, Comparator.nullsLast(Comparator.reverseOrder()))
-	.sorted(Compartor.comparingInt(x))
+	    .sorted(Compartor.comparingInt(x))
         .sorted(Compartor.comparingInt(x, Comparator.reverseOrder()))
         .sorted(Compartor.comparing(x).thenComparing(y))
         .sorted(Compartor.comparing(x).thenComparing(y, Comparator.reverseOrder())
@@ -15,9 +15,9 @@ list.stream()
     	.sorted(Comparator.reverseOrder()) //1 field
 .toList();
 
-Max
-====
-	List<Integer> integerList = List.of(23, 34, 56,231, 36);
+Max (Stream.max(Integer::compareTo / Comparator.comparing())
+==================================================================
+	    List<Integer> integerList = List.of(23, 34, 56,231, 36);
         Integer highestInt = integerList.stream().max(Integer::compareTo).get();
         System.out.println("highestInt :: "  +highestInt);  //231
 
@@ -25,7 +25,6 @@ Max
         Number highestNumber = numberList.stream().map(Number::doubleValue).max(Double::compareTo).get();
         System.out.println("highestNumber :: " + highestNumber);  //123.34
 
-        servicePriceList.stream().flatMap(servicePrice -> servicePrice.getSavingList().stream()).filter(Saving::getIsApplied).collect(Collectors.maxBy(Comparator.comparing(Saving::getAmount))).get().getAmount();		
 
 
 Java 9

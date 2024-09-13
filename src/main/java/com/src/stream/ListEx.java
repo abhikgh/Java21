@@ -31,6 +31,7 @@ import java.util.ListIterator;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -129,18 +130,12 @@ public class ListEx {
         //orElse() is always executed
         //orElseGet(supplier) is conditionally executed - when Optional value is null
 
-        //first element in list
-        String firstElement = Optional.ofNullable(list)
+        //last element in list
+        String lastElement = Optional.ofNullable(list)
                             .orElseGet(Collections::emptyList)
                             .stream()
-                            .reduce((first, second) -> first)   //(or findFirst())
+                            .reduce((first, second) -> second)
                             .orElseGet(() -> "NA");
-        System.out.println("firstElement :: " + firstElement); //ccc
-
-        //last element in list
-        String lastElement = list.stream()
-                                 .reduce((first, second) -> second)
-                                 .orElseGet(() -> "NA");
         System.out.println("lastElement :: " + lastElement); //ccc
 
         //All elements follow rule
@@ -322,15 +317,8 @@ public class ListEx {
 
         //get max aged employees
         System.out.println("----------------------get max aged employees----------------------");
-        //use this if return list
-        int maxAge = listPersons.stream().map(ABCE::getAge).max(Integer::compareTo).orElse(0);
-        listPersons = listPersons.stream().filter(abce -> abce.getAge()==maxAge).toList();
-        System.out.println("max aged employee");
-        listPersons.stream().forEach(System.out::println);
-
-        //use this if return Object
-        ABCE maxAgedPerson = listPersons.stream().reduce((person1, person2) -> person1.getAge()> person2.getAge() ? person1 : person2).orElse(null);
-        System.out.println("max aged employee 2:: " + maxAgedPerson);
+        ABCE maxAgedEmployee = listPersons.stream().max(Comparator.comparing(ABCE::getAge)).stream().findFirst().orElse(null);
+        System.out.println("maxAgedEmployee :: " + maxAgedEmployee);
 
         // Sort by firstName and then by age
         System.out.println("----------------------Sort by firstName and then by age---------------------");
@@ -339,7 +327,7 @@ public class ListEx {
 
         // Sort by firstName and then by age descending
         System.out.println("----------------------Sort by firstName and then by age descending---------------------");
-        listPersons = listPersons.stream().sorted(Comparator.comparing(ABCE::getLastName).thenComparing(ABCE::getAge, Comparator.reverseOrder())).toList();
+        listPersons = listPersons.stream().sorted(Comparator.comparing(ABCE::getLastName, Comparator.nullsLast(Comparator.reverseOrder())).thenComparing(ABCE::getAge, Comparator.reverseOrder())).toList();
         listPersons.stream().forEach(System.out::println);
 
         List<String> listStr = Arrays.asList("kajd", "jdjsjsj", "ewriew", "sldss", "sjfdksdf", "fisifi");
@@ -490,7 +478,7 @@ public class ListEx {
         System.out.println("employeesKA List---------");
         employeesKA.forEach(emp -> System.out.println(emp.getEmployeeName() + "-" + emp.getDepartment().getDepartmentName()));
 
-        //filter out employees with name starts with K and A using predicates
+        //Predicates
         Predicate<Employee> predicate1 = employee -> employee.getEmployeeName().startsWith("K");
         Predicate<Employee> predicate2 = employee -> employee.getEmployeeName().startsWith("A");
         List<Predicate<Employee>> predicates = List.of(predicate1, predicate2);
@@ -500,7 +488,6 @@ public class ListEx {
 
         //distinct service ids
         List<Service> serviceList = getAllServices();
-        Set<String> set = new HashSet<>();
         List<String> distinctServiceIds = serviceList.stream().map(Service::getServiceId).distinct().toList();
         System.out.println("distinctServiceIds :: " + distinctServiceIds); //[123, 234, 900, 1234]
 
@@ -573,7 +560,7 @@ public class ListEx {
         List<String> list11 = Arrays.asList("a","c","b").stream().sorted().toList();
         List<String> list12 = Arrays.asList("c","a","b").stream().sorted().toList();
         boolean listEquals = list11.equals(list12);
-        System.out.println("List equals :: " + listEquals);
+        System.out.println("List equals :: " + listEquals); //true
 
         //List                                              ListIterator
         //cannot modify list while traversing               can modify list while traversing
@@ -627,17 +614,14 @@ public class ListEx {
 
         List<Integer> listNumbers3 = Arrays.asList(25, 190, 68, 20, 135, 335, 140, 18, 19, 102, 201, 156);
         //Get the largest number in a list of numbers
-        int largestNo = listNumbers3.stream().sorted(Comparator.reverseOrder()).toList().get(0);
+        int largestNo = listNumbers3.stream().max(Integer::compareTo).get();
         System.out.println("largestNo :: " + largestNo); //335
-
-        largestNo = Collections.max(listNumbers3, Comparator.comparing(v ->v));
-        //System.out.println("largestNo :: " + largestNo);
 
         //Get the second-largest number in a list of numbers
         int secondLargestNo = listNumbers3.stream().sorted(Comparator.reverseOrder()).toList().get(1);
         // System.out.println("secondLargestNo :: " + secondLargestNo); //201
 
-        secondLargestNo = listNumbers3.stream().sorted().skip(listNumbers3.size()-2).findFirst().orElse(0);
+        //secondLargestNo = listNumbers3.stream().sorted().skip(listNumbers3.size()-2).findFirst().orElse(0);
         // System.out.println("secondLargestNo :: " + secondLargestNo); //201
 
         //From 1 to 10, if even then print "even", if odd then print "odd"
@@ -652,14 +636,14 @@ public class ListEx {
         });
         System.out.println("");
 
-        //Immutable list (does not take null)
-        //List.of("","")
-        //List.copyOf(list)
-        //Collections.unmodifiableList(list)
-
         //No add, Only change
-        //Arrays.asList("","")
-        //Collections.synchronizedList(list)
+            //Arrays.asList("","")
+            //Collections.synchronizedList(list)
+
+        //Immutable list
+            //List.of("","")
+            //List.copyOf(list)
+            //Collections.unmodifiableList(list)
 
         List<String> mutableList = Arrays.asList("aaaa","bbbb","cccc");
         //mutableList.add(0,"00000"); //not allowed
@@ -903,8 +887,8 @@ public class ListEx {
         //select a random number between 10(incl) and 100(excl)
         int upper = 100;
         int lower = 10;
-        int rand = (int) (Math.random() * (upper - lower)) + lower;
-        System.out.println("rand :: " + rand);
+        int randomNum = new Random().nextInt((100 - 10) + 1) + 10;
+        System.out.println("randomNum :: " + randomNum);
 
     }
 

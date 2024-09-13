@@ -31,19 +31,19 @@ public class EmployeeStream {
 		
 		//find maximum age of employee
 		AtomicInteger maxAge2 = new AtomicInteger();
-		employeeList.stream().collect(Collectors.maxBy(Comparator.comparing(Employee1::getAge))).stream().findFirst().ifPresent(employee1 -> {
+		employeeList.stream().max(Comparator.comparing(Employee1::getAge)).stream().findFirst().ifPresent(employee1 -> {
 			maxAge2.set(employee1.getAge());
 		});
 		System.out.println("maxAge :: " + maxAge2.get()); //31
 		
 		//find maximum aged employee
 		Employee1 maxAgedEmployee =
-		employeeList.stream().collect(Collectors.maxBy(Comparator.comparing(Employee1::getAge))).stream().findFirst().orElse(null);
+		employeeList.stream().max(Comparator.comparing(Employee1::getAge)).stream().findFirst().orElse(null);
 		System.out.println("maxAgedEmployee :: " + maxAgedEmployee); //maxAgedEmployee :: Employee Name: Mary age: 31 Salary : 20000.0
 
 		//find employee with highest salary
 		Employee1 empMaxSalary =
-				employeeList.stream().collect(Collectors.maxBy(Comparator.comparing(Employee1::getSalary))).stream().findFirst().orElse(null);
+				employeeList.stream().max(Comparator.comparing(Employee1::getSalary)).stream().findFirst().orElse(null);
 		System.out.println("empMaxSalary :: " + empMaxSalary);
 
 		//find employee with nth(5th) highest salary

@@ -410,7 +410,7 @@ public class ItemNo {
         System.out.println("mapSumOfDiscountTypes :: " + mapSumOfDiscountTypes); //{Sale=1300, Coupon=366, Promotion=700, Voucher=2150}
 
 
-        //Rule : .filter().findFirst()
+        //Rule : .filter().findFirst().ifPresent() / .filter().findFirst().orElse()
         //Rule : .flatmap().map()
 
         List<Person> personList = List.of(
