@@ -154,16 +154,6 @@ class Item {
             });
             .collect(Collectors.groupingBy(Saving::getDiscountType, Collectors.reducing(BigDecimal.ZERO, Saving::getAmount, BigDecimal::add)));
 
-            Collectors.maxBy
-            -------------------
-            If map Value has >1 values from which maximum has to be found - use Collectors.groupingBy, Collectors.maxBy
-            - returns Optional
-
-           .collect(Collectors.groupingBy(Student::getStandard, Collectors.maxBy(Comparator.comparingInt(Student::getTotalMarks))));
-           .map(Student::getMarks).map(Marks::getHistory).filter(Objects::nonNull).collect(Collectors.maxBy(Comparator.comparingInt(v ->v))).get();
-           .collect(Collectors.maxBy(Comparator.comparing(Item::getPrice))).get().getItemNo();
-           .collect(Collectors.maxBy(Comparator.comparing(Saving::getAmount))).get().getAmount();
-
 
             Collectors.toMap
             --------------------
@@ -276,7 +266,7 @@ public class CollectorEx {
         List<ItemX> uniqueItemXList = itemXList.stream().filter(itemX -> uniqueKeys.add(itemX.getItemType().concat(itemX.getItemCC()))).toList();
         System.out.println("uniqueItemXList :: " + uniqueItemXList);
 
-	//remove duplicates(itemType+itemCC) from a list
+	   //remove duplicates(itemType+itemCC) from a list
         Map<String, ItemX> nodupsMap = new HashMap<>();
         for(ItemX itemX: itemXList) {
             if(!nodupsMap.containsKey(itemX.getItemType().concat(itemX.getItemCC()))){
@@ -302,7 +292,7 @@ public class CollectorEx {
 
         //for each item type get count of items which have itemClassification=Living
         Map<String, Long> mapItemTypeCountLiving =
-                itemXList.stream().collect(Collectors.groupingBy(ItemX::getItemType, Collectors.filtering(itemX -> itemX.getItemClassification().equalsIgnoreCase("Living"), Collectors.counting())));
+                itemXList.stream().collect(Collectors.groupingBy(ItemX::getItemType, Collectors.mapping(itemX -> itemX.getItemClassification().equalsIgnoreCase("Living"), Collectors.counting())));
         System.out.println("mapItemTypeCountLiving");
         mapItemTypeCountLiving.forEach((key, value) -> System.out.println(key + "-" + value));
 
@@ -335,25 +325,13 @@ public class CollectorEx {
         System.out.println("mapEachTypeOfSaving :: " + mapEachTypeOfSaving); //{false=3, true=7}
 
         //highest saving amount
-       /*
-         AtomicReference<String>
-         AtomicReference<BigDecimal>
-         AtomicInteger
-         AtomicBoolean
-         AtomicLong
-        */
-
         AtomicReference<BigDecimal> highestSavingsAmount = new AtomicReference();
-
-                servicePriceList.stream().flatMap(servicePrice -> servicePrice.getSavingList().stream()).collect(Collectors.maxBy(Comparator.comparing(Saving::getAmount))).ifPresent(saving -> {
-                    highestSavingsAmount.set(saving.getAmount());
-                });
+        servicePriceList.stream().flatMap(servicePrice -> servicePrice.getSavingList().stream()).max(Comparator.comparing(Saving::getAmount)).stream().findFirst().ifPresent(saving ->  highestSavingsAmount.set(saving.getAmount()));
         System.out.println("highestSavingsAmount :: " + highestSavingsAmount.get()); //2000
-
 
         //highest savings amount for savings isapplied=true
         BigDecimal highestSavingIsAppliedTrue =
-        servicePriceList.stream().flatMap(servicePrice -> servicePrice.getSavingList().stream()).filter(Saving::getIsApplied).collect(Collectors.maxBy(Comparator.comparing(Saving::getAmount))).get().getAmount();
+        servicePriceList.stream().flatMap(servicePrice -> servicePrice.getSavingList().stream()).filter(Saving::getIsApplied).max(Comparator.comparing(Saving::getAmount)).get().getAmount();
         System.out.println("highestSavingIsAppliedTrue :: " + highestSavingIsAppliedTrue); //400
 
         //total savings amount for savings isapplied=true
@@ -448,7 +426,7 @@ public class ItemNo {
         //itemNo with highest price
         //highest = Collectors.maxBy(Comparator.comparing())
         String itemNoWithHighestPrice =
-                      itemList.stream().collect(Collectors.maxBy(Comparator.comparing(Item::getPrice))).get().getItemNo();
+                      itemList.stream().max(Comparator.comparing(Item::getPrice)).get().getItemNo();
         System.out.println("itemNoWithHighestPrice :: " + itemNoWithHighestPrice);
 
         //highest price
