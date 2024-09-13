@@ -24,7 +24,9 @@ public class Employee implements Cloneable{
     //clone() has protected access in java.lang.Object
     @Override
     public Object clone() throws CloneNotSupportedException {
-        //return super.clone(); //Shallow clone
+        //Shallow clone
+        //Employee employee = (Employee) super.clone();
+        //return employee;
 
         //Deep clone
         Employee employee = (Employee) super.clone();
