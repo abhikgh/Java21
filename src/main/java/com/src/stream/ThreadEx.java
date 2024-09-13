@@ -43,26 +43,32 @@ public class ThreadEx {
 
          */
 
-        Thread thread1 = new Thread(){
+        //1. Run Thread as Lambda
+        Runnable threadLambda = () -> {
+            System.out.println("Running thread as lambda..");
+        };
+        threadLambda.run();
+
+        //2. Run Thread as Anonymous Inner class
+        Thread threadAnonymous = new Thread(){
             @Override
             public void run() {
-                System.out.println("In thread1...");
+                System.out.println("Running thread as Anonymous Inner class...");
             }
         };
-        thread1.start();
+        threadAnonymous.start();
 
-        Thread thread11 = new Thread(
-                () -> System.out.println("In thread11...")
-        );
-        thread11.start();
+        //3. Run Thread as new Thread(runnable)
+        Thread threadRunnable = new Thread(() -> System.out.println("Running thread as thread runnable..."));
+        threadRunnable.start();
 
-        Thread myThread = new MyThread();
+            MyRunnbale myRunnbale = new MyRunnbale();
+            Thread t = new Thread(myRunnbale);
+            t.start(); //Run in myRunnable...
+
+        //4. Run thread as Object
+        MyThread myThread = new MyThread();
         myThread.start(); //Run in myThread...
-
-        MyRunnbale myRunnbale = new MyRunnbale();
-        Thread t = new Thread(myRunnbale);
-        t.start(); //Run in myRunnable...
-
 
         //3 threads searching in parallel
         AtomicBoolean isFound = new AtomicBoolean(false);
@@ -86,25 +92,20 @@ public class ThreadEx {
 
         };
 
-        Thread t2 = new Thread() {
-
-            @Override
-            public void run() {
-                try (Scanner scanner = new Scanner(new File("src/main/resources/file2.csv"))) {
-                    scanner.useDelimiter(",");
-                    while (!isFound.get() && scanner.hasNext()) {
-                        String elem = scanner.next();
-                        if (elem.contains("ip")) {
-                            isFound.set(true);
-                            System.out.println(elem.split(":")[1]);
-                        }
+        Thread t2 = new Thread(() -> {
+            try (Scanner scanner = new Scanner(new File("src/main/resources/file2.csv"))) {
+                scanner.useDelimiter(",");
+                while (!isFound.get() && scanner.hasNext()) {
+                    String elem = scanner.next();
+                    if (elem.contains("ip")) {
+                        isFound.set(true);
+                        System.out.println(elem.split(":")[1]);
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-
-        };
+        });
 
         Thread t3 = new Thread() {
 
