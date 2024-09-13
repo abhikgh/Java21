@@ -28,7 +28,7 @@ public class Employee implements Cloneable{
         //Employee employee = (Employee) super.clone();
         //return employee;
 
-        //Deep clone
+        //Deep clone = Shallow clone + set()
         Employee employee = (Employee) super.clone();
         employee.setDepartment((Department) employee.getDepartment().clone());
         return employee;
