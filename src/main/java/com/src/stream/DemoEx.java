@@ -343,7 +343,7 @@ public class DemoEx {
         System.out.println("mathsMarks :: " + mathsMarks); //90
 
         //get total maths marks of all students of std=10
-        int totalMaths10 = reportCard.getStudents().stream().map(Student::getMarks).mapToInt(Marks::getMaths).sum();
+        int totalMaths10 = reportCard.getStudents().stream().filter(student -> student.getStandard()==10).map(Student::getMarks).mapToInt(Marks::getMaths).sum();
         System.out.println("totalMaths10 :: " + totalMaths10); //90
 
         //get the total maths marks of each standard
@@ -356,13 +356,16 @@ public class DemoEx {
         //get total maths+science marks per standard
         Map<Integer, Integer> map24 =
         reportCard.getStudents().stream().collect(Collectors.groupingBy(Student::getStandard,
-                Collectors.reducing(0, student -> student.getMarks().getMaths() + student.getMarks().getScience() ,Integer::sum))).entrySet().stream().sorted(Comparator.comparing(Map.Entry::getKey))
+                Collectors.reducing(0, student -> student.getMarks().getMaths() + student.getMarks().getScience() ,Integer::sum)))
+                .entrySet().stream().sorted(Comparator.comparing(Map.Entry::getKey))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (o,n)->n, LinkedHashMap::new));
         System.out.println("map24");
         System.out.println(map24);
         
         //highest marks in history
-        int highestHistoryMarks = reportCard.getStudents().stream().map(Student::getMarks).map(Marks::getHistory).filter(Objects::nonNull).collect(Collectors.maxBy(Comparator.comparing(v -> v))).get(); //98
+        int highestHistoryMarks =
+                reportCard.getStudents().stream().map(Student::getMarks).map(Marks::getHistory).filter(Objects::nonNull)
+                .max(Comparator.comparing(v ->v)).get();
         System.out.println("highestHistoryMarks :: " + highestHistoryMarks);
 
     }
