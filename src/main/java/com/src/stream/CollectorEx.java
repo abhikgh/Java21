@@ -98,18 +98,6 @@ class Item {
         .collect(Collectors.groupingBy(Student::getStandard, Collectors.counting()));
 
 
-         Collectors.filtering
-        ---------------------------
-          If map Value has >1 values from which filtering needs to be done
-          - Collectors.groupingBy, Collectors.filtering(x,Collectors.counting)
-
-         .collect(Collectors.groupingBy(Student::getStandard,
-         Collectors.filtering(student -> student.getHobbies().contains("programming"), Collectors.counting())));
-
-         .collect(Collectors.groupingBy(ItemX::getItemType,
-              Collectors.filtering(itemX -> itemX.getItemClassification().equalsIgnoreCase("Living"), Collectors.counting())));
-
-
             Collectors.mapping
             -----------------------------
              If map Value has >1 values which has to be transformed

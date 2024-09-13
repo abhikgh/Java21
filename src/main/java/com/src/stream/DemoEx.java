@@ -29,6 +29,7 @@ import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class DemoEx {
 
@@ -40,57 +41,46 @@ public class DemoEx {
         ReportCard reportCard = objectMapper.readValue(file, ReportCard.class);
 
         //1. Students who have Karate in sports
-        List<Student> studentList1 = new ArrayList<>();
-        reportCard.getStudents().forEach(student -> {
-            student.getSports().stream().filter(sport -> "Karate".equalsIgnoreCase(sport.getSportName())).findFirst().ifPresent(sport -> studentList1.add(student));
-        });
-        //System.out.println("studentList1");
-        //studentList1.forEach(student -> System.out.println(student.getFullName()));
+        List<Student> studentList1 =
+                reportCard.getStudents().stream().filter(student -> student.getSports().stream().map(Sport::getSportName).toList().contains("karate")).toList();
+
+         System.out.println("studentList1");
+         studentList1.forEach(student -> System.out.println(student.getFullName()));
+         System.out.println("aaaaaaaaaaaabbbbbbbbbbb");
 
         //2. Students of standard>=8 who have Karate in sports and have brown/black belt
-        List<Student> studentList2 = new ArrayList<>();
-        reportCard.getStudents().stream().filter(student -> student.getStandard()>=8)
-                        .forEach(student -> {
-                            student.getSports().stream()
-                                    .filter(sport -> "Karate".equalsIgnoreCase(sport.getSportName()) && List.of("brown", "black").contains(sport.getStatus()))
-                                    .findFirst().ifPresent(sport -> studentList2.add(student));
-                        });
-        //System.out.println("studentList2");
-        //studentList2.forEach(student -> System.out.println(student.getFullName()));
+        List<Student> studentList2
+           =  reportCard.getStudents().stream().filter(student -> student.getStandard()>=8 &&
+                        student.getSports().stream().map(Sport::getSportName).toList().contains("karate") &&
+                        Stream.of("brown-belt", "black-belt").anyMatch(allowedValues -> student.getSports().stream().map(Sport::getStatus).toList().contains(allowedValues)))
+                        .toList();
+        System.out.println("studentList2");
+        studentList2.forEach(student -> System.out.println(student.getFullName()));
+        System.out.println("cccccccccccccdddddddddddddddddd");
 
         //3. Student(s) of standard=10 who has the highest totalMarks
-        //highest marks of class 10
-        int highestTotalStd10 = reportCard.getStudents().stream().filter(student -> student.getStandard()==10)
-                                .map(Student::getTotalMarks)
-                                .max(Integer::compareTo)
-                                .orElse(0);
-        List<Student> studentList3  = reportCard.getStudents().stream()
-                                                     .filter(student -> student.getStandard()==10 && student.getTotalMarks()==highestTotalStd10)
-                                                    .toList();
-
-      /*  studentList3 =
-        reportCard.getStudents().stream().filter(student -> student.getStandard()==10).collect(Collectors.maxBy(Comparator.comparing(Student::getTotalMarks))).stream().toList();*/
-
-        //System.out.println("studentList3");
-        //studentList3.forEach(student -> System.out.println(student.getFullName()));
+        List<Student> studentList3  =
+                reportCard.getStudents().stream().filter(student -> student.getStandard()==10).max(Comparator.comparing(Student::getTotalMarks)).stream().toList();
+        System.out.println("studentList3");
+        studentList3.forEach(student -> System.out.println(student.getFullName() + student.getTotalMarks()));
+        System.out.println("eeeeeeeeeeeeeeeefffffffffffffffffff");
 
         //4. Count of each student from each standard
-        Map<Integer, Long> map4 = reportCard.getStudents().stream()
-                .collect(Collectors.groupingBy(Student::getStandard, Collectors.counting()));
-        //System.out.println("map4");
-        //System.out.println(map4);
+        Map<Integer, Long> map4 = reportCard.getStudents().stream().collect(Collectors.groupingBy(Student::getStandard, Collectors.counting()));
+        System.out.println("map4");
+        System.out.println(map4);
+        System.out.println("gggggggggghhhhhhhhhhhhhhhhhhhh");
 
         //5.Students in each standard
         //If map Value has >1 values which has to be transformed - use Collectors.groupingBy , Collectors.mapping
         Map<Integer, List<String>> map5 = reportCard.getStudents().stream()
-                .collect(Collectors.groupingBy(Student::getStandard,
-                        Collectors.mapping(Student::getFullName, Collectors.toList())));
+                .collect(Collectors.groupingBy(Student::getStandard, Collectors.mapping(Student::getFullName, Collectors.toList())));
         //System.out.println("map5");
         //System.out.println(map5);
 
         //8. Student(s) with highest totalMarks from each standard
-        Map<Integer, List<Student>> map6 = new HashMap<>();
-        reportCard.getStudents().stream()
+
+       /* reportCard.getStudents().stream()
                 .collect(Collectors.collectingAndThen(Collectors.groupingBy(Student::getStandard),
                         map -> {
                                 map.forEach((key, value) -> {
@@ -100,7 +90,19 @@ public class DemoEx {
                             return null;
                         }));
         System.out.println("map6");
+        System.out.println(map6);*/
+        Map<Integer, List<Student>> map6 =
+        reportCard.getStudents().stream()
+                .collect(Collectors.collectingAndThen(Collectors.groupingBy(Student::getStandard), map -> {
+                            map.forEach((key, value) -> {
+                                map.put(key, value.stream().max(Comparator.comparing(Student::getTotalMarks)).stream().toList());
+                            });
+                            return map;
+                        }));
+        System.out.println("map6");
         System.out.println(map6);
+
+
 
         // Student with highest totalMarks from each standard
         Map<Integer, Student> map7 = reportCard.getStudents().stream()
@@ -121,27 +123,29 @@ public class DemoEx {
         System.out.println(map16);
 
         //10. Get count of students from each standard who has programming in hobby
-        //If map Value has >1 values from which filtering needs to be done - use Collectors.groupingBy(,Collectors.filtering)
-        Map<Integer, Long> map10 = reportCard.getStudents().stream()
-                .collect(Collectors.groupingBy(Student::getStandard,
-                        Collectors.filtering(student -> student.getHobbies().contains("programming"), Collectors.counting())));
+        Map<Integer, Long> map10 = new HashMap<>();
+                reportCard.getStudents().stream()
+                .collect(Collectors.collectingAndThen(Collectors.groupingBy(Student::getStandard),
+                       map -> {
+                            map.forEach( (key,value) -> {
+                                map10.put(key, value.stream().filter(student -> student.getHobbies().contains("programming")).count());
+                            });
+                            return map10;
+                       }));
         System.out.println("map10");
         map10.forEach((key, value) -> System.out.println(key + "-" + value));
 
         //Print all the house in each standard
         Map<Integer, String> map101 = reportCard.getStudents().stream()
-                .collect(Collectors.groupingBy(Student::getStandard,
-                        Collectors.mapping(Student::getHouse, Collectors.joining(","))));
+                .collect(Collectors.groupingBy(Student::getStandard, Collectors.mapping(Student::getHouse, Collectors.joining(","))));
         System.out.println("map101");
         map101.forEach((key, value) -> System.out.println(key + "-" + value));
 
         //Print all the hobbies in each standard
         Map<Integer, String> map102 = reportCard.getStudents().stream()
-                .collect(Collectors.groupingBy(Student::getStandard,
-                        Collectors.mapping(student -> student.getHobbies().stream().collect(Collectors.joining(",")),Collectors.joining(","))));
+                .collect(Collectors.groupingBy(Student::getStandard, Collectors.mapping(student -> student.getHobbies().stream().collect(Collectors.joining(",")),Collectors.joining(","))));
         System.out.println("map102");
         map102.forEach((key, value) -> System.out.println(key + "-" + value));
-
 
         //for each standard get the hobbies as Set
         Map<Integer, Set<String>> map104 = reportCard.getStudents().stream()
@@ -177,31 +181,24 @@ public class DemoEx {
 
         //7. Students who have at least 1 hobby and have Karate in sports
         List<String> studentList7 =
-        reportCard.getStudents().stream().filter(student -> !(CollectionUtils.isEmpty(student.getHobbies())) && student.getSports().stream().anyMatch(sport -> sport.getSportName().equalsIgnoreCase("Karate"))).map(Student::getFullName).toList();
+        reportCard.getStudents().stream().filter(student -> !(CollectionUtils.isEmpty(student.getHobbies())) &&
+                                                           student.getSports().stream().anyMatch(sport -> sport.getSportName().equalsIgnoreCase("Karate")))
+                                                            .map(Student::getFullName).toList();
         System.out.println("studentList7");
         studentList7.forEach(System.out::println);
         //Student 1, Student 3, Student 4, Student 5, Student 6, Student 7, Student 11
 
         //13. Students of each standard who has totalMarks>=360
-        //If map Value has >1 values from which filtering needs to be done - use Collectors.groupingBy, Collectors.filtering
-        Map<Integer, List<Student>> map13 =
-        reportCard.getStudents().stream().collect(Collectors.groupingBy(Student::getStandard,
-                                                    Collectors.filtering(student -> student.getTotalMarks()>=360, Collectors.toList())));
+        Map<Integer, List<Student>> map13 = new HashMap<>();
+        reportCard.getStudents().stream().collect(Collectors.collectingAndThen(Collectors.groupingBy(Student::getStandard),
+                                                    map -> {
+                                                            map.forEach((key,value) -> {
+                                                                map13.put(key, value.stream().filter(student -> student.getTotalMarks()>=360).toList());
+                                                            });
+                                                            return map;
+                                                    }));
         System.out.println("map13");
         map13.forEach((key, value) -> System.out.println(key + "-" + value));
-
-        //13. Student names of each standard who has totalMarks>=360
-        Map<Integer, List<String>> map107 = new HashMap<>();
-        reportCard.getStudents().stream().collect(Collectors.collectingAndThen(Collectors.groupingBy(Student::getStandard),
-                map -> {
-                            map.forEach((key,value) -> {
-                                map107.put(key, value.stream().filter(student -> student.getTotalMarks()>=360).map(Student::getFullName).toList());
-                            });
-                            return null;
-                }));
-
-        System.out.println("map107");
-        map107.forEach((key, value) -> System.out.println(key + "-" + value));
 
         //9. For each Student, print the hobbies, if no hobby is present show NA in a map
         Map<String, String> map9 =
@@ -296,14 +293,12 @@ public class DemoEx {
 
         //get students who has brown-belt in karate
         List<String> studentHavingKarateBrownBelt = new ArrayList<>();
-        reportCard.getStudents().forEach(student -> {
-
-            if(student.getSports().stream().filter(sport -> sport.getSportName().equalsIgnoreCase("Karate") && sport.getStatus().equalsIgnoreCase("brown-belt")).toList().size()>0){
-                studentHavingKarateBrownBelt.add(student.getFullName());
-            }
-        });
+        studentHavingKarateBrownBelt =
+                reportCard.getStudents().stream().filter(student -> student.getSports().stream().map(Sport::getSportName).toList().contains("karate") &&
+                                                            student.getSports().stream().map(Sport::getStatus).toList().contains("brown-belt"))
+                                                 .map(Student::getFullName).toList();
         System.out.println("studentHavingKarateBrownBelt");
-        System.out.println(studentHavingKarateBrownBelt);
+        System.out.println(studentHavingKarateBrownBelt); //[Student 3, Student 4, Student 5, Student 11]
 
         //get count of each hobby
         Map<String, Long> map21 =
@@ -312,18 +307,16 @@ public class DemoEx {
         System.out.println(map21);
 
         //check if all students have at least 1 hobby
-        AtomicBoolean allStudentsHaveHobbies = new AtomicBoolean(true);
-        reportCard.getStudents().forEach(student -> {
-            if(allStudentsHaveHobbies.get() && CollectionUtils.isEmpty(student.getHobbies())){
-                allStudentsHaveHobbies.set(false);
-            }
-        });
-        System.out.println("allStudentsHaveHobbies");
-        System.out.println(allStudentsHaveHobbies.get());
+        boolean allStudentsHaveHobbies =
+        reportCard.getStudents().stream()
+                        .map(student -> !CollectionUtils.isEmpty(student.getHobbies()))
+                                .reduce(Boolean::logicalAnd)
+                                        .orElse(false);
+        System.out.println("allStudentsHaveHobbies :: " + allStudentsHaveHobbies);
 
         //get students by karate belt
         Function<Student, String> compositeKey = student -> student.getSports().stream()
-                .filter(sport -> sport.getSportName().equalsIgnoreCase("Karate"))
+                .filter(sport -> sport.getSportName().equalsIgnoreCase("karate"))
                 .map(sport -> sport.getSportName().concat("-").concat(sport.getStatus())).collect(Collectors.joining());
         Map<String, List<String>> map22 =
         reportCard.getStudents().stream().collect(Collectors.groupingBy(compositeKey, Collectors.mapping(Student::getFullName, Collectors.toList())))
