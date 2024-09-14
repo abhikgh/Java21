@@ -364,9 +364,9 @@ Virtual Threads
 
 OS Thread
 Platform Thread :: Platform Thread runs on top of OS Thread and has a 1-1 mapping (carrier Thread  :: Platform Thread which are carrying a Virtual Thread)
-Virtual Thread  :: Virtual threads are a lightweight implementation of threads that is provided by the JDK rather than the OS
+Virtual Thread  :: lightweight implementation of threads that is provided by the JDK
 
-    Virtual Threads runs on Platform Threads and hence do not capture the OS Thread - many Virtual Threads share OS thread
+    Virtual Threads runs on top of Platform Threads and hence do not capture the OS Thread - many Virtual Threads share OS thread
 	Virtual Threads can be suspended and resumed when blocking operations occur, thus freeing the underlying Platform Thread to be reused for other operations
 	light-weight
 	concurrent applications 	
@@ -444,13 +444,7 @@ D — Dependency Inversion Principle
 
 Single Responsibility Principle : every class should have Single responsibility
 
-Open-Closed Principle : open for extension, closed for modification
-
-    public class DiscountCalculator {
-        public double calculateDiscount(Order order) {
-            // Discount calculation logic
-        }
-    }
+Open-Closed Principle : open for extension, closed for modification (abstract class)
 
     public abstract class DiscountCalculator {
         public abstract double calculateDiscount(Order order);
@@ -463,18 +457,7 @@ Open-Closed Principle : open for extension, closed for modification
         }
     }
 
-Liskov Substitution Principle : super class object can be substituted by sub class object
-
-    public class Bird {
-        public void fly() {
-            // Flying logic
-        }
-    }
-
-    public class Ostrich extends Bird {
-        // Ostriches cannot fly, but they inherit the fly method
-    }
-
+Liskov Substitution Principle : sub class object can substitute super class object
 
     public abstract class Bird {
         public abstract void move();
@@ -524,13 +507,6 @@ Dependency Inversion Principle :  Interface abstraction layer between high-level
         void checkSpelling(String text);
     }
 
-    public class EnglishSpellChecker implements SpellChecker {
-        @Override
-        public void checkSpelling(String text) {
-            // Spell checking logic
-        }
-    }
-
     public class TextEditor {
         private SpellChecker spellChecker;
 
@@ -543,6 +519,15 @@ Dependency Inversion Principle :  Interface abstraction layer between high-level
             // Other processing logic
         }
     }
+
+    public class EnglishSpellChecker implements SpellChecker {
+            @Override
+            public void checkSpelling(String text) {
+                // Spell checking logic
+            }
+     }
+
+
 
  // --------------------------- Remove if-else-if ----------------------------------//
 
@@ -567,10 +552,10 @@ Dependency Inversion Principle :  Interface abstraction layer between high-level
  Agile Manifesto
  -----------------------
 
-  1. Individuals and Interactions over processes and tools
-  2. Working software over comprehensive documentation
-  3. Customer collaboration over contract negotiation
-  4. Responding to change over following a plan
+  1. Individuals and Interactions OVER processes and tools
+  2. Working software OVER comprehensive documentation
+  3. Customer collaboration OVER contract negotiation
+  4. Responding to change OVER following a plan
 
  Agile Methodology
  --------------------
@@ -602,8 +587,11 @@ Scrum
     Regular Stand-Ups
 
 Kanban
-    Workflow Dashboard (‘to-do’, 'in-progress','on-hold','in-review','in-acceptance','done')
+    Kanban board (‘to-do’, 'in-progress','on-hold','in-review','in-acceptance','done')
+    Regular Stand-Ups
     Continuous Feedback
+    Product Backlog
+    Product Vision
 
 
 Lean Development Model
@@ -726,7 +714,7 @@ multi-mapping
 
 	Virtual memory 1 	Virtual memory 2	Virtual memory 3
 
-Garbage Collector watches which objects can be reqched from our application through a chain of references and frees up the ones we can’t reach.
+Garbage Collector watches which objects can be reached from our application through a chain of references and frees up the ones we can’t reach.
 
 Garbage Collector phases :
 
@@ -770,7 +758,7 @@ Stack memory  - Object references, Local variables
             1. LIFO structure
             2. Every thread has its own stack
 
-Metaspace - Classes, metadata, static data
+Metaspace - Metadata, Classes, static data
 
             1. Can grow dynamically as against PermGen ( so no OutOfMemoryError)
             2. This is why static keyword is accessible from anywhere because they are held in metaspace so every thread can reach it easily.
@@ -837,31 +825,6 @@ Heap memory is full
 Surround the code with try-catch block
 
 Ex of OutOfMemoryError: Integer[] array = new Integer[10000 * 10000];
-
-Object-Oriented Programming             vs              Functional Programming             vs              Reactive Programming
---------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-Classes and objects
-Classes and objects to model real-world entities and their behavior.
-Encapsulation, Inheritance, Polymorphism, and Abstraction (EIPA)
-Encapsulation :: Containing the data and the accessors to the data in a single class thereby
-                hiding the internal state of the object from the outside world
-Code perspective : state-change and verbose
-
-
-
-                                                       Functions - data transformation
-                                                       Immutability, Transparency, Higher-order functions, Recursion (ITHR)
-                                                       FP uses Immutability to ensure that data cannot be modified after it is created,
-                                                             Transparency to ensure that a function will always produce the same outputs given the same inputs
-                                                             Higher-order functions to accept 1/more functions as input and/or return a function as output
-                                                             Recursion for iteration
-                                                       Code perspective : No state-change and compact
-
-
-                                                                                                Event-driven, non-blocking programming that communicates over asynchronous data streams
-                                                                                                pub-sub mode (Subscriber -----> Publisher)
-                                                                                                High-concurrency scenarios
 
 Functional Interface
 ------------------------------
@@ -944,7 +907,8 @@ Reduce
 -----------------
 
 //check if all employees follow the rule
-boolean allEmpsFollowRule = employeeList.stream().map(employee -> predicates.stream().anyMatch(predicate -> predicate.test(employee)))
+boolean allEmpsFollowRule = employeeList.stream()
+            .map(employee -> predicates.stream().anyMatch(predicate -> predicate.test(employee)))
 		    .reduce(Boolean::logicalAnd)
 		    .orElse(false);
 System.out.println("allEmpsFollowRule :: " + allEmpsFollowRule);
