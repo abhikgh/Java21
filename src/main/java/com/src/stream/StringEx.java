@@ -312,7 +312,25 @@ public class StringEx {
                                 s refers to the Heap object,
                                 to have s refer to the String Pool object use s.intern()
 
+        */
 
+        //==  memory references, equals() value
+        //Whenever we create an object using the operator new, it will create a new memory location for that object
+        String s = "abc";
+        String s1 = "abc"; //same memory location
+        System.out.println(s == s1);  //true
+        System.out.println(s.equals(s1)); //true
+        String s2 = "abc";
+        System.out.println(s == s2);  //true
+
+        String s3 = new String("abc");
+        System.out.println(s ==s3); //false
+        System.out.println(s.equals(s3)); //true
+        s3 = s3.intern();
+        System.out.println(s ==s3); //true
+        System.out.println(s.equals(s3)); //true
+
+        /*
 
         Advantages of String being immutable
         ===========================================
