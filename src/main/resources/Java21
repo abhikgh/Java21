@@ -1466,3 +1466,17 @@ AtomicBoolean
 AtomicLong
 AtomicReference<String>
 AtomicReference<BigDecimal> highestSavingsAmount = new AtomicReference();
+
+Class and Interface design patterns
+========================================
+Single Responsibility
+Open for extension, Closed for modification
+Input Validation
+Logging
+Circuit breaker
+Rate limiting
+Concurrency
+Data masking
+Retry
+Async
+Caching
