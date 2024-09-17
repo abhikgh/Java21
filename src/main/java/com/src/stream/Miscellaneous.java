@@ -113,6 +113,34 @@ public class Miscellaneous {
             e.printStackTrace();
         }
 
+        // ---------------------------------- try-outside-for-loop :: if exception whole loop will not continue -----------------------------------//
+        try {  
+                for (int count = 1; count <= 4; count++) {  
+                    if (count == 3) {  
+                        // intentionally create an exception
+                        int num = count / 0;  
+                    } else {  
+                        System.out.println("success, count:" + count);  
+                    }  
+                }  
+            } catch (Exception e) {  
+                System.out.println("An exception occurs.");  
+            }  
+        // ---------------------------------- try-within-for-loop :: if exception whole loop will continue -----------------------------------//
+
+        for (int count = 1; count <= 4; count++) {  
+        try {  
+            if (count == 3) {  
+                // intentionally create an exception
+                int num = count / 0;  
+            } else {  
+                System.out.println("success, count:" + count);  
+            }  
+        } catch (Exception e) {  
+            System.out.println("An exception occurs.");  
+        }  
+    }  
+
         //----------------------------------- BigDecimal --------------------------------------------
 
         BigDecimal b1 = new BigDecimal("34223.45992").setScale(2, RoundingMode.HALF_UP);
