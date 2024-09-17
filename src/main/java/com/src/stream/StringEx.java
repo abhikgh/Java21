@@ -49,6 +49,44 @@ public class StringEx {
         String stringJoin = String.join("|", string1, string2);
         System.out.println("stringJoin :: " + stringJoin); // string1|string2
 
+        //String concat
+        List<String> students = Arrays.asList("Tom", "Bob", "Victor");
+        String concatenatedString = students.stream().collect(Collectors.joining(""));
+        System.out.println("concatenatedString :: " + concatenatedString);
+        concatenatedString="";
+
+        for(String s : students){
+            concatenatedString = concatenatedString+s;
+        }
+        System.out.println("concatenatedString :: " + concatenatedString);
+        concatenatedString="";
+
+        for(String s : students){
+            concatenatedString = concatenatedString.concat(s);
+        }
+        System.out.println("concatenatedString :: " + concatenatedString);
+        concatenatedString="";
+
+        StringBuilder stringBuilder = new StringBuilder();
+        for(String s : students){
+            stringBuilder = stringBuilder.append(s);
+        }
+        concatenatedString= stringBuilder.toString();
+        System.out.println("concatenatedString :: " + concatenatedString);
+        concatenatedString="";
+
+        StringJoiner stringJoiner = new StringJoiner("","","");
+        for(String s : students){
+            stringJoiner = stringJoiner.add(s);
+        }
+        concatenatedString = stringJoiner.toString();
+        System.out.println("concatenatedString :: " + concatenatedString);
+        concatenatedString="";
+
+        concatenatedString = String.join("",students);
+        System.out.println("concatenatedString :: " + concatenatedString);
+        concatenatedString="";
+
         //String :: split
         String str = "Welcome-to-Java-Hello-World";
 
