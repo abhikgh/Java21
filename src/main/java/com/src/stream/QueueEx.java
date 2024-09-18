@@ -45,7 +45,7 @@ public class QueueEx {
         System.out.println(firstElemRemoved); //12
         System.out.println(priorityQueue); // [22, 120, 60]
 
-        //Difference between poll() and remove() : When queue is,  poll returns null, but remove() throws Exception
+        //Difference between poll() and remove() : When queue is empty - poll() returns null, but remove() throws Exception
 
         //Scan each student and get the highest marks
         Queue<Student> studentPriorityQueue = new PriorityQueue<>(new StudentComparator());
@@ -64,7 +64,7 @@ public class QueueEx {
         System.out.println("Student with highest marks :: " + studentPriorityQueue.poll());
         //PriorityBlockingQueue
 		/*
-			BlockingQueue (Interface) - for Consumer / Producer problem
+			BlockingQueue (Interface) - Thread-safe queue for Producer/Consumer problem
 			Blocking if either queue is full and thread wants to put in it OR queue is empty and thread wants to remove from it
             implementations : PriorityBlockingQueue, ArrayBlockingQueue, LinkedBlockingQueue
 
