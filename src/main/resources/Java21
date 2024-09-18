@@ -1500,6 +1500,7 @@ State of the thread/process is saved for resume
 Thread Scheduler
 ========================
 determines which thread will run next which are in READY state depending on their priority
-	- Preemptive Scheduling : Process switches from a RUNNING state to READY state or from a WAITING state to READY state. The resources are assigned to the process for a particular time and then removed.
+	- Preemptive Scheduling : When a high-priority process comes in the ready queue, it doesn't have to wait for the running process to finish its burst time.
+	      However, the running process is interrupted in the middle of its execution and placed in the ready queue until the high-priority process uses the resources.
 	- Time Slicing          : CPU time will be sliced among the threads, each thread will get fixed time and in round-robin fashion
 	
