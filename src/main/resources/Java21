@@ -1497,9 +1497,20 @@ Context switching
 Switching of CPU from 1 thread/process to another
 State of the thread/process is saved for resume
 
+Thread states
+===================
+
+	NEW	new()
+	|	start()
+	RUNNABLE
+	|	JVM		sleep()/wait()/join()/ IO
+	RUNNING		----------------------------------->  BLOCKED
+	|
+	TERMINATED
+
 Thread Scheduler
 ========================
-determines which thread will run next which are in READY state depending on their priority
+determines which thread will run next which are in RUNNABLE state depending on their priority
 	- Preemptive Scheduling : When a high-priority process comes in the ready queue, it doesn't have to wait for the running process to finish its burst time.
 	      However, the running process is interrupted in the middle of its execution and placed in the ready queue until the high-priority process uses the resources.
 	- Time Slicing          : CPU time will be sliced among the threads, each thread will get fixed time and in round-robin fashion
