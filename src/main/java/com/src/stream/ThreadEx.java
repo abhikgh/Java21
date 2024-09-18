@@ -43,18 +43,19 @@ public class ThreadEx {
 
          */
 
-        //0. Run Thread as Lambda
+        //1. Run Thread as Lambda
         Runnable threadLambda = () -> {
             System.out.println("Running thread as lambda..");
         };
         threadLambda.run();
 
-        //1. Run Thread as Lambda
-         Thread thread = new Thread(() -> {
-             System.out.println("Running thread as lambda..");
+        //2. Run Thread as new Thread(runnable)
+        Thread thread = new Thread(() -> {
+            System.out.println("Running thread as lambda..");
         });
-
-        //2. Run Thread as Anonymous Inner class
+        thread.start();
+        
+        //3. Run Thread as Anonymous Inner class
         Thread threadAnonymous = new Thread(){
             @Override
             public void run() {
@@ -63,19 +64,11 @@ public class ThreadEx {
         };
         threadAnonymous.start();
 
-        //3. Run Thread as new Thread(runnable)
-        Thread threadRunnable = new Thread(() -> System.out.println("Running thread as thread runnable..."));
-        threadRunnable.start();
-
-            MyRunnbale myRunnbale = new MyRunnbale();
-            Thread t = new Thread(myRunnbale);
-            t.start(); //Run in myRunnable...
-
         //4. Run thread as Object
-        MyThread myThread = new MyThread();
+        Thread myThread = new MyThread();
         myThread.start(); //Run in myThread...
 
-        //3 threads searching in parallel
+        //Threads searching in parallel
         AtomicBoolean isFound = new AtomicBoolean(false);
         Thread t1 = new Thread() {
 
