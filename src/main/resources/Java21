@@ -1508,6 +1508,21 @@ Thread states
 	|
 	TERMINATED
 
+wait() : releases lock
+
+t.join() - t will complete then main thread will continue
+t.wait() - t releases lock, waits to get it back by notify()/notifyAll()
+t.sleep() - t doesn't release lock
+
+wait() 
+wait(long ms) 
+wait(long ms, int nanos) 
+1.IllegalMonitorStateException - not in a synchronized block
+2.IllegalArgumentException - if the timeout value passed is invalid 
+3.InterruptedException - if another thread interrupts the current thread. 
+
+
+
 Thread Scheduler
 ========================
 determines which thread will run next which are in RUNNABLE state depending on their priority
