@@ -1504,3 +1504,26 @@ determines which thread will run next which are in READY state depending on thei
 	      However, the running process is interrupted in the middle of its execution and placed in the ready queue until the high-priority process uses the resources.
 	- Time Slicing          : CPU time will be sliced among the threads, each thread will get fixed time and in round-robin fashion
 	
+
+finalize
+==================
+protected void finalize() throws Throwable
+{
+try {
+
+    System.out.println("inside demo's finalize()");
+}
+catch (Throwable e) {
+
+    throw e;
+}
+finally {
+
+    System.out.println("Calling finalize method"
+		       + " of the Object class");
+
+    // Calling finalize() of Object class
+    super.finalize();
+}
+//If an uncaught exception is thrown during the finalization, the exception is ignored and finalization of that object stops
+}
