@@ -43,11 +43,16 @@ public class ThreadEx {
 
          */
 
-        //1. Run Thread as Lambda
+        //0. Run Thread as Lambda
         Runnable threadLambda = () -> {
             System.out.println("Running thread as lambda..");
         };
         threadLambda.run();
+
+        //1. Run Thread as Lambda
+         Thread thread = new Thread(() -> {
+             System.out.println("Running thread as lambda..");
+        });
 
         //2. Run Thread as Anonymous Inner class
         Thread threadAnonymous = new Thread(){
