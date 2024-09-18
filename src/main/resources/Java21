@@ -1496,3 +1496,10 @@ Context switching
 =========================
 Switching of CPU from 1 thread/process to another
 State of the thread/process is saved for resume
+
+Thread Scheduler
+========================
+determines which thread will run next which are in READY state depending on their priority
+	- Preemptive Scheduling : Process switches from a RUNNING state to READY state or from a WAITING state to READY state. The resources are assigned to the process for a particular time and then removed.
+	- Time Slicing          : CPU time will be sliced among the threads, each thread will get fixed time and in round-robin fashion
+	
