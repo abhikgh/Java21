@@ -1491,3 +1491,8 @@ System.out.println(a == b); // false
 Integer x = 1;
 Integer y = 1;
 System.out.println(x == y); // true
+
+Context switching
+=========================
+Switching of CPU from 1 thread/process to another
+State of the thread/process is saved for resume
