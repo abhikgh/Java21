@@ -1480,3 +1480,14 @@ Data masking
 Retry
 Async
 Caching
+
+Java Integer Cache
+=======================
+-128 to 127 numbers are cached
+Integer a = 128;
+Integer b = 128;
+System.out.println(a == b); // false
+
+Integer x = 1;
+Integer y = 1;
+System.out.println(x == y); // true
