@@ -117,6 +117,14 @@ public class DateEx {
         String isEqual = localDate2.equals(localDate3) ? "equal" : "notEqual";
         System.out.println(isEqual); // notEqual
 
+        //Check if these 2 dates are equal
+        inputDate = "21-SEP-2024";
+        LocalDate localDateFromString = LocalDate.parse(inputDate, new DateTimeFormatterBuilder().parseCaseInsensitive().appendPattern("dd-MMM-yyyy").toFormatter().withLocale(Locale.US));
+        LocalDateTime localDateTime = LocalDateTime.now();
+        LocalDate localDateFromLocalDateTime = localDateTime.toLocalDate();
+        boolean isDateEqual = localDateFromString.equals(localDateFromLocalDateTime);
+        System.out.println("isDateEqual :: " + isDateEqual);
+
         //Months between
         long monthsBetween = ChronoUnit.MONTHS.between(localDate3.withDayOfMonth(1), localDate2.withDayOfMonth(1));
         System.out.println("monthsBetween :: " + monthsBetween); //60
@@ -238,7 +246,7 @@ public class DateEx {
 
         //String to LocalDateTime
         inputDateTime = "2023-06-02T00:00:00Z";
-        LocalDateTime localDateTime = LocalDateTime.parse(inputDateTime, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'"));
+        localDateTime = LocalDateTime.parse(inputDateTime, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'"));
         System.out.println("localDateTime = " + localDateTime); // 2023-06-02T00:00
 
         //LocalDateTime to String
