@@ -317,6 +317,32 @@ public class JSONEx {
         System.out.println(persistPersonResponse22);
         System.out.println(objectMapper.writeValueAsString(persistPersonResponse22));
 
+        // ---------------------------------- JSON Masking -----------------------------------//
+
+        File file0 = new File("src/main/resources/Input.json");
+        //Json -> Object -> String -> JsonNode
+        PersistPersonResponse persistPersonResponse3 = objectMapper.readValue(file, PersistPersonResponse.class);
+        String persistPersonJSON3 = objectMapper.writeValueAsString(persistPersonResponse3);
+        JsonNode jsonTree = objectMapper.readTree(persistPersonJSON3);
+
+        String fieldsToMask = "subOrgTxt,personId";
+        List<String> listFieldsToMask = Arrays.asList(fieldsToMask.split(","));
+
+        for(String fieldToMask :listFieldsToMask){
+            if(Objects.nonNull(jsonTree.findValue(fieldToMask))){
+                for (JsonNode parent : jsonTree.findParents(fieldToMask)){
+                    Optional.ofNullable(parent).ifPresent(parentNode -> ((ObjectNode)parentNode).put(fieldToMask, "XXXXXX"));
+                }
+            }
+        }
+
+        String finalJSON = jsonTree.toPrettyString();
+        System.out.println("FinalJSON...");
+        System.out.println(finalJSON);
+
+
+
+
 
     }
 }

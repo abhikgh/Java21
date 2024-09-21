@@ -279,31 +279,6 @@ public class Miscellaneous {
         String firstElement = (String) genericRental.getFirst();
         System.out.println("firstElement :: " + firstElement);
 
-        // ---------------------------------- JSON Masking -----------------------------------//
-
-        File file0 = new File("src/main/resources/Input.json");
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, Boolean.TRUE);
-        //Json -> Object -> String
-        PersistPersonResponse persistPersonResponse = objectMapper.readValue(file0, PersistPersonResponse.class);
-        String jsonRequest = objectMapper.writeValueAsString(persistPersonResponse);
-        System.out.println(jsonRequest);
-
-        String fieldsToMask = "subOrgTxt,personId";
-        List<String> maskedFields = Arrays.stream(fieldsToMask.split(",")).collect(Collectors.toList());
-
-        JsonNode jsonNode = new ObjectMapper().readTree(jsonRequest);
-        for (String key : maskedFields) {
-            if (Objects.nonNull(jsonNode.findValue(key))) {
-                for (JsonNode jsonNode1 : jsonNode.findParents(key)) {
-                    Optional.ofNullable(jsonNode1).ifPresent(node -> ((ObjectNode) node).put(key, "XXXXXXX"));
-                }
-            }
-        }
-
-        System.out.println("Masked JSON----------------------");
-        System.out.println(jsonNode.toString());
-
         //------------------------------------- Base 64 encoding and decoding --------------------------------//
 
         System.out.println("Base64 encoding and decoding----------------------");

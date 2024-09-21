@@ -11,6 +11,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.StringJoiner;
 import java.util.stream.Collectors;
@@ -75,11 +76,11 @@ public class StringEx {
         System.out.println("concatenatedString :: " + concatenatedString);
         concatenatedString="";
 
-        StringJoiner stringJoiner = new StringJoiner("","","");
+        StringJoiner stringJoiner3 = new StringJoiner("","","");
         for(String s : students){
-            stringJoiner = stringJoiner.add(s);
+            stringJoiner3 = stringJoiner3.add(s);
         }
-        concatenatedString = stringJoiner.toString();
+        concatenatedString = stringJoiner3.toString();
         System.out.println("concatenatedString :: " + concatenatedString);
         concatenatedString="";
 
