@@ -1515,6 +1515,8 @@ wait() : releases lock
 t.join() - t will complete then main thread will continue
 t.wait() - t releases lock, waits to get it back by notify()/notifyAll()
 t.sleep() - t doesn't release lock
+Thread.yield() - static method that hints to the thread scheduler that the current thread is willing to pause execution
+                and allow threads with the same priority to execute, though it does not guarantee a pause.
 
 wait() 
 wait(long ms) 
@@ -1555,3 +1557,8 @@ finally {
 }
 //If an uncaught exception is thrown during the finalization, the exception is ignored and finalization of that object stops
 }
+
+Class.forName()
+====================
+Dynamically load a class at runtime by its name
+Commonly used to create database connections to load the JDBC driver class.
