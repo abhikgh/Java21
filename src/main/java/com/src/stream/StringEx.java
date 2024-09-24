@@ -193,7 +193,17 @@ public class StringEx {
         ans = inputStr.substring(2, 10); //cdefghij {2,9}
         System.out.println("substring :: " + ans);
 
-        //switch-case
+        //switch-case 1
+        inputStr = "test";
+        ans =  switch (inputStr.toUpperCase()) {
+            case null -> throw new RuntimeException("null input");
+            case "XYZ", "ABC" -> inputStr;
+            case "TEST" -> "testing";
+            default -> "abc";
+        };
+        System.out.println("switch-case 1 :: " + ans);  //testing
+
+        //switch-case 2
         inputStr = "test";
         switch (inputStr.toUpperCase()) {
             case null -> throw new RuntimeException("null input");
