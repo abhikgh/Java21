@@ -1,11 +1,13 @@
 package com.src.stream;
 
 import java.io.File;
+import java.time.Duration;
 import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 class MyThread extends Thread{
     @Override
@@ -164,6 +166,56 @@ public class ThreadEx {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
+        //Traditional Thread vs Virtual Thread
+
+        //--Traditional Thread---
+
+        AtomicInteger atomicInteger = new AtomicInteger(1);
+        Runnable traditionalTask = () -> {
+
+            atomicInteger.getAndIncrement();
+            try {
+                Thread.sleep(Duration.ofMillis(10));
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+
+        };
+
+        long start = System.currentTimeMillis();
+        try(ExecutorService executorService = Executors.newFixedThreadPool(500)){
+            for(int i =0;i<10000; i++) {
+                executorService.submit(traditionalTask);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        System.out.println("Response time Traditional Thread :: " + (System.currentTimeMillis() - start) + " ms");
+
+        //--Virtual Thread---
+
+        AtomicInteger atomicIntegerVirtual = new AtomicInteger(1);
+        Runnable virtualThreadTask = () -> {
+
+            atomicIntegerVirtual.getAndIncrement();
+            try {
+                Thread.sleep(Duration.ofMillis(10));
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+
+        };
+
+        long startV = System.currentTimeMillis();
+        try(ExecutorService executorService = Executors.newVirtualThreadPerTaskExecutor()){
+            for(int i =0;i<10000; i++) {
+                executorService.submit(virtualThreadTask);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        System.out.println("Response time Virtual Thread :: " + (System.currentTimeMillis() - startV) + " ms");
 
 
 
