@@ -608,6 +608,39 @@ public class Miscellaneous {
         int randomNum = new Random().nextInt((9000 - 1000) + 1) + 1000;
         System.out.println("randomNum :: " + randomNum);
 
+        //-----------------------Try-catch-finally -----------------------------
+        /*
+            try {
+                int i = 100/0;
+                i = i + 1;
+            }catch (Exception e){
+                throw e;
+            } finally {
+                System.out.println("finally...");
+            }
+
+                finally...
+                Exception in thread "main" java.lang.ArithmeticException: / by zero
+                    at com.src.stream.Miscellaneous.main(Miscellaneous.java:612)
+
+                When finally will NOT be executed ?
+                1. System.exit(0);                   (finalize() will run )
+                2. Runtime.getRuntime().halt(0);     (finalize() will NOT run )
+         */
+
+            try {
+                int i = 100/0;
+                i = i + 1;
+            }catch (Exception e){
+                throw e;
+            } finally {
+
+                System.out.println("finally...");
+            }
+
+
+
+
     }
 
     private static boolean checkCorrectItems(List<Items> itemsList) {
