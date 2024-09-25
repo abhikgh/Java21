@@ -364,20 +364,19 @@ Java 21
 
 Virtual Threads
 ==============================
-
+Virtual Thread  :: lightweight implementation of threads - fully managed by the JVM - and so they are not dependent on OS resources like normal thread
+                   runs on top of Platform Threads and hence do not capture the OS Thread - many Virtual Threads share OS thread
+                   For blocking operations, Virtual Threads can be suspended and resumed - thus freeing the underlying Platform Thread
+                   concurrent applications
+Platform Thread :: Platform Thread runs on top of OS Thread and has a 1-1 mapping with OS Thread(carrier Thread  :: Platform Thread which are carrying a Virtual Thread)
 OS Thread
-Platform Thread :: Platform Thread runs on top of OS Thread and has a 1-1 mapping (carrier Thread  :: Platform Thread which are carrying a Virtual Thread)
-Virtual Thread  :: lightweight implementation of threads that is provided by the JDK
 
-    Virtual Threads runs on top of Platform Threads and hence do not capture the OS Thread - many Virtual Threads share OS thread
-	Virtual Threads can be suspended and resumed when blocking operations occur, thus freeing the underlying Platform Thread to be reused for other operations
-	light-weight
-	concurrent applications 	
 									      
 Runnable r = () -> System.out.println("New virtual thread");
 Thread.ofVirtual().start(r);
 Thread.sleep(1000);
 
+//executor service that creates a new Virtual Thread for each task submitted to it
 try(ExecutorService executorService = Executors.newVirtualThreadPerTaskExecutor()){
     Future<?> future = executorService.submit( () -> System.out.println("aaa"));
     future.get();

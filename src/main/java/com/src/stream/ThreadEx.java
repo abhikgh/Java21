@@ -68,7 +68,6 @@ public class ThreadEx {
         Thread myThread = new MyThread();
         myThread.start(); //Run in myThread...
 
-        //Threads searching in parallel
         AtomicBoolean isFound = new AtomicBoolean(false);
         Thread t1 = new Thread() {
 
@@ -76,11 +75,12 @@ public class ThreadEx {
             public void run() {
                 try (Scanner scanner = new Scanner(new File("src/main/resources/file1.csv"))) {
                     scanner.useDelimiter(",");
-                    while (!isFound.get() && scanner.hasNext()) {
+                    Thread.currentThread().setName("t1");
+                    while (scanner.hasNext()) {
                         String elem = scanner.next();
                         if (elem.contains("ip")) {
                             isFound.set(true);
-                            System.out.println(elem.split(":")[1]);
+                            System.out.println("Thread " + Thread.currentThread().getName() +" found ip " + elem.split(":")[1]);
                         }
                     }
                 } catch (Exception e) {
@@ -93,11 +93,12 @@ public class ThreadEx {
         Thread t2 = new Thread(() -> {
             try (Scanner scanner = new Scanner(new File("src/main/resources/file2.csv"))) {
                 scanner.useDelimiter(",");
-                while (!isFound.get() && scanner.hasNext()) {
+                Thread.currentThread().setName("t2");
+                while (scanner.hasNext()) {
                     String elem = scanner.next();
                     if (elem.contains("ip")) {
                         isFound.set(true);
-                        System.out.println(elem.split(":")[1]);
+                        System.out.println("Thread " + Thread.currentThread().getName() +" found ip " + elem.split(":")[1]);
                     }
                 }
             } catch (Exception e) {
@@ -111,11 +112,12 @@ public class ThreadEx {
             public void run() {
                 try (Scanner scanner = new Scanner(new File("src/main/resources/file3.csv"))) {
                     scanner.useDelimiter(",");
-                    while (!isFound.get() && scanner.hasNext()) {
+                    Thread.currentThread().setName("t3");
+                    while (scanner.hasNext()) {
                         String elem = scanner.next();
                         if (elem.contains("ip")) {
                             isFound.set(true);
-                            System.out.println(elem.split(":")[1]);
+                            System.out.println("Thread " + Thread.currentThread().getName() +" found ip " + elem.split(":")[1]);
                         }
                     }
                 } catch (Exception e) {
@@ -125,9 +127,33 @@ public class ThreadEx {
 
         };
 
-        t1.start();
+        //Threads running in parallel
+        /*t1.start();
         t2.start();
+        t3.start();*/
+
+        //Threads running one after another
+        t1.start();
+        t1.join();
+
+        t2.start();
+        t2.join();
+
         t3.start();
+        t3.join();
+
+
+        //Virtual Threads
+        Runnable r = () -> System.out.println("New virtual thread");
+        Thread.ofVirtual().start(r);
+        Thread.sleep(1000);
+
+        try(ExecutorService executorService = Executors.newVirtualThreadPerTaskExecutor()){
+            Future<?> future = executorService.submit( () -> System.out.println("aaa"));
+            future.get();
+        }catch (Exception e ){
+            e.printStackTrace();
+        }
 
         Thread virtualThread = Thread.startVirtualThread(() -> {
             System.out.println("Running task in a virtual thread: "
@@ -139,16 +165,7 @@ public class ThreadEx {
             e.printStackTrace();
         }
 
-        Runnable r = () -> System.out.println("New virtual thread");
-        Thread.ofVirtual().start(r);
-        Thread.sleep(1000);
 
-        try(ExecutorService executorService = Executors.newVirtualThreadPerTaskExecutor()){
-            Future<?> future = executorService.submit( () -> System.out.println("aaa"));
-            future.get();
-        }catch (Exception e ){
-            e.printStackTrace();
-        }
 
 
     }
