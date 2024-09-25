@@ -628,18 +628,6 @@ public class Miscellaneous {
                 2. Runtime.getRuntime().halt(0);     (finalize() will NOT run )
          */
 
-            try {
-                int i = 100/0;
-                i = i + 1;
-            }catch (Exception e){
-                throw e;
-            } finally {
-
-                System.out.println("finally...");
-            }
-
-
-
 
     }
 
