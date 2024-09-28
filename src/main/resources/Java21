@@ -412,6 +412,58 @@ if(newPerson2 instanceof NewPerson(String name, String address)){    //removes e
 }
 
 
+Sealed Interface implemented by Record
+------------------------------------------------
+
+public sealed interface Employee permits RegularEmp, Freelancer{
+
+    String getName();
+    String getDepartment();
+}
+
+public record RegularEmp(String name, String department, double salary) implements Employee{
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public String getDepartment() {
+        return department;
+    }
+}
+
+public record Freelancer(String name, String department, double hourlyRate) implements Employee{
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public String getDepartment() {
+        return department;
+    }
+}
+
+public class SealedInterfaceEx {
+
+    public static void main(String[] args) {
+        Employee regularEmp = new RegularEmp("Reg","ADM", 233.40);
+        Employee freeLancer = new Freelancer("Reg","ADM", 12.40);
+        processEmployee(regularEmp);
+    }
+
+    private static void processEmployee(Employee employee) {
+        if(employee instanceof RegularEmp(String name, String department, double salary)){
+            System.out.println("RegularEmp :: " + name + "," + department + "," + salary);
+        } else if(employee instanceof Freelancer(String name, String department, double hourlyRate)){
+            System.out.println("Freelancer :: " + name + "," + department + "," + hourlyRate);
+            //RegularEmp :: Reg,ADM,233.4
+        }
+    }
+}
+
+
 
 SOLID Principles in Java
 ===============================
