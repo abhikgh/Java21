@@ -362,7 +362,7 @@ public class ChildIntImpl implements ChildInt{
 Java 21
 ======================
 
-Virtual Threads
+1. Virtual Threads
 ==============================
 Virtual Thread  :: lightweight implementation of threads - fully managed by the JVM - and so they are not dependent on OS resources like normal thread
                    runs on top of Platform Threads and hence do not capture the OS Thread - many Virtual Threads share OS thread
@@ -395,7 +395,7 @@ try {
 }
 
 
-Record patterns
+2. Record patterns
 ==============================
 public record NewPerson(String name, String address) {}
 
@@ -406,10 +406,11 @@ System.out.println(newPerson.address());
 
 //after Record pattern
 NewPerson newPerson2 = new NewPerson("John", "little avenue");
-if(newPerson2 instanceof NewPerson(String name, String address)){
+if(newPerson2 instanceof NewPerson(String name, String address)){    //removes explicit casting
     System.out.println(name);
     System.out.println(address);
 }
+
 
 Switch - pattern matching
 ================================
