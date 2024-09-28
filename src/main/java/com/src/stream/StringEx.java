@@ -2,6 +2,8 @@ package com.src.stream;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.util.JSONPObject;
+import com.google.gson.JsonObject;
 import com.src.model.NewPerson;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,6 +11,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -224,6 +229,19 @@ public class StringEx {
             case String s -> ans = inputStr2.toUpperCase(); //default
         }
         System.out.println("switch-case-when :: " + ans);  //Yes its a yes
+
+        // Pattern Matching with switch (switch + instanceof)
+        Object object = new String("abc");
+        String someOutput =  switch (object) {
+            case null -> throw new RuntimeException("its null value");
+            case String s      -> s;
+            case JSONPObject json -> json.toString();
+            case BigDecimal bd   -> bd.toPlainString();
+            case Integer i       -> Integer.toString(i);
+            case LocalDate ld    -> ld.format(DateTimeFormatter.ISO_LOCAL_DATE);
+            default              -> "n/a";
+        };
+        System.out.println("Pattern matching with switch :: " + someOutput); //abc
 
         ans = getAnsSwitch(inputStr);
         System.out.println("switch-case 3 :: " + ans);

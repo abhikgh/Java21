@@ -411,6 +411,52 @@ if(newPerson2 instanceof NewPerson(String name, String address)){    //removes e
     System.out.println(address);
 }
 
+3. Pattern Matching with switch (switch + instanceof)
+==============================================================
+
+//switch-case 1
+inputStr = "test";
+ans =  switch (inputStr.toUpperCase()) {
+    case null -> throw new RuntimeException("null input");
+    case "XYZ", "ABC" -> inputStr;
+    case "TEST" -> "testing";
+    default -> "abc";
+};
+System.out.println("switch-case 1 :: " + ans);  //testing
+
+//switch-case 2
+inputStr = "test";
+switch (inputStr.toUpperCase()) {
+    case null -> throw new RuntimeException("null input");
+    case "XYZ", "ABC" -> ans = inputStr;
+    case "TEST" -> ans = "testing";
+    default -> ans = "none";
+}
+System.out.println("switch-case 2 :: " + ans);  //testing
+
+//switch-case-when
+final String inputStr2 = "yes";
+switch(inputStr2){
+    case null -> throw new RuntimeException("its null value");
+    case String s when "Yes".equalsIgnoreCase(inputStr2) -> ans = "Yes its a yes";
+    case String s when "No".equalsIgnoreCase(inputStr2) -> ans = "No its a no";
+    case String s -> ans = inputStr2.toUpperCase(); //default
+}
+System.out.println("switch-case-when :: " + ans);  //Yes its a yes
+
+// Pattern Matching with switch (switch + instanceof)
+Object object = new String("abc");
+String someOutput =  switch (object) {
+    case null -> throw new RuntimeException("its null value");
+    case String s      -> s;
+    case JSONPObject json -> json.toString();
+    case BigDecimal bd   -> bd.toPlainString();
+    case Integer i       -> Integer.toString(i);
+    case LocalDate ld    -> ld.format(DateTimeFormatter.ISO_LOCAL_DATE);
+    default              -> "n/a";
+};
+System.out.println("Pattern matching with switch :: " + someOutput); //abc
+
 
 Sealed Interface implemented by Record
 ------------------------------------------------
