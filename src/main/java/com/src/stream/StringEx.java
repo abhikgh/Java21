@@ -109,7 +109,7 @@ public class StringEx {
         System.out.println("isEmpty :: " + strTest.isEmpty()); //false
         System.out.println("isBlank :: " + strTest.isBlank()); //true
 
-        //All words in a paragraph
+        //Java Text-blocks
         strTest = """
                 Hi All.
                 This is a new line.
@@ -121,6 +121,8 @@ public class StringEx {
         System.out.println("All words in paragraph are :: ");
         System.out.println(words);
         //Hi All. This is a new line.This is another line. Thank you.
+
+        //\ (backslash) is still a special symbol. You have to escape it by doubling it \\
 
         //Count of words in a paragraph
         long noOfWordsInParagraph = Arrays.asList(strTest.lines().collect(Collectors.joining()).split(" ")).stream().count();
