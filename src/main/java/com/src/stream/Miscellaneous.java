@@ -1,15 +1,11 @@
 package com.src.stream;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.MapperFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.collect.Lists;
 import com.google.common.math.IntMath;
 import com.src.model.Department;
 import com.src.model.Employee;
-import com.src.model.FieldTest;
+import com.src.model.ReflectionTest;
 import com.src.model.Items;
 import lombok.Data;
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
@@ -356,30 +352,38 @@ public class Miscellaneous {
         //----------------------------------- Reflections -----------------------------//
         //Reflections :: Gets attributes of a class at runtime; also instantiate objects, call methods and set field values using reflection.
         System.out.println("-------------Reflections-----------------------");
-        for (Field field : FieldTest.class.getDeclaredFields()) {
+        for (Field field : ReflectionTest.class.getDeclaredFields()) {
             System.out.println(field.getName());
         }
 
-        for (Method method : FieldTest.class.getDeclaredMethods()) {
+        for (Method method : ReflectionTest.class.getDeclaredMethods()) {
             System.out.println(method.getName());
             if (method.isAnnotationPresent(JsonIgnore.class)) {   //@Retention(RetentionPolicy.RUNTIME)
                 System.out.println("Annotation present on method :: " + method.getName());
             }
         }
 
-        for (Class class0 : FieldTest.class.getDeclaredClasses()) {
+        for (Class class0 : ReflectionTest.class.getDeclaredClasses()) {
             System.out.println(class0.getName());
         }
 
-        Package aPackage = FieldTest.class.getPackage();
-        Class[] interfaceArr = FieldTest.class.getInterfaces();
-        Class superClass = FieldTest.class.getSuperclass();
+        Package aPackage = ReflectionTest.class.getPackage();
+        Class[] interfaceArr = ReflectionTest.class.getInterfaces();
+        Class superClass = ReflectionTest.class.getSuperclass();
 
+        //Reflection to access private method from outside of class
         System.out.println("Reflections to invoke private method from outside of class");
-        Method method = FieldTest.class.getDeclaredMethod("somePrivateMethod2", String.class); //String is input parameter
+        Method method = ReflectionTest.class.getDeclaredMethod("somePrivateMethod2", String.class); //String is input parameter
         method.setAccessible(true);
-        FieldTest fieldTest = new FieldTest();
-        method.invoke(fieldTest, "test");
+        ReflectionTest reflectionTest = new ReflectionTest();
+        method.invoke(reflectionTest, "test");
+
+        //Reflection to access private method from outside of class
+        Method privateMethod = ReflectionTest.class.getDeclaredMethod("privateMethodConcat", String.class, String.class);
+        privateMethod.setAccessible(true);
+        ReflectionTest reflectionTest2 = new ReflectionTest();
+        String output = (String) privateMethod.invoke(reflectionTest2, "abc", "def");
+        System.out.println("Reflection private method :: " + output); //ABCDEF
 
         //-------------------------------- SHA-256 (Standard Hashing Algorithm) ---------------------------------------//
         //It undergoes 64 rounds of hashing and calculates a hash code that is a 64-digit hexadecimal number.
@@ -433,56 +437,6 @@ public class Miscellaneous {
         empG3.getDepartment().setDesignation("VP");
         System.out.println("designation empG3 : " + empG3.getDepartment().getDesignation()); //VP
         System.out.println("designation empG1 : " + empG1.getDepartment().getDesignation()); //Associate
-        //------------------------------------ Inner class -----------------------------------------------//
-
-        /*static class InnerStatic {
-        private class Private {
-            private int i = 10;
-            private static int j = 20;
-            private String evenOdd(int num) {
-                return ((num%2 == 0) ? "even" : "odd");
-            }
-         }
-       }
-
-        //static Inner class
-        Miscellaneous.InnerStatic.Private sip = new Miscellaneous.InnerStatic().new Private();
-        String ans = sip.evenOdd(5);
-        System.out.println("evenOdd :: " + ans + ":: i="+sip.i +" ::j="+ InnerStatic.Private.j);
-        //evenOdd :: odd:: i=10 ::j=20*/
-
-        //Anonymous Inner class
-        class ABCD {
-            public void print() {
-                System.out.println("ABCD...");
-            }
-        }
-        ABCD abcd = new ABCD() {
-            @Override
-            public void print() {
-                System.out.println("ABCD...");
-            }
-        };
-        abcd.print();
-
-        //Inner class variable needs to be final or effectively final
-        /*
-            final int[] count = {10};
-            Thread producer = new Thread(){
-                @Override
-                public void run() {
-                    try {
-                        while(count[0]-- >0) {
-                            int produced = (int) (Math.random() * 100);
-                            priorityBlockingQueue.put(produced);
-                            System.out.println("Produced :: " + produced);
-                        }
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-            };
-         */
 
         //------------------------anymatch ,allmatch, nonematch starts ----------------------------------------------------//
 
@@ -701,14 +655,5 @@ public class Miscellaneous {
         return (T) o;
     }
 
-    static class InnerStatic {
-        private class Private {
-            private static final int j = 20;
-            private final int i = 10;
 
-            private String evenOdd(int num) {
-                return ((num % 2 == 0) ? "even" : "odd");
-            }
-        }
-    }
 }

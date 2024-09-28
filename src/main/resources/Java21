@@ -663,39 +663,52 @@ non-static				                                            -static
 can access ALL outer class members                                  -can access only static members of the Outer class members
 OuterClass.InnerClass inner = new OuterClass().new InnerClass();    -OuterClass.InnerClass inner = new  OuterClass.InnerClass();
 
-//Inner class
-Miscellaneous.InnerStatic.Private sip = new Miscellaneous.InnerStatic().new Private();
-String ans = sip.evenOdd(5);
-System.out.println("evenOdd :: " + ans + ":: i="+sip.i +" ::j="+ InnerStatic.Private.j);
-//evenOdd :: odd:: i=10 ::j=20
-
-static class InnerStatic {
-    private class Private {
-        private int i = 10;
-        private static int j = 20;
-        private String evenOdd(int num) {
-            return ((num%2 == 0) ? "even" : "odd");
-        }
-    }
-}
-
-Anonymous inner class
---------------------------
+Inner class is created when the outer class ony references the inner class and code is kept at one place.
 Anonymous inner class is an inner class without a name and for which only a single object is created. It is used when override a method of a class or interface.
 
-//Anonymous Inner class
-class ABCD {
-    public void print() {
-	System.out.println("ABCD...");
+
+public class InnerEx {
+
+    static class InnerStatic {
+        private class Private {
+            private static int j = 20;
+            private int i = 10;
+
+            private String evenOdd(int num) {
+                i = i+ j;
+                return ((num % 2 == 0) ? "even" : "odd");
+            }
+        }
     }
+
+
+    public static void main(String[] args) {
+
+        //static Inner class
+        InnerEx.InnerStatic.Private sip = new InnerEx.InnerStatic().new Private();
+        String ans = sip.evenOdd(5);
+        System.out.println("evenOdd :: " + ans + ":: i="+sip.i +" ::j="+ InnerStatic.Private.j);
+        //evenOdd :: odd:: i=30 ::j=20*/
+
+        //Anonymous Inner class
+
+        class ABCD {
+            public void print() {
+                System.out.println("ABCD 1...");
+            }
+        }
+
+        ABCD abcd = new ABCD() {
+            @Override
+            public void print() {
+                System.out.println("ABCD 2...");
+            }
+        };
+        abcd.print(); //ABCD 2...
+    }
+
+
 }
-ABCD abcd = new ABCD() {
-    @Override
-    public void print() {
-	System.out.println("ABCD...");
-    }
-};
-abcd.print();
 
 // -------------------------- Coding Checklist--------------------------- //
 
@@ -755,7 +768,7 @@ Heap memory - Objects, Arrays, String Pool
             -S0
             -S1
 
-Stack memory  - Object references, Local variables
+Stack memory  - references, Local variables
 
             1. LIFO structure
             2. Every thread has its own stack
@@ -764,6 +777,11 @@ Metaspace - Metadata, Classes, static data
 
             1. Can grow dynamically as against PermGen ( so no OutOfMemoryError)
             2. This is why static keyword is accessible from anywhere because they are held in metaspace so every thread can reach it easily.
+
+static data and Garbage Collection
+=======================================
+Static data lives throughout the life cycle of the class
+Static variables can cause memory leaks if they hold references to objects that are no longer accessed but cannot be garbage collected.
 
 Memory Management
 ========================
@@ -1190,7 +1208,7 @@ How HashMap works
 - equals
 
 map.put(key, value)
- Bucket b = hashCode(key)
+Bucket b = hashCode(key)
   Bucket		Entry<K,V>
 	---------		------------------
 	b1			Key1/Value1	Key2/Value2  (LinkedList)

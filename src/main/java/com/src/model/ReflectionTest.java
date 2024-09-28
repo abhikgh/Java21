@@ -6,13 +6,12 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.SneakyThrows;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class FieldTest {
+public class ReflectionTest {
 
     public String pub;
     protected String pro;
@@ -23,6 +22,12 @@ public class FieldTest {
 
     private void somePrivateMethod2(String string) {
         System.out.println(string.toUpperCase());
+    }
+
+    private String privateMethodConcat(String input1, String input2) {
+        String output = input1.toUpperCase().concat(input2.toUpperCase());
+        System.out.println(output);
+        return output;
     }
 
     @JsonIgnore
