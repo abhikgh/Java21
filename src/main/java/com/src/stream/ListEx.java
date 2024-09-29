@@ -228,6 +228,11 @@ public class ListEx {
         }
         System.out.println("List after removal: " + allFruits2);
 
+        //SequencedCollection
+        allFruits = getAllFruits();
+        Fruit firstFruit = allFruits.getFirst();
+        Fruit lastFruit = allFruits.getLast();
+
         //Given a list of numbers, square them and filter the numbers which are greater 10000 and then find average of them
         Integer[] arr=new Integer[]{100,24,13,44,114,200,40,112};
         List<Integer> list2 = Arrays.asList(arr);

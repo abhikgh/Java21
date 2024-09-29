@@ -457,6 +457,23 @@ String someOutput =  switch (object) {
 };
 System.out.println("Pattern matching with switch :: " + someOutput); //abc
 
+4. SequencedCollection
+========================================
+interface SequencedCollection<E> extends Collection<E> {
+
+    // new method
+    SequencedCollection<E> reversed();
+
+    // methods promoted from Deque
+    void addFirst(E);
+    void addLast(E);
+
+    E getFirst();
+    E getLast();
+
+    E removeFirst();
+    E removeLast();
+}
 
 Sealed Interface implemented by Record
 ------------------------------------------------
