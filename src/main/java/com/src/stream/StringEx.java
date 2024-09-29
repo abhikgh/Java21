@@ -21,6 +21,8 @@ import java.util.Set;
 import java.util.StringJoiner;
 import java.util.stream.Collectors;
 
+import static java.lang.StringTemplate.STR;
+
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -55,24 +57,28 @@ public class StringEx {
         String stringJoin = String.join("|", string1, string2);
         System.out.println("stringJoin :: " + stringJoin); // string1|string2
 
-        //String concat
+        //----String concat starts----------
         List<String> students = Arrays.asList("Tom", "Bob", "Victor");
+        //Collectors.joining
         String concatenatedString = students.stream().collect(Collectors.joining(""));
         System.out.println("concatenatedString :: " + concatenatedString);
         concatenatedString="";
 
+        //string +
         for(String s : students){
             concatenatedString = concatenatedString+s;
         }
         System.out.println("concatenatedString :: " + concatenatedString);
         concatenatedString="";
 
+        //string.concat
         for(String s : students){
             concatenatedString = concatenatedString.concat(s);
         }
         System.out.println("concatenatedString :: " + concatenatedString);
         concatenatedString="";
 
+        //stringBuilder.append
         StringBuilder stringBuilder = new StringBuilder();
         for(String s : students){
             stringBuilder = stringBuilder.append(s);
@@ -81,6 +87,7 @@ public class StringEx {
         System.out.println("concatenatedString :: " + concatenatedString);
         concatenatedString="";
 
+        //stringJoiner3.add
         StringJoiner stringJoiner3 = new StringJoiner("","","");
         for(String s : students){
             stringJoiner3 = stringJoiner3.add(s);
@@ -89,9 +96,12 @@ public class StringEx {
         System.out.println("concatenatedString :: " + concatenatedString);
         concatenatedString="";
 
+        //String.join("",)
         concatenatedString = String.join("",students);
         System.out.println("concatenatedString :: " + concatenatedString);
         concatenatedString="";
+
+        //----String concat ends----------
 
         //String :: split
         String str = "Welcome-to-Java-Hello-World";
