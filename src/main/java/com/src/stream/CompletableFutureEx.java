@@ -33,47 +33,12 @@ public class CompletableFutureEx {
 
     public static void main(String[] args) throws ExecutionException, InterruptedException {
 
-        //--- CFs having SAME return type ---
-        
-        List<CompletableFuture<String>> completableFutures = new ArrayList<>();
-        completableFutures.add(CompletableFuture.supplyAsync( () -> {
-            return "aaa";
-        }));
-        completableFutures.add(CompletableFuture.supplyAsync( () -> {
-            return "bbb";
-        }));
-        completableFutures.add(CompletableFuture.supplyAsync( () -> {
-            return "ccc";
-        }));
+        List<String> inputList = List.of("aaa", "bbb", "ccc");
+        String outputList = getOutputListSync(inputList);
+        System.out.println(outputList);
 
-        //wait for all CFs to complete
-        CompletableFuture.allOf(completableFutures.toArray(new CompletableFuture[completableFutures.size()])).join();
-
-        //get each CF
-        List<String> stringList = new ArrayList<>();
-        for (CompletableFuture<String> cf:  completableFutures) {
-            stringList.add(cf.get());
-        }
-        System.out.println("stringList");
-        System.out.println(stringList); //[aaa, bbb, ccc]     
-
-        //----------------------------------------------------------------------------------------//
-
-        CompletableFuture<Double> height = CompletableFuture.supplyAsync(() -> {
-            return 175.0;
-        });
-        CompletableFuture<Double> weight = CompletableFuture.supplyAsync(() -> {
-            return 65.0;
-        });
-        //wait for all CFs to complete
-        CompletableFuture<Double> bmi = CompletableFuture.allOf(height, weight)
-                .thenApplyAsync(value -> {
-                    Double h = height.join();
-                    Double w = weight.join();
-                    Double heightInMeter = h / 100;
-                    return w / (heightInMeter * heightInMeter);
-                });
-        System.out.println("BMI :: " + bmi.get());
+        String outputList2 = getOutputListASync(inputList);
+        System.out.println(outputList2);
 
         //----------------------------------------------------------------------------------------//
 
@@ -98,5 +63,30 @@ public class CompletableFutureEx {
 
         //----------------------------------------------------------------------------------------//
 
+    }
+
+
+    private static String getOutputListSync(List<String> inputList) {
+        return String.join(",", inputList.stream().map(String::toUpperCase).toList());
+    }
+
+
+    private static String getOutputListASync(List<String> inputList) throws ExecutionException, InterruptedException {
+        String output = "";
+        List<CompletableFuture<String>> completableFutureList = inputList.stream().map(CompletableFutureEx::convertToUpper).toList();
+        //wait for all CFs to complete
+        CompletableFuture.allOf(completableFutureList.toArray(new CompletableFuture[0])).join();
+        //get each CF
+        for(CompletableFuture<String> cf: completableFutureList){
+            if(cf.isDone()){
+                output +=cf.get();
+            }
+        }
+        return output;
+    }
+
+    private static CompletableFuture<String> convertToUpper(String inputString) {
+        String output = inputString.toUpperCase();
+        return CompletableFuture.completedFuture(output);
     }
 }
