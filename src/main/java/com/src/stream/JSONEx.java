@@ -159,8 +159,8 @@ public class JSONEx {
         System.out.println(jsonRequest);
 
         //JSON to Java
-        File file = new File("src/main/resources/Input.json");
         System.out.println("---------JSON to JAVA---------");
+        File file = new File("src/main/resources/Input.json");
         PersistPersonResponse persistPersonResponse2 = objectMapper.readValue(file, PersistPersonResponse.class);
         System.out.println(persistPersonResponse2);
 
@@ -169,6 +169,12 @@ public class JSONEx {
         file = new File("src/main/resources/allMoviesOfHeroRequest.json");
         List<Movie> movies = Arrays.asList(objectMapper.readValue(file, Movie[].class));
         movies.forEach(System.out::println);
+
+        //JSON array to String
+        System.out.println("---------JSON array to String ---------");
+        Path path = Paths.get("src/main/resources/allMoviesOfHeroRequest.json");
+        String jsonString = Files.readString(path);
+        System.out.println(jsonString);
 
         //JSON to Java with variable fields
 
@@ -206,7 +212,7 @@ public class JSONEx {
         Path pathJsonFilesInput = Paths.get("src/main/resources/json/input");
         Map<String, OrderInput> orderInputMap = new LinkedHashMap<>();
         Files.walk(pathJsonFilesInput)
-                .filter(path -> path.toFile().isFile() && path.getFileName().toString().endsWith(".json"))
+                .filter(path2 -> path2.toFile().isFile() && path2.getFileName().toString().endsWith(".json"))
                 .map(Path::toFile)
                 .forEach(file2 -> {
                     try {
