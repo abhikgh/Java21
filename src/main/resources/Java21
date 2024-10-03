@@ -1446,28 +1446,36 @@ class MyClass implements InterfaceA, InterfaceB {
 Immutable class
 ----------------------
 
-// 1. final class
+// 1. final class - so cannot be extended
 // 2. private final fields
 // 3. no setters, only getters
 
 public final class MyImmutable {
 
 	private final int i;
+	private final List<String> hobbies;
 
 	//getters only
 	public int getI() {
 	   return i;
 	}
+
+	public List<String> getHobbies() {
+     return new ArrayList<>(hobbies); // Return a new copy
+    }
 	
-	public MyImmutable(int i){
+	public MyImmutable(int i, List<String> hobbies){
 		this.i = i;
+		this.hobbies = new ArrayList<>(hobbies);
 	}
 	
 }
 
 Advantages:
-1. Thread safe
+1. Security / Thread safety
 2. Map key
+3. Caching
+
 
 Immutable Objects in Java
 1. String
