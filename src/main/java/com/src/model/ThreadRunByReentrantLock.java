@@ -10,7 +10,6 @@ import java.util.concurrent.locks.ReentrantLock;
     reentrantLock.lockInterruptibly()   //current thread is waiting for lock but some other thread requests the lock, then the current thread will be interrupted and return                                        immediately
     reentrantLock.unlock()
 
-
     synchronized                        vs                              ReentrantLock
     --------------------------------------------------------------------------------------
     unstructured - do not need a block structure
