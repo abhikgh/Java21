@@ -11,7 +11,7 @@ import java.util.concurrent.locks.ReentrantLock;
     reentrantLock.unlock()
 
 
-    synchronized                        vs                              ReetrantLock
+    synchronized                        vs                              ReentrantLock
     --------------------------------------------------------------------------------------
     unstructured - do not need a block structure
     lock can be held across methods
