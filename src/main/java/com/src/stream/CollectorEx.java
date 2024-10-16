@@ -220,6 +220,8 @@ public class CollectorEx {
 	int[] arr = new int[]{12, 23, 494, 393, 838};
         int sum = Arrays.stream(arr).sum();
 	System.out.println(sum); // 1760
+	int max = Arrays.stream(arr).max().getAsInt();
+        System.out.println(max);
 
         //Join all non-empty , non-blank Strings with ,
         String commaSeparatedNonEmptyString = strings.stream().filter(StringUtils::isNotBlank).collect(Collectors.joining(","));
