@@ -35,6 +35,19 @@ public class IntStreamEx {
 		IntStream.rangeClosed(1, 360)
 		         .forEach(i->x.getAndIncrement());
 		System.out.println(x); //365
+
+		//happy numbers
+		Scanner scanner = new Scanner(System.in);
+       int startElement = scanner.nextInt();
+       int endElement = scanner.nextInt();
+
+		List<Integer> happys = new ArrayList<>();
+       IntStream.rangeClosed(startElement, endElement)
+                .filter(i -> checkIsHappy(i))
+                .forEach(happys::add);
+		System.out.println(happys);
+
+
 				 
 		         
 		
@@ -47,5 +60,24 @@ public class IntStreamEx {
 		else
 			return !IntStream.rangeClosed(2, number / 2).anyMatch(x -> number % x == 0);
 	}
+
+	 private boolean checkIsHappy(int i) {
+        while(i!= 1 && i!=4){
+            i = checkHappy(i);
+        }
+       
+       return i == 1?true:false;
+    }
+
+	private int checkHappy(int i) {
+		int sum = 0, rem = 0;
+       while(i != 0){
+           rem = i %10;
+           sum += rem*rem;
+           i = i/10;
+       }
+       return sum;
+	}
+
 
 }
