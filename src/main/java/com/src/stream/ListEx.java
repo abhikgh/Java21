@@ -256,6 +256,13 @@ public class ListEx {
         //Do not Use Parallel Stream  as it is NOT Thread-Safe , also order is NOT maintained
         List<String> myList = Arrays.asList("aaa", "nads", "akds", "fdsdf", "kjlkj");
 
+        //top4
+        List<Integer> creditPoints = new ArrayList<>();
+        creditPoints.add(12);creditPoints.add(212);creditPoints.add(123);creditPoints.add(23);creditPoints.add(322);
+        creditPoints.add(902);creditPoints.add(92929);
+        List<Integer> top4 = creditPoints.stream().sorted(Comparator.reverseOrder()).limit(4).toList();
+        System.out.println(top4);
+
         myList = myList.parallelStream()
                 .map(String::toUpperCase)
                 .sorted()
