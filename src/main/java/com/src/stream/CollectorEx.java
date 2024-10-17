@@ -217,10 +217,10 @@ public class CollectorEx {
 
         List<String> strings = Arrays.asList("abc", "", "bc", "efg", "abcd", "", "    ", "jkl");
 
-	int[] arr = new int[]{12, 23, 494, 393, 838};
-        int sum = Arrays.stream(arr).sum();
-	System.out.println(sum); // 1760
-	int max = Arrays.stream(arr).max().getAsInt();
+        int[] arr = new int[]{12, 23, 494, 393, 838};
+        sum = Arrays.stream(arr).sum();
+        System.out.println(sum); // 1760
+        int max = Arrays.stream(arr).max().getAsInt();
         System.out.println(max);
 
         //Join all non-empty , non-blank Strings with ,
@@ -235,8 +235,8 @@ public class CollectorEx {
         String nonEmptyStringsJoinedPS = strings.stream().filter(StringUtils::isNotBlank).collect(Collectors.joining(",", "+", "-"));
         System.out.println(nonEmptyStringsJoinedPS); //+abc,bc,efg,abcd,jkl-
 
-        Integer[] arr = new Integer[]{100, 100, 9, 8, 200};
-        Double avg = Arrays.asList(arr).stream().map(i -> i * i).filter(i -> i <= 100).collect(Collectors.averagingInt(v -> v));
+        Integer[] arr2 = new Integer[]{100, 100, 9, 8, 200};
+        Double avg = Arrays.stream(arr2).map(i -> i * i).filter(i -> i <= 100).collect(Collectors.averagingInt(v -> v));
         System.out.println(avg);
 
         //---------------------------------------------------------------------------------------------------------------------//
@@ -488,9 +488,9 @@ public class ItemNo {
         System.out.println("maxWord :: " + maxWord); //the
 
 
-        Integer[] arr2 = new Integer[]{12, 33, 223, 33, 223, 77, 882, 929, 828, 49, 50, 843, 33};
+        Integer[] arr3 = new Integer[]{12, 33, 223, 33, 223, 77, 882, 929, 828, 49, 50, 843, 33};
         int maxOccurredInteger =
-                Arrays.stream(arr2).collect(Collectors.collectingAndThen(Collectors.groupingBy(Function.identity(), Collectors.counting()),
+                Arrays.stream(arr3).collect(Collectors.collectingAndThen(Collectors.groupingBy(Function.identity(), Collectors.counting()),
                         map -> map.entrySet().stream().sorted(Comparator.comparing(Map.Entry::getValue, Comparator.reverseOrder()))
                                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (o,n) -> n, LinkedHashMap::new))
                                 .entrySet().iterator().next().getKey()));

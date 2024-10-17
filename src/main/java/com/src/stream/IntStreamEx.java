@@ -55,8 +55,8 @@ public class IntStreamEx {
 		         
 		
 
-		System.out.println("------------Check happ nos --------------");
-		Scanner scanner = new Scanner(System.in);
+		System.out.println("------------Check happy nos --------------");
+		scanner = new Scanner(System.in);
 		int start = scanner.nextInt();
 		int end = scanner.nextInt();
 		List<Integer> happyList = new ArrayList<>();
