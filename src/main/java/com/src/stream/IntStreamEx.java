@@ -39,6 +39,22 @@ public class IntStreamEx {
 		         .forEach(i->x.getAndIncrement());
 		System.out.println(x); //365
 
+		//happy numbers
+		Scanner scanner = new Scanner(System.in);
+       int startElement = scanner.nextInt();
+       int endElement = scanner.nextInt();
+
+		List<Integer> happys = new ArrayList<>();
+       IntStream.rangeClosed(startElement, endElement)
+                .filter(i -> checkIsHappy(i))
+                .forEach(happys::add);
+		System.out.println(happys);
+
+
+
+		         
+		
+
 		System.out.println("------------Check happ nos --------------");
 		Scanner scanner = new Scanner(System.in);
 		int start = scanner.nextInt();
@@ -48,7 +64,7 @@ public class IntStreamEx {
 				.filter(IntStreamEx::checkIsHappy)
 				.forEach(happyList::add);
 		System.out.println(happyList);
-				 
+
 	}
 
 	private static boolean checkIsHappy(int i) {
@@ -66,7 +82,7 @@ public class IntStreamEx {
 			i = i / 10;
 		}
 		return sum;
-	}
+
 
 	private static boolean checkPrime(Integer number) {
 		if (number <= 1)
