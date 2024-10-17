@@ -1,8 +1,11 @@
 package com.src.stream;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
+import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -35,10 +38,34 @@ public class IntStreamEx {
 		IntStream.rangeClosed(1, 360)
 		         .forEach(i->x.getAndIncrement());
 		System.out.println(x); //365
-				 
-		         
-		
 
+		System.out.println("------------Check happ nos --------------");
+		Scanner scanner = new Scanner(System.in);
+		int start = scanner.nextInt();
+		int end = scanner.nextInt();
+		List<Integer> happyList = new ArrayList<>();
+		IntStream.rangeClosed(start, end)
+				.filter(IntStreamEx::checkIsHappy)
+				.forEach(happyList::add);
+		System.out.println(happyList);
+				 
+	}
+
+	private static boolean checkIsHappy(int i) {
+		while(i!=1 && i!=4){
+			i = checkHappy(i);
+		}
+		return  i==1?true:false;
+	}
+
+	private static int checkHappy(int i) {
+		int sum =0, rem = 0;
+		while(i != 0){
+			rem = i % 10;
+			sum += rem*rem;
+			i = i / 10;
+		}
+		return sum;
 	}
 
 	private static boolean checkPrime(Integer number) {

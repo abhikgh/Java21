@@ -524,6 +524,30 @@ public class ItemNo {
         list10.stream().collect(Collectors.groupingBy(Collection::size, Collectors.flatMapping(l -> l.stream().filter(i -> i%2==0), Collectors.toList())));
         System.out.println("map10 :: " + map10); //{4=[8, 10], 6=[2, 4, 6]}
 
+        System.out.println("-------------Calculate basket-------------");
+        AtomicReference<Double> atomicReference = new AtomicReference<>((double)0);
+        Scanner scanner = new Scanner(System.in);
+        Map<String, Integer> itemDetailsMap = new HashMap<>();
+        for (int i=0;i<5;i++){
+            String item = scanner.next();
+            int quantity = scanner.nextInt();
+            itemDetailsMap.put(item, quantity);
+        }
+        Map<String, Double> itemPricesMap = new HashMap<>();
+        itemPricesMap.put("apple", 20.0);
+        itemPricesMap.put("banana", 2.5);
+        itemPricesMap.put("lemon",3.5);
+        itemPricesMap.put("mango", 10.0);
+        itemPricesMap.put("oranges", 4.5);
+
+        itemDetailsMap.forEach((key, value) -> {
+            Double priceOfItem = itemPricesMap.get(key);
+            Double costOfItem = priceOfItem * value;
+            BinaryOperator<Double> binaryOperator = (u,v) -> u+v;
+            atomicReference.accumulateAndGet(costOfItem, binaryOperator);
+        });
+
+        System.out.println("Total cost :: " + atomicReference.get());
 
     }
 
