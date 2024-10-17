@@ -45,7 +45,7 @@ public class IntStreamEx {
        int endElement = scanner.nextInt();
 
 		List<Integer> happys = new ArrayList<>();
-       IntStream.rangeClosed(startElement, endElement)
+         IntStream.rangeClosed(startElement, endElement)
                 .filter(i -> checkIsHappy(i))
                 .forEach(happys::add);
 		System.out.println(happys);
@@ -75,14 +75,15 @@ public class IntStreamEx {
 	}
 
 	private static int checkHappy(int i) {
-		int sum =0, rem = 0;
-		while(i != 0){
+		int sum = 0, rem = 0;
+		while (i != 0) {
 			rem = i % 10;
-			sum += rem*rem;
+			sum += rem * rem;
 			i = i / 10;
 		}
 		return sum;
 
+	}
 
 	private static boolean checkPrime(Integer number) {
 		if (number <= 1)
