@@ -162,6 +162,19 @@ public class Miscellaneous {
         var bdMin = bAdd.min(bSub);
         System.out.println("bdMin :: " + bdMin); //0.01
 
+        b1 = new BigDecimal(23.6589).setScale(2, RoundingMode.HALF_DOWN); //23.66
+        b2 = new BigDecimal(8.9892).setScale(2, RoundingMode.DOWN); //8.98
+        BigDecimal bRoundingModes = b1.divide(b2, 2, RoundingMode.HALF_UP);
+        System.out.println(bRoundingModes);
+        //Rounding Modes
+        // HALF_UP − Rounding mode to round towards "nearest neighbor" unless both neighbors are equidistant, in which case round up
+        // HALF_DOWN − Rounding mode to round towards "nearest neighbor" unless both neighbors are equidistant, in which case round down.
+        // HALF_EVEN − Rounding mode to round towards the "nearest neighbor" unless both neighbors are equidistant, in which case, round towards the even neighbor.
+        // DOWN − Rounding mode to round towards zero.
+        // UP − Rounding mode to round away from zero.
+        // CEILING - for > 0 same as DOWN for -ve it is different
+            //DOWN -5.5 == -5 , CEILING -5.5 == -6
+
         // ----------------------------------Generics -----------------------------------//
 
         /*

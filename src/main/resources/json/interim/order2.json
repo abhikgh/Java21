@@ -42,4 +42,15 @@
     "chairs" : 849.00,
     "tables" : 489.00
   } ]
+}{
+  "orderId" : "ieidjdj3i23",
+  "country" : "DE",
+  "customerType" : "family",
+  "status" : 1,
+  "orderItems" : [ {
+    "cabinet" : 130.00,
+    "sofa" : 1232.00,
+    "chairs" : 849.00,
+    "tables" : 489.00
+  } ]
 }
