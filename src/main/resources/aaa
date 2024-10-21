@@ -1,0 +1,111 @@
+public class StudentClass<Type> {
+    public void getQuery(String studentData, String query) {
+        String[] queryArray = query.split(",");
+        int queryType = Integer.parseInt(queryArray[0]);
+
+        if (queryType == 1) {
+            // Query type 1: Get names starting with a specific letter
+            StudentList<String> studentList = new StudentList<>();
+            String[] names = studentData.split(" ");
+            for (int i = 0; i < names.length; i++) {
+                studentList.addElement(names[i]);
+            }
+            ArrayList<String> namesList = studentList.beginWith(queryArray[1]);
+            for (String name : namesList) {
+                System.out.println(name);
+            }
+            System.out.println();
+        } else if (queryType == 2) {
+            // Query type 2: Get names with specific blood groups
+            StudentList<String> studentList = new StudentList<>();
+            String[] names = studentData.split(" ");
+            for (int i = 0; i < names.length; i++) {
+                studentList.addElement(names[i]);
+            }
+            String[] groups = queryArray[1].split(" ");
+            ArrayList<String> namesList = studentList.bloodGroupOf(groups, "B+");
+            for (String name : namesList) {
+                System.out.println(name);
+            }
+            System.out.println();
+        } else if (queryType == 3) {
+            // Query type 3: Get the count of students scoring above a threshold
+            StudentList<Double> studentList = new StudentList<>();
+            String[] scores = studentData.split(" ");
+            for (String score : scores) {
+                studentList.addElement(Double.parseDouble(score));
+            }
+            int count = studentList.thresholdScore(Integer.parseInt(queryArray[1]));
+            System.out.println(count + " students scored " + queryArray[1] + " above");
+        } else if (queryType == 4 || queryType == 5) {
+            // Query type 4 and 5: Get the average score of all students
+            ScoreList<Double> scoreList = new ScoreList<>();
+            String[] scores = studentData.split(" ");
+            for (String score : scores) {
+                scoreList.addElement(Double.parseDouble(score));
+            }
+            double average = scoreList.averageValues();
+            System.out.println(average);
+        }
+    }
+}
+
+public class StudentList<Type> {
+    ArrayList<Type> stArrayList = new ArrayList<>();
+
+    public void addElement(Type type) {
+        stArrayList.add(type);
+    }
+
+    public ArrayList<String> beginWith(String data) {
+        // Get names starting with a specific letter
+        ArrayList<String> names = new ArrayList<>();
+        for (Type name : stArrayList) {
+            if (name.toString().startsWith(data.toLowerCase()) || name.toString().startsWith(data.toUpperCase())) {
+                names.add(name.toString());
+            }
+        }
+        return names;
+    }
+
+    public ArrayList<String> bloodGroupOf(String[] groups, String group) {
+        // Get names with specific blood groups
+        ArrayList<String> names = new ArrayList<>();
+        for (int i = 0; i < groups.length; i++) {
+            if (groups[i].equals(group)) {
+                names.add(stArrayList.get(i).toString());
+            }
+        }
+        return names;
+    }
+
+    public int thresholdScore(int score) {
+        // Get the count of students scoring above a threshold
+        int count = 0;
+        for (Type score1 : stArrayList) {
+            double scoreInt = (double) score1;
+            if (scoreInt >= score) {
+                count++;
+            }
+        }
+        return count;
+    }
+}
+
+public class ScoreList<Type extends Number> {
+    ArrayList<Type> scArrayList = new ArrayList<>();
+
+    public void addElement(Type type) {
+        scArrayList.add(type);
+    }
+
+    public double averageValues() {
+        // Calculate the average of all scores
+        double sum = 0;
+        for (Type score1 : scArrayList) {
+            double score = score1.doubleValue();
+            sum = sum + score;
+        }
+        return sum / scArrayList.size();
+    }
+}
