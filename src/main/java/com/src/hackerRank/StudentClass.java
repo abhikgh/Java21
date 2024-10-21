@@ -3,7 +3,8 @@ package com.src.hackerRank;
 import java.util.List;
 
 public class StudentClass<Type> {
-    public void getQuery(String studentData, String query) {
+
+    public void getStudents(String studentData, String query) {
         String[] arr = query.split("\\,");
         int queryType = Integer.parseInt(arr[0]);
 
