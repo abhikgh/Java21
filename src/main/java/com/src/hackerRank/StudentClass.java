@@ -18,7 +18,6 @@ public class StudentClass<Type> {
             for (String name : namesList) {
                 System.out.println(name);
             }
-            System.out.println();
         } else if (queryType == 2) {
             StudentList<String> studentList = new StudentList<>();
             String[] names = studentData.split(" ");
