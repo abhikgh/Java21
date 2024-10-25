@@ -4,13 +4,21 @@ import lombok.Getter;
 
 import java.util.Observable;
 import java.util.Observer;
+
+/**
+ *  Observer Design Pattern
+ *
+ *  behavioral design pattern that defines a one-to-many dependency between objects.
+ *  When Observable changes state, all its Observers are notified and updated automatically.
+ */
+
 /*
 Why Observable is deprecated
 
-1. Observable is a class , so class extending Observable can't subclass other class
-2. Observable class :: Not Serializable
-3. Observable class :: Not thread-safe - methods can be overridden by its subclasses
-4. Observable class :: conveys something has changed, but they don't convey which field has changed
+1. Observable class :: cannot extend , other class is a class , so class extending Observable can't subclass other class
+2. conveys something has changed, but they don't convey which field has changed
+3. Performance Overhead: Notifying a large number of observers can be time-consuming.
+4. Memory Leaks: Observers that are no longer used
 
 	Use :: PropertyChangeSupport, PropertyChangeListener
  */
@@ -36,10 +44,9 @@ public class TemperatureObservable extends Observable {
 
 class TemperatureObserver implements Observer{
 	@Override
-	public void update(Observable arg0, Object arg1) {
-		if(arg0 instanceof TemperatureObservable) {
-			TemperatureObservable temp = (TemperatureObservable)arg0;
-			int temperature = temp.getTemperature();
+	public void update(Observable observable, Object arg1) {
+		if(observable instanceof TemperatureObservable temperatureObservable) {
+			int temperature = temperatureObservable.getTemperature();
 			if(temperature<=15) {
 				System.out.println("cold");
 			}
@@ -55,10 +62,9 @@ class TemperatureObserver implements Observer{
 class TemperatureIceCreamObserver implements Observer{
 
 	@Override
-	public void update(Observable o, Object arg) {
-		if(o instanceof TemperatureObservable) {
-			TemperatureObservable temp = (TemperatureObservable)o;
-			int temperature = temp.getTemperature();
+	public void update(Observable observable, Object arg) {
+		if(observable instanceof TemperatureObservable temperatureObservable) {
+			int temperature = temperatureObservable.getTemperature();
 			if(temperature<=0) {
 				System.out.println("Ice Cream");
 			}
