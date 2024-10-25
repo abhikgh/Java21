@@ -435,8 +435,8 @@ public class Miscellaneous {
         Employee empG1 = new Employee(111, "John", deptG, new BigDecimal(223)); //prototype object
 
         //Shallow clone :: referenced Object is shared between clones
-        //Deep clone    :: referenced Object is not-shared between clones (exclusive)
-        //                 referenced objects has to be set after cloning them
+        //Deep clone    :: referenced objects has to be set after cloning parent object
+
 
         /*
         Employee empG2 = (Employee) empG1.clone();
