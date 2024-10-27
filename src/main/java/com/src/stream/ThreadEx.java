@@ -26,6 +26,12 @@ class MyRunnbale implements Runnable{
 
 public class ThreadEx {
 
+    //ThreadLocal
+    //ThreadLocal are variables which are local to a thread
+    //Child class thread cannot access this variable
+    //In order to make child class access the variable - make it InheritableThreadLocal
+    public static final ThreadLocal<Book> threadLocalBook = new ThreadLocal<>();
+
     public static void main(String[] args) throws InterruptedException {
         
         //Runnable is a FunctionalInterface - run()
@@ -218,6 +224,8 @@ public class ThreadEx {
         System.out.println("Response time Virtual Thread :: " + (System.currentTimeMillis() - startV) + " ms");
 
 
+        threadLocalBook.set(new Book("My First Book", "First Author", 1984, "0395489318", 230));
+        Book book = threadLocalBook.get();
 
 
     }
