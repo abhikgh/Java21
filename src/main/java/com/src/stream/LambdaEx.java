@@ -79,7 +79,7 @@ public class LambdaEx {
 		String outputStr2 = testStr("ABcd", stringFunction2);
 		System.out.println("outputStr2 :: " + outputStr2); //abcd
 
-		//If the return type of a method is Functional Interface then it must return the lambda implementation
+		//Method which returns Functional Interface must return the lambda implementation
 		int lambdaOp = getAddition().mathsOp(20, 30);
 		System.out.println("lambdaOp :: " + lambdaOp); //320
 
@@ -148,7 +148,12 @@ public class LambdaEx {
 
 	}
 
-
+    /*
+		@FunctionalInterface
+		interface MathsOperation {
+			int mathsOp(int a, int b);
+		}
+     */
 	public static MathsOperation getAddition(){
 		return (a,b) -> a+10*b;
 	}
