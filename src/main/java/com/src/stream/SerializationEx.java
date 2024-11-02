@@ -8,13 +8,28 @@ import java.io.Serializable;
 
 /*
 
+ Object -------> Sequence of Bytes, so that the object can be easily saved / streamed.
+ The byte stream can then be deserialised , to get a copy of the Original object.
+
  Object -> byte stream -> File, DB, Memory -> byte stream -> Object
 
- An object is serializable only if its class/superclass implements the Serializable interface.
- If Super class is not Serialized it must have a no-arg constructor.
- Serialization performs Deep Clone of an Object.
- transient / @JsonIgnore - to not make a variable Serializable
- During Deserialization if superclass does not implement Serializable then its default constructor will run to create the object
+ Rules:
+
+ 1. An object is serializable only if its class/superclass implements the Serializable interface (else NotSerializableException)
+
+ 2. If Super class is not Serialized it must have a no-arg constructor.
+    All Super class' no-arg constructors are run while deserialization. However , the class' constructor does not run.
+
+ 3. Generally, Super Class variables are serialized ,
+    but if the variable is in Sub Class constructor then it is serialized if Super Class implements Serializable
+
+ 4. Serialized object can contain only Serializable objects , else NotSerializableException
+
+ 5. All primitive types are serializable.
+
+ 6. TRANSIENT, STATIC, @JsonIgnore fields are not serialized.
+
+ 7. Serialization performs deep copy of an Object.
 
  */
 class SuperClass {
@@ -36,14 +51,12 @@ public class SerializationEx extends SuperClass implements Serializable {
     private transient String c;
 
     public SerializationEx(String a, String b) {
-        //default :: super()
-        //super() constructor (with/without arguments)  must be the first line in the child class constructor - if its there, fine, else will be added by the compiler
-        super();
+      //super()/super(x..) is the first call in a constructor
       this.a = a;
       this.b = b;
       this.c = "test";
     }
-   // r=100, a=aaaaaa,b=bbb, c=null
+   // r=100, a=aaa,b=bbb, c=null
 
     public static void main(String[] args) {
         SerializationEx serializationEx = new SerializationEx("aaa", "bbb");
