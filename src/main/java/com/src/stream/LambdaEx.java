@@ -89,6 +89,7 @@ public class LambdaEx {
 		System.out.println("function :: " + y); //100
 
 		//BiFunction :: Functional interface with 2 inputs
+		//BiFunction to replace multiple if, else-if
 		/*
 			@FunctionalInterface
 			public interface BiFunction<T, U, R> {
@@ -98,6 +99,16 @@ public class LambdaEx {
 		BiFunction<Integer, Integer, Integer> biFunction = (x1, x2) -> x1 + x2;
 		Integer resultBF = biFunction.apply(2, 3);
 		System.out.println("resultBF :: " + resultBF); // 5
+
+		//BiFunction to replace multiple if, else-if
+		Map<String, BiFunction<Integer, Integer, Integer>> map = new HashMap<>();
+		map.put("add", (x1, y1) -> x1+y1+10);
+		map.put("subtract", (x1, y1) -> x1-y1+10);
+		map.put("multiply", (x1, y1) -> x1*y1+10);
+		map.put("divide", (x1, y1) -> x1/y1+10);
+
+		Integer mathOpResult = map.get("add").apply(2, 3);
+		System.out.println("mathOpResult :: " + mathOpResult);
 
 		List<String> list1 = Arrays.asList("a", "b", "c");
 		List<Integer> list2 = Arrays.asList(1, 2, 3);

@@ -1087,26 +1087,27 @@ public class LambdaEx {
 		int y = functionA.apply(10);
 		System.out.println("function :: " + y); //100
 
-		//BiFunction :: Functional interface that accepts 2 parameters
-		/*
-			@FunctionalInterface
-			public interface BiFunction<T, U, R> {
-				R apply(T t, U u);
-			}
-                */
-		BiFunction<Integer, Integer, Integer> biFunction = (x1, x2) -> x1 + x2;
-		Integer resultBF = biFunction.apply(2, 3);
-		System.out.println("resultBF :: " + resultBF); // 5
+		//BiFunction :: Functional interface with 2 inputs
+        //BiFunction to replace multiple if, else-if
+        /*
+            @FunctionalInterface
+            public interface BiFunction<T, U, R> {
+                R apply(T t, U u);
+            }
+        */
+        BiFunction<Integer, Integer, Integer> biFunction = (x1, x2) -> x1 + x2;
+        Integer resultBF = biFunction.apply(2, 3);
+        System.out.println("resultBF :: " + resultBF); // 5
 
-		List<String> list1 = Arrays.asList("a", "b", "c");
-		List<Integer> list2 = Arrays.asList(1, 2, 3);
-		List<String> result = listCombiner(list1, list2, (str, num) -> str+num);
-		System.out.println("result 1 :: " + result); //result 1 :: [a1, b2, c3]
+        //BiFunction to replace multiple if, else-if
+        Map<String, BiFunction<Integer, Integer, Integer>> map = new HashMap<>();
+        map.put("add", (x1, y1) -> x1+y1+10);
+        map.put("subtract", (x1, y1) -> x1-y1+10);
+        map.put("multiply", (x1, y1) -> x1*y1+10);
+        map.put("divide", (x1, y1) -> x1/y1+10);
 
-		List<Double> list12 = Arrays.asList(1.0d, 2.1d, 3.3d);
-		List<Float> list22 = Arrays.asList(0.1f, 0.2f, 4f);
-		List<Boolean> result2 = listCombiner(list12, list22, (doN, flN) -> doN  > flN);
-		System.out.println("result2 :: " + result2); //result2 :: [true, true, false]
+        Integer mathOpResult = map.get("add").apply(2, 3);
+        System.out.println("mathOpResult :: " + mathOpResult);
 
 		//BinaryOperator
 		/*
