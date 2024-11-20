@@ -330,8 +330,7 @@ public class CollectorEx {
 
         //total savings amount for savings isapplied=true
         BigDecimal totalSavingIsAppliedTrue =
-        servicePriceList.stream().flatMap(servicePrice -> servicePrice.getSavingList().stream()).filter(Saving::getIsApplied).map(Saving::getAmount)
-                        .reduce(BigDecimal.ZERO, BigDecimal::add);
+        servicePriceList.stream().flatMap(servicePrice -> servicePrice.getSavingList().stream()).filter(Saving::getIsApplied).map(Saving::getAmount).reduce(BigDecimal.ZERO, BigDecimal::add);
         System.out.println("totalSavingIsAppliedTrue :: " + totalSavingIsAppliedTrue); //1216
 
         //sum of each savings type (isApplied or not)
@@ -598,7 +597,7 @@ public class ItemNo {
         return bookList;
     }
 
-    private static List<ServicePrice> getAllServicePrices() {
+    public static List<ServicePrice> getAllServicePrices() {
 
         Saving saving1 = new Saving(BigDecimal.valueOf(100), "saving1", Boolean.TRUE, "DMDM2O2MS", 1, "Voucher", new Discount(10));
         Saving saving2 = new Saving(BigDecimal.valueOf(50), "saving2", Boolean.TRUE, "UD3U9222", 1, "Voucher", new Discount(10));

@@ -927,7 +927,7 @@ public class ListEx {
     }
 
 
-    private static List<TaxationDetail> getTaxationDetailsList() {
+    public static List<TaxationDetail> getTaxationDetailsList() {
         TaxationDetail taxationDetail1 = new TaxationDetail("VAT", new TaxAmounts(new TaxationAmounts(BigDecimal.valueOf(100.23), BigDecimal.valueOf(133.44)), "13"));
         TaxationDetail taxationDetail2 = new TaxationDetail("VAT", new TaxAmounts(new TaxationAmounts(BigDecimal.valueOf(200.23), BigDecimal.valueOf(233.44)), "23"));
         TaxationDetail taxationDetail3 = new TaxationDetail("GST", new TaxAmounts(new TaxationAmounts(BigDecimal.valueOf(300.23), BigDecimal.valueOf(333.44)), "33"));
