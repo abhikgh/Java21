@@ -325,18 +325,23 @@ public class CollectorEx {
 
         //highest savings amount for savings isapplied=true
         BigDecimal highestSavingIsAppliedTrue =
-        servicePriceList.stream().flatMap(servicePrice -> servicePrice.getSavingList().stream()).filter(Saving::getIsApplied).max(Comparator.comparing(Saving::getAmount)).get().getAmount();
+        servicePriceList.stream().flatMap(servicePrice -> servicePrice.getSavingList().stream())
+                .filter(Saving::getIsApplied).max(Comparator.comparing(Saving::getAmount)).get().getAmount();
         System.out.println("highestSavingIsAppliedTrue :: " + highestSavingIsAppliedTrue); //400
 
         //total savings amount for savings isapplied=true
         BigDecimal totalSavingIsAppliedTrue =
-        servicePriceList.stream().flatMap(servicePrice -> servicePrice.getSavingList().stream()).filter(Saving::getIsApplied).map(Saving::getAmount).reduce(BigDecimal.ZERO, BigDecimal::add);
+        servicePriceList.stream()
+                .flatMap(servicePrice -> servicePrice.getSavingList().stream())
+                .filter(Saving::getIsApplied)
+                .map(Saving::getAmount)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
         System.out.println("totalSavingIsAppliedTrue :: " + totalSavingIsAppliedTrue); //1216
 
         //sum of each savings type (isApplied or not)
         Map<Boolean, BigDecimal> sumOfEachTypeOfSaving =
-        servicePriceList.stream().flatMap(servicePrice -> servicePrice.getSavingList().stream()).collect(Collectors.groupingBy(Saving::getIsApplied,
-                Collectors.reducing(BigDecimal.ZERO, Saving::getAmount, BigDecimal::add)));
+        servicePriceList.stream().flatMap(servicePrice -> servicePrice.getSavingList().stream())
+                .collect(Collectors.groupingBy(Saving::getIsApplied, Collectors.reducing(BigDecimal.ZERO, Saving::getAmount, BigDecimal::add)));
         System.out.println("sumOfEachTypeOfSaving :: " + sumOfEachTypeOfSaving); //{false=3300, true=1216}
 /*
 	@Getter
@@ -556,7 +561,7 @@ public class ItemNo {
 
     }
 
-    private static List<Item> getItemsWithPrice() {
+    public static List<Item> getItemsWithPrice() {
         Item item1 = new Item("929292", "RegularSalesUnitPrice" ,new BigDecimal(123.23));
         Item item2 = new Item("929292", "FamilyPrice" ,new BigDecimal(123.23));
         Item item3 = new Item("3533", "RegularSalesUnitPrice" ,new BigDecimal(123.23));
