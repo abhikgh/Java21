@@ -9,6 +9,26 @@ import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
+//Thread implements Runnable
+//Runnable is a FunctionalInterface - run()
+//ThreadLocal :: variables which are local to a thread, child class cannot access
+//InheritableThreadLocal :: child class can access
+
+/*
+
+                Thread                vs             Process
+                ---------------------------------------------------
+                Lightweight
+                Resides within process
+                Shares memory
+                Context-switching is easy
+                Inter-thread communication is easy
+                    (wait, notify)
+
+
+*/
+
+
 class MyThread extends Thread{
     @Override
     public void run() {
@@ -26,44 +46,33 @@ class MyRunnbale implements Runnable{
 
 public class ThreadEx {
 
-    //ThreadLocal
-    //ThreadLocal are variables which are local to a thread
-    //Child class thread cannot access this variable
-    //In order to make child class access the variable - make it InheritableThreadLocal
+
     public static final ThreadLocal<Book> threadLocalBook = new ThreadLocal<>();
 
     public static void main(String[] args) throws InterruptedException {
         
-        //Runnable is a FunctionalInterface - run()
-        //Thread implements Runnable
+        //1. extends Thread
+        Thread extendsThread = new MyThread();
+        extendsThread.start(); //Run in myThread...
 
-        /*
+        //2. implements Runnable
+        MyRunnbale myRunnbale = new MyRunnbale();
+        Thread threadAsRunnable = new Thread(myRunnbale);
+        threadAsRunnable.start();
 
-                Thread                vs             Process
-                ---------------------------------------------------
-                Lightweight
-                Resides within process
-                Shares memory
-                Context-switching is easy
-                Inter-thread communication is easy
-                    (wait, notify)
-
-
-         */
-
-        //1. Run Thread as Lambda
-        Runnable threadLambda = () -> {
-            System.out.println("Running thread as lambda..");
-        };
-        threadLambda.run();
-
-        //2. Run Thread as new Thread(runnable)
+        //3. implements Runnable as lambda
         Thread thread = new Thread(() -> {
             System.out.println("Running thread as lambda..");
         });
         thread.start();
-        
-        //3. Run Thread as Anonymous Inner class
+
+        //4. Thread as Lambda
+        Runnable threadAsLambda = () -> {
+            System.out.println("Running thread as lambda..");
+        };
+        threadAsLambda.run();
+
+        //5. Thread as Anonymous Inner class
         Thread threadAnonymous = new Thread(){
             @Override
             public void run() {
@@ -71,10 +80,6 @@ public class ThreadEx {
             }
         };
         threadAnonymous.start();
-
-        //4. Run thread as Object
-        Thread myThread = new MyThread();
-        myThread.start(); //Run in myThread...
 
         AtomicBoolean isFound = new AtomicBoolean(false);
         Thread t1 = new Thread() {

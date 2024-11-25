@@ -1420,6 +1420,16 @@ Exception Hierarchy
         
 
 -------------------------------------------------------------------------
+
+NoClassDefFoundError            vs                           ClassNotFoundException
+=========================================================================================
+When a compiled class references another class             Class.forName() - Class is not found at runtime in classpath
+that is not on the runtime classpath,
+even though the class was present at compile time
+
+
+-------------------------------------------------------------------------
+
 Diamond problem in java
 ============================
 If a class implements 2 interfaces with same method signature then it must override the method 
