@@ -31,6 +31,8 @@ import java.io.Serializable;
 
  7. Serialization performs deep copy of an Object.
 
+ 8. If only serialize certain fields use Externalizable interface.
+
  */
 class SuperClass {
 
