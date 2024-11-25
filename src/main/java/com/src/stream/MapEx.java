@@ -172,9 +172,8 @@ public class MapEx {
 		System.out.println("highest occurring number :: " + mapEntry2.getKey() + " with occurrence " + mapEntry2.getValue());
 
 		// ConcurrentHashMap
-		// Thread-safe and Fail-safe: 16 threads can run simultaneously
-		// Read : no-lock
-		// Write: lock on the section of the thread
+		// Divides the map into 16 parts
+		// Write is locked
 		// Modifiable while iterating
 		// No null key/value
 		Map<Integer, String> concurrentHashMap = new ConcurrentHashMap<Integer, String>();
