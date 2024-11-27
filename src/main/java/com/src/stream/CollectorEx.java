@@ -392,7 +392,8 @@ public class ItemNo {
 
         //sum of each discountType
         Map<String, BigDecimal> mapSumOfDiscountTypes  =
-        servicePriceList.stream().flatMap(servicePrice -> servicePrice.getSavingList().stream())
+        servicePriceList.stream()
+                .flatMap(servicePrice -> servicePrice.getSavingList().stream())
                 .collect(Collectors.groupingBy(Saving::getDiscountType, Collectors.reducing(BigDecimal.ZERO,Saving::getAmount,BigDecimal::add)));
         System.out.println("mapSumOfDiscountTypes :: " + mapSumOfDiscountTypes); //{Sale=1300, Coupon=366, Promotion=700, Voucher=2150}
 
