@@ -1599,7 +1599,14 @@ AtomicInteger
 AtomicBoolean
 AtomicLong
 AtomicReference<String>
-AtomicReference<BigDecimal> highestSavingsAmount = new AtomicReference();
+AtomicReference<Double> atomicReference = new AtomicReference<>((double)0);
+    - BinaryOperator<Double> binaryOperator = (u,v) -> u+v;
+      atomicReference.accumulateAndGet(costOfItem, binaryOperator);
+AtomicReference<BigDecimal> highestSavingsAmount = new AtomicReference<>(BigDecimal.ZERO);
+    - loop -> {
+         highestSavingsAmount.getAndAccumulate(bigDecimal, BigDecimal::add);
+      }
+
 
 Class and Interface design patterns
 ========================================

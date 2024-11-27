@@ -319,7 +319,7 @@ public class CollectorEx {
         System.out.println("mapEachTypeOfSaving :: " + mapEachTypeOfSaving); //{false=3, true=7}
 
         //highest saving amount
-        AtomicReference<BigDecimal> highestSavingsAmount = new AtomicReference();
+        AtomicReference<BigDecimal> highestSavingsAmount = new AtomicReference<>(BigDecimal.ZERO);
         servicePriceList.stream().flatMap(servicePrice -> servicePrice.getSavingList().stream()).max(Comparator.comparing(Saving::getAmount)).stream().findFirst().ifPresent(saving ->  highestSavingsAmount.set(saving.getAmount()));
         System.out.println("highestSavingsAmount :: " + highestSavingsAmount.get()); //2000
 
@@ -328,6 +328,13 @@ public class CollectorEx {
         servicePriceList.stream().flatMap(servicePrice -> servicePrice.getSavingList().stream())
                 .filter(Saving::getIsApplied).max(Comparator.comparing(Saving::getAmount)).get().getAmount();
         System.out.println("highestSavingIsAppliedTrue :: " + highestSavingIsAppliedTrue); //400
+
+        //total savings amount for SP1
+        BigDecimal totalSavingsAmountForSP1 = servicePriceList.stream().filter(servicePrice -> servicePrice.getServicePriceName().equalsIgnoreCase("SP1"))
+                .flatMap(servicePrice -> servicePrice.getSavingList().stream())
+                .map(Saving::getAmount)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        System.out.println("totalSavingsAmountForSP1 :: " + totalSavingsAmountForSP1);
 
         //total savings amount for savings isapplied=true
         BigDecimal totalSavingIsAppliedTrue =
@@ -340,7 +347,8 @@ public class CollectorEx {
 
         //sum of each savings type (isApplied or not)
         Map<Boolean, BigDecimal> sumOfEachTypeOfSaving =
-        servicePriceList.stream().flatMap(servicePrice -> servicePrice.getSavingList().stream())
+        servicePriceList.stream()
+                .flatMap(servicePrice -> servicePrice.getSavingList().stream())
                 .collect(Collectors.groupingBy(Saving::getIsApplied, Collectors.reducing(BigDecimal.ZERO, Saving::getAmount, BigDecimal::add)));
         System.out.println("sumOfEachTypeOfSaving :: " + sumOfEachTypeOfSaving); //{false=3300, true=1216}
 /*
@@ -372,17 +380,20 @@ public class ItemNo {
 
         //each of the distinct discountTypes
         List<String> distinctDiscountTypes =
-                servicePriceList.stream().flatMap(servicePrice -> servicePrice.getSavingList().stream()).map(Saving::getDiscountType).distinct().toList();
+                servicePriceList.stream().flatMap(servicePrice -> servicePrice.getSavingList().stream())
+                        .map(Saving::getDiscountType).distinct().toList();
         System.out.println("distinctDiscountTypes :: " + distinctDiscountTypes); //[Voucher, Promotion, Sale, Coupon]
 
         //count of each of discountTypes
         Map<String, Long> mapCountOfDiscountTypes =
-                servicePriceList.stream().flatMap(servicePrice -> servicePrice.getSavingList().stream()).collect(Collectors.groupingBy(Saving::getDiscountType, Collectors.counting()));
+                servicePriceList.stream().flatMap(servicePrice -> servicePrice.getSavingList().stream())
+                        .collect(Collectors.groupingBy(Saving::getDiscountType, Collectors.counting()));
         System.out.println("mapCountOfDiscountTypes :: " + mapCountOfDiscountTypes); //{Sale=3, Coupon=2, Promotion=2, Voucher=3}
 
         //sum of each discountType
         Map<String, BigDecimal> mapSumOfDiscountTypes  =
-        servicePriceList.stream().flatMap(servicePrice -> servicePrice.getSavingList().stream()).collect(Collectors.groupingBy(Saving::getDiscountType, Collectors.reducing(BigDecimal.ZERO,Saving::getAmount,BigDecimal::add)));
+        servicePriceList.stream().flatMap(servicePrice -> servicePrice.getSavingList().stream())
+                .collect(Collectors.groupingBy(Saving::getDiscountType, Collectors.reducing(BigDecimal.ZERO,Saving::getAmount,BigDecimal::add)));
         System.out.println("mapSumOfDiscountTypes :: " + mapSumOfDiscountTypes); //{Sale=1300, Coupon=366, Promotion=700, Voucher=2150}
 
 
