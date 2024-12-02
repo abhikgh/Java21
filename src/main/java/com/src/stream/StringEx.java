@@ -203,6 +203,21 @@ public class StringEx {
         ans = StringUtils.substringBetween(inputStr, "<TransactionId>", "</TransactionId>");
         System.out.println("substringBetween :: " + ans);  //abc123
 
+        //StringUtils :: replace
+        inputStr="John plays and John sings and john dances";
+        ans = StringUtils.replace(inputStr,"John","Mary");
+        System.out.println("StringUtils replace :: " + ans);
+
+        //StringUtils :: replace each
+        inputStr="John plays and John sings and john dances and sings well";
+        ans = StringUtils.replaceEach(inputStr,new String[]{"John", "sings"},new String[]{"Mary","dances"});
+        System.out.println("StringUtils replace each:: " + ans);
+
+        //StringUtils :: replace each case-insensitive
+        inputStr="John plays and John sings and john dances";
+        ans = StringUtils.replaceIgnoreCase(inputStr,"John","Mary");
+        System.out.println("StringUtils replace each case-insensitive:: " + ans);
+
         //substring
         inputStr = "abcdefghijklmnop";
         ans = inputStr.substring(2, 10); //cdefghij {2,9}
