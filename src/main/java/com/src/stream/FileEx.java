@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -37,7 +38,8 @@ public class FileEx {
 	// Files.walk(directory)    
 	// Files.isDirectory
 	// Files.isRegularFile
-	// Files.readAllBytes(path); // Files.readString cannot read pdf     
+	// Files.readAllBytes(path); // Files.readString cannot read pdf
+    // Files.lines(path) //get each line of the file
 
 
 	 // Paths.get
@@ -55,6 +57,7 @@ public class FileEx {
         path = Paths.get("src/main/resources/abc2.txt");
         Files.deleteIfExists(path);
         Files.createFile(path);
+
 
         //Write to file
         Files.writeString(path, "Sample text again", StandardOpenOption.APPEND);
@@ -155,6 +158,21 @@ public class FileEx {
         bufferedOutputStream.flush();
         bufferedOutputStream.close();
         System.out.println("New file generated...");
+
+        //Read a large file parallely
+        Path pathFile = Paths.get("src/main/resources/abc.log");
+        BigDecimal amountSumGTLakh = Files.lines(pathFile)
+                                        .parallel() //changing to parallel stream
+                                        .map(FileEx::getAmountFromLog)
+                                        .reduce(BigDecimal.ZERO, BigDecimal::add);
+        System.out.println("amountSumGTLakh :: " + amountSumGTLakh); //280000
+
+
+    }
+
+    public static BigDecimal getAmountFromLog(String line){
+        BigDecimal amount = new BigDecimal(line.split(",")[2]);
+        return amount.compareTo(BigDecimal.valueOf(100000)) > 0 ?amount:BigDecimal.ZERO;
 
 
     }
