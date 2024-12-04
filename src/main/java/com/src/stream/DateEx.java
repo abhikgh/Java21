@@ -41,32 +41,41 @@ public class DateEx {
     public static void main(String[] args) throws ParseException, DatatypeConfigurationException {
 
         /*
-            Date, LocalDateTime and Timestamp do not have any Zone information
+            Legacy Date-Time APIs Date and Calendar
+            -------------------------------------------
+            Not thread-safe
+            Lack of ZoneId information
+            Mutable objects
 
-                ZoneId :: Time-Zone such as "Europe/Paris"
-                ex: ZoneId zone = ZoneId.of("Europe/Berlin");
+                ZoneId     = Time-Zone (ZoneId zone = ZoneId.of("Europe/Berlin")
+                ZoneOffset = ZoneId + offset    (from GMT/UTC, such as +02:00)
+                ZonedDateTime = LocalDateTime + ZoneId + offset(from UTC) (2007-12-03T10:15:30+01:00 Europe/Paris)
+                Date          = LocalDateTime + ZoneId
+                OffsetDateTime = LocalDateTime + offset(from UTC)
 
-                ZoneOffset :: extends ZoneId and defines the fixed offset of the current time-zone w.r.t GMT/UTC, such as +02:00.
-
-            ZonedDateTime = LocalDateTime + ZoneId + ZoneOffSet(from UTC)
-                ex: 2007-12-03T10:15:30+01:00 Europe/Paris
-
+                ZonedDateTime
+                -----------------
                 ZonedDateTime.now(zoneId);
                 ZonedDateTime.of(localDateTime, zoneId);
+                ZonedDateTime zonedDateTimeZ2 = zonedDateTime.withZoneSameInstant(ZoneId.of("Europe/Berlin")); //convert zonedDateTime from one TimeZone to another TimeZone
 
-                ZonedDateTime withZoneSameInstant :: convert zonedDateTime from one TimeZone to another TimeZone
-                ZonedDateTime zonedDateTimeZ2 = zonedDateTime.withZoneSameInstant(ZoneId.of("Europe/Berlin"));
-
-            Date = LocalDateTime + ZoneId    
-
-            OffsetDateTime = LocalDateTime + ZoneOffSet(from UTC)
-            
                
-                Why OffsetDateTime for Database ?
-                 - No ZonedDateTime - because zone rules change
-                 - No LocalDateTime - becuae cannot get the Zone
-
         */
+
+        /**
+         * Setting the Default Time Zone
+         *
+         *  TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
+         *
+         *  spring.jackson.time-zone=UTC (for jackson serialization/deserialization)
+         */
+
+        /**
+         * Storing Date and Time in Database
+         *
+         * ZonedDateTime
+         *
+         */
 
         // Today's date
         LocalDate today = LocalDate.now();
