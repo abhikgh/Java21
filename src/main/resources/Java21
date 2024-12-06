@@ -824,21 +824,18 @@ multi-mapping
 
 	Virtual memory 1 	Virtual memory 2	Virtual memory 3
 
-Garbage Collector watches which objects can be reached from our application through a chain of references and frees up the ones we can’t reach.
-
-Garbage Collector phases :
-
-1. parallel phase can run on multiple GC threads
-2. serial phase runs on a single GC thread
-3. stop-the-world phase can’t run concurrently with application code
-4. concurrent phase can run in the background, while our application does its work
-5. incremental phase can terminate before finishing all of its work and continue it later
-
-ZGC
----------
-Concurrent, low-latency GC 
--XX:+UseZGC.
-ZGC outperform G1GC :: reduced garbage collection time, lower memory usage, lower response times, higher throughput
+Garbage Collection
+---------------------
+Garbage Collection is freeing up memory by deleting objects that do not have a live reference. (live reference =  objects can be reached from the application through a chain of references )
+Garbage Collection Algorithm :: Mark and Sweep
+Garbage Collection Types ::
+1. Serial Garbage Collector -  runs on a single thread
+2. Parallel Garbage Collector - runs on multiple threads, but freezes the application
+3. G1 Garbage Collector - divides the Heap area into equal-sized heap regions, Mark and Sweep from the area that has most garbage(java -XX:+UseG1GC -jar Application.java)
+			  default
+4. Z Garbage Collector - divides the Heap area into Unequal-sized heap regions, ZGC performs all expensive work concurrently, without stopping the application for more than 10 ms
+	ZGC outperform G1GC :: reduced garbage collection time, reduced latency, more throughput
+	java -XX:+UseZGC Application.java
 
 
 JVM Memory = Heap memory + Stack memory + Metaspace + Others(GC, JIT Compiler, Socket Buffer...)
