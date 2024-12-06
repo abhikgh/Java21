@@ -140,6 +140,14 @@ public class ThreadEx {
 
         };
 
+        //AtomicInteger replaces synchronized
+        AtomicInteger count = new AtomicInteger(0);
+        for (int i = 0; i < 1000; i++) {
+           count.getAndIncrement();
+        }
+        System.out.println("Final count (with AtomicInteger): " + count.get());
+
+
         //Threads running in parallel
         /*t1.start();
         t2.start();

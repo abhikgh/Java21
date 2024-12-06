@@ -1713,3 +1713,15 @@ BigDecimal amountSumGTLakh = Files.lines(pathFile)
                             .map(FileEx::getAmountFromLog)
                             .reduce(BigDecimal.ZERO, BigDecimal::add);
 System.out.println("amountSumGTLakh :: " + amountSumGTLakh); //280000
+
+----------------------------------------------------------------------------------
+
+//AtomicInteger replaces synchronized
+
+AtomicInteger count = new AtomicInteger(0);
+for (int i = 0; i < 1000; i++) {
+   count.getAndIncrement();
+}
+System.out.println("Final count (with AtomicInteger): " + count.get());
+
+----------------------------------------------------------------------------------
