@@ -34,29 +34,38 @@ public class CompletableFutureEx {
     public static void main(String[] args) throws ExecutionException, InterruptedException {
 
         List<String> inputList = List.of("aaa", "bbb", "ccc");
-        String outputList = getOutputListSync(inputList);
+        String outputList = String.join(",", inputList.stream().map(String::toUpperCase).toList());
         System.out.println(outputList);
 
-        String outputList2 = getOutputListASync(inputList);
+        String outputList2 = "";
+        List<CompletableFuture<String>> completableFutureList = inputList.stream().map(CompletableFutureEx::convertToUpper).toList();
+        //wait for all CFs to complete
+        CompletableFuture.allOf(completableFutureList.toArray(new CompletableFuture[0])).join();
+        //get each CF
+        for(CompletableFuture<String> cf: completableFutureList){
+            if(cf.isDone()){
+                outputList2 +=cf.get();
+            }
+        }
         System.out.println(outputList2);
 
         //----------------------------------------------------------------------------------------//
 
-        List<CompletableFuture<String>> completableFutureList = new ArrayList<>();
-        completableFutureList.add(CompletableFuture.supplyAsync(() -> {
+        List<CompletableFuture<String>> completableFutureList2 = new ArrayList<>();
+        completableFutureList2.add(CompletableFuture.supplyAsync(() -> {
             return "Hello";
         }));
-        completableFutureList.add(CompletableFuture.supplyAsync(() -> {
+        completableFutureList2.add(CompletableFuture.supplyAsync(() -> {
             return "Beautiful";
         }));
-        completableFutureList.add(CompletableFuture.supplyAsync(() -> {
+        completableFutureList2.add(CompletableFuture.supplyAsync(() -> {
             return "World";
         }));
         //wait for all CFs to complete
-        CompletableFuture.allOf(completableFutureList.toArray(new CompletableFuture[0])).join();
+        CompletableFuture.allOf(completableFutureList2.toArray(new CompletableFuture[0])).join();
         //get each CF
         String result = "";
-        for(CompletableFuture<String> completableFuture : completableFutureList){
+        for(CompletableFuture<String> completableFuture : completableFutureList2){
            result = result.concat(completableFuture.get()+" ");
         }
         System.out.println("result : " + result);
@@ -65,25 +74,6 @@ public class CompletableFutureEx {
 
     }
 
-
-    private static String getOutputListSync(List<String> inputList) {
-        return String.join(",", inputList.stream().map(String::toUpperCase).toList());
-    }
-
-
-    private static String getOutputListASync(List<String> inputList) throws ExecutionException, InterruptedException {
-        String output = "";
-        List<CompletableFuture<String>> completableFutureList = inputList.stream().map(CompletableFutureEx::convertToUpper).toList();
-        //wait for all CFs to complete
-        CompletableFuture.allOf(completableFutureList.toArray(new CompletableFuture[0])).join();
-        //get each CF
-        for(CompletableFuture<String> cf: completableFutureList){
-            if(cf.isDone()){
-                output +=cf.get();
-            }
-        }
-        return output;
-    }
 
     private static CompletableFuture<String> convertToUpper(String inputString) {
         String output = inputString.toUpperCase();

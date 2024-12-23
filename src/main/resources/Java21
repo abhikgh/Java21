@@ -1209,6 +1209,32 @@ Implementation level
 Async Call
 ---------------------------------
 
+public static void main(String[] args) throws ExecutionException, InterruptedException {
+
+        List<String> inputList = List.of("aaa", "bbb", "ccc");
+        String outputList = String.join(",", inputList.stream().map(String::toUpperCase).toList());
+        System.out.println(outputList);
+
+        String outputList2 = "";
+        List<CompletableFuture<String>> completableFutureList = inputList.stream().map(CompletableFutureEx::convertToUpper).toList();
+        //wait for all CFs to complete
+        CompletableFuture.allOf(completableFutureList.toArray(new CompletableFuture[0])).join();
+        //get each CF
+        for(CompletableFuture<String> cf: completableFutureList){
+            if(cf.isDone()){
+                outputList2 +=cf.get();
+            }
+        }
+        System.out.println(outputList2);
+
+}
+private static CompletableFuture<String> convertToUpper(String inputString) {
+    String output = inputString.toUpperCase();
+    return CompletableFuture.completedFuture(output);
+}
+
+
+
 public CompletableFuture<FinalResultMovie> getFinalResultMovieASync(String heroName) throws ExecutionException {
 
         CompletableFuture<ResultHero> completableFuture1 = CompletableFuture.supplyAsync(()->{
