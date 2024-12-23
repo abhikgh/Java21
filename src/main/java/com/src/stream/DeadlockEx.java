@@ -2,7 +2,7 @@ package com.src.stream;
 
 public class DeadlockEx {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws InterruptedException {
 
 		String resource1 = "resource1";
 		String resource2 = "resource2";
@@ -43,11 +43,8 @@ public class DeadlockEx {
 		};
 
 		t1.start();
-		try {
-			t1.join(); //Solution to deadlock :: t1 to complete before main thread can run
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+		t1.join(); //Solution to deadlock :: t1 to complete before main thread can run
+
 		t2.start();
 	}
 
@@ -56,8 +53,6 @@ public class DeadlockEx {
 		Thread-0resource2
 		Thread-1resource2
 		Thread-1resource1
-
-
 	 */
 
 }

@@ -11,12 +11,7 @@ import static com.src.stream.JointAccount.BALANCE;
 
 //Race Condition :: 2/more threads competing to update the same resource
 //Semaphore + JOIN to prevent Race Condition
-//Semaphore - restricts how many threads that can acquire a Resource
-//Semaphore semaphore = new Semaphore(1);
-//semaphore.acquire();
-//semaphore.release();
 
-//Class :: ThreadwithSemaphore
 @AllArgsConstructor
 @Getter
 @Setter
@@ -57,28 +52,20 @@ public class RaceConditionEx {
         JointAccount jointAccountB = new JointAccount(semaphore, "tB");
 
         jointAccountA.start();
-        jointAccountB.start();  //IF ANY ONE OF THEM CAN COMPLETE FIRST, ELSE IF ONE NEEDS TO COMPLETE BEFORE THE OTHER, THEN start() and join(), AND start() and join()
+        jointAccountA.join();
 
-        jointAccountA.join(); //jointAccountA to complete before main thread can proceed
-        jointAccountB.join(); //jointAccountB to complete before main thread can proceed
+        jointAccountB.start();
+        jointAccountB.join();
 
         System.out.println("Balance :: " + BALANCE);
 
         /*
-            Thread :: tA gets object lock
-            Thread :: tA releases object lock
-            Thread :: tB gets object lock
-            Thread :: tB releases object lock
-            Balance :: 3100
-
-            Thread :: tB gets object lock
-            Thread :: tB releases object lock
-            Thread :: tA gets object lock
-            Thread :: tA releases object lock
-            Balance :: 3100
+                Thread :: tA gets object lock
+                Thread :: tA releases object lock
+                Thread :: tB gets object lock
+                Thread :: tB releases object lock
+                Balance :: 3100
 
          */
-
-
     }
 }

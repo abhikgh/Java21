@@ -1710,6 +1710,148 @@ System.out.println("amountSumGTLakh :: " + amountSumGTLakh); //280000
 
 ----------------------------------------------------------------------------------
 
+How do you ensure thread safety in a multi-threaded environment?
+-------------------------------------------------------------------
+
+Key Principles of Thread Safety :
+    Atomicity: Operations must be performed as a single, indivisible step.
+    Visibility: Changes made by one thread should be visible to others.
+    Order: Operations must execute in the correct sequence.
+
+Common Problems in Multi-threading :
+    Race Conditions: 2/more threads competing to update the same resource
+    Deadlocks: 2/more threads block each other by holding resources that the others need
+    Livelocks: Threads keep changing their states in response to each other but do no productive work.
+    Starvation: A thread is perpetually denied access to resources.
+
+Race Condition
+------------------
+
+//Semaphore + JOIN to prevent Race Condition
+
+@AllArgsConstructor
+@Getter
+@Setter
+class JointAccount extends Thread {
+    public static int BALANCE = 100;
+    private Semaphore semaphore;
+    private String threadName;
+
+    public void increment(Integer sum) {
+        BALANCE = BALANCE + sum;
+    }
+
+
+    @SneakyThrows
+    @Override
+    public void run() {
+        semaphore.acquire();
+        System.out.println("Thread :: " + threadName + " gets object lock");
+        if (threadName.equals("tA")) {
+            increment(2000);
+        } else if (threadName.equals("tB"))
+            increment(1000);
+        System.out.println("Thread :: " + threadName + " releases object lock");
+        semaphore.release();
+
+    }
+
+}
+
+public class RaceConditionEx {
+
+
+    public static void main(String[] args) throws InterruptedException {
+
+        Semaphore semaphore = new Semaphore(1);
+
+        JointAccount jointAccountA = new JointAccount(semaphore, "tA");
+        JointAccount jointAccountB = new JointAccount(semaphore, "tB");
+
+        jointAccountA.start();
+        jointAccountA.join();
+
+        jointAccountB.start();
+        jointAccountB.join();
+
+        System.out.println("Balance :: " + BALANCE);
+
+        /*
+                Thread :: tA gets object lock
+                Thread :: tA releases object lock
+                Thread :: tB gets object lock
+                Thread :: tB releases object lock
+                Balance :: 3100
+
+         */
+    }
+}
+
+Deadlock
+-----------
+
+//synchronized + join to prevent Deadlock
+
+public class DeadlockEx {
+
+	public static void main(String[] args) throws InterruptedException {
+
+		String resource1 = "resource1";
+		String resource2 = "resource2";
+
+		Thread t1 = new Thread() {
+			@Override
+			public void run() {
+				synchronized (resource1) {
+					System.out.println(Thread.currentThread().getName() + resource1);
+				}
+				try {
+					Thread.sleep(100);
+				} catch (Exception e) {
+				}
+				synchronized (resource2) {
+					System.out.println(Thread.currentThread().getName() + resource2);
+				}
+
+			}
+		};
+
+		Thread t2 = new Thread() {
+			@Override
+			public void run() {
+				synchronized (resource2) {
+					System.out.println(Thread.currentThread().getName() + resource2);
+				}
+
+				try {
+					Thread.sleep(100);
+				} catch (Exception e) {
+				}
+				synchronized (resource1) {
+					System.out.println(Thread.currentThread().getName() + resource1);
+				}
+			}
+
+		};
+
+		t1.start();
+		t1.join(); //Solution to deadlock :: t1 to complete before main thread can run
+
+		t2.start();
+	}
+
+	/*
+		Thread-0resource1
+		Thread-0resource2
+		Thread-1resource2
+		Thread-1resource1
+	 */
+
+}
+
+Atomic variables
+--------------------
+
 //AtomicInteger replaces synchronized
 
 AtomicInteger count = new AtomicInteger(0);
@@ -1718,4 +1860,71 @@ for (int i = 0; i < 1000; i++) {
 }
 System.out.println("Final count (with AtomicInteger): " + count.get());
 
-----------------------------------------------------------------------------------
+ReentrantLock
+--------------------
+
+/*
+    ReentrantLock allows a thread to acquire an object lock multiple times
+    Fair locking - new ReentrantLock(true);	// the thread that has waited the maximum time for the object lock gets the lock
+    reentrantLock.lock()
+    reentrantLock.tryLock(10,TimeUnit.SECONDS)
+    reentrantLock.lockInterruptibly()   //current thread is waiting for lock but some other thread requests the lock, then the current thread will be interrupted and return                                        immediately
+    reentrantLock.unlock()
+
+    synchronized                        vs                              ReentrantLock
+    --------------------------------------------------------------------------------------
+    unstructured - do not need a block structure
+    lock can be held across methods
+ */
+
+public class ThreadRunByReentrantLock implements Runnable{
+
+    ReentrantLock reentrantLock = new ReentrantLock(true);
+
+    public static void main(String[] args) throws InterruptedException {
+
+        ThreadRunByReentrantLock client = new ThreadRunByReentrantLock();
+
+        Thread thread1 = new Thread(client, "thread1");
+        Thread thread2 = new Thread(client, "thread2");
+        Thread thread3 = new Thread(client, "thread3");
+        Thread thread4 = new Thread(client, "thread4");
+
+        thread1.start();Thread.sleep(1);
+        thread2.start();Thread.sleep(1);
+        thread3.start();Thread.sleep(1);
+        thread4.start();Thread.sleep(1);
+
+    }
+
+    @Override
+    public void run() {
+
+        try{
+
+            reentrantLock.lock();
+
+            String threadName = Thread.currentThread().getName();
+            System.out.println(threadName + " running now");
+
+            System.out.println(threadName + " exiting ");
+
+        }finally{
+            reentrantLock.unlock();
+        }
+    }
+
+}
+
+/*
+    thread1 running now
+    thread1 exiting
+    thread2 running now
+    thread2 exiting
+    thread3 running now
+    thread3 exiting
+    thread4 running now
+    thread4 exiting
+
+ */
+

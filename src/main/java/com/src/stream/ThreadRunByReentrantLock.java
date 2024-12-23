@@ -1,4 +1,4 @@
-package com.src.model;
+package com.src.stream;
 
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -6,6 +6,7 @@ import java.util.concurrent.locks.ReentrantLock;
 /*
     ReentrantLock allows a thread to acquire an object lock multiple times
     Fair locking - new ReentrantLock(true);	// the thread that has waited the maximum time for the object lock gets the lock
+    reentrantLock.lock()
     reentrantLock.tryLock(10,TimeUnit.SECONDS)
     reentrantLock.lockInterruptibly()   //current thread is waiting for lock but some other thread requests the lock, then the current thread will be interrupted and return                                        immediately
     reentrantLock.unlock()
