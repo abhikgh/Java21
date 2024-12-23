@@ -54,8 +54,8 @@ class Student0Comparator implements Comparator<Student0> {
 class Priorities{
 	public List<Student0> getStudents(List<String> events){
 		int initialCapacity = events.size();
-		List<Student0> students = new LinkedList<Student0>();
-	    PriorityQueue<Student0> priorityQueue = new PriorityQueue<Student0>(initialCapacity, new Student0Comparator());
+		List<Student0> students = new LinkedList<>();
+	    PriorityQueue<Student0> priorityQueue = new PriorityQueue<>(initialCapacity, new Student0Comparator());
 		events.forEach(event -> {
 			StringTokenizer st = new StringTokenizer(event);
 			String token = st.nextToken();

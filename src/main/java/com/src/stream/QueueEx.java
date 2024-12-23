@@ -21,7 +21,7 @@ public class QueueEx {
 			O(log(n))
 		 */
 
-        Queue<Integer> priorityQueue = new PriorityQueue<Integer>();
+        Queue<Integer> priorityQueue = new PriorityQueue<>();
 
         priorityQueue.add(12);
         priorityQueue.add(120);
@@ -49,7 +49,7 @@ public class QueueEx {
 
         //Scan each student and get the highest marks
         Queue<Student> studentPriorityQueue = new PriorityQueue<>(new StudentComparator());
-        Scanner scanner = new Scanner(System.in); //end by Ctrl D
+        Scanner scanner = new Scanner(System.in);
         while (scanner.hasNextLine()) {
             String input = scanner.nextLine();
             if (input.equalsIgnoreCase("END")) {
