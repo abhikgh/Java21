@@ -1418,15 +1418,12 @@ Exception Hierarchy
                                        IllegalArgumentException             SQLException
                                        ArrayIndexOutOfBoundsException       InterruptedException
         
-
+      (Environment error)               (Programming Error)                  (External condition check in code)
 -------------------------------------------------------------------------
 
 NoClassDefFoundError            vs                           ClassNotFoundException
 =========================================================================================
-When a compiled class references another class             Class.forName() - Class is not found at runtime in classpath
-that is not on the runtime classpath,
-even though the class was present at compile time
-
+Referenced class is not found at runtime in classpath      Class is not found at runtime in classpath
 
 -------------------------------------------------------------------------
 
