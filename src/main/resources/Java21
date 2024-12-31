@@ -875,6 +875,14 @@ static data and Garbage Collection
 Static data lives throughout the life cycle of the class
 Static variables can cause memory leaks if they hold references to objects that are no longer accessed but cannot be garbage collected.
 
+Detect Thread dumps
+-----------------------
+jconsole -  inspect the stack trace of each thread
+
+Detect memory leaks
+-------------------------
+JProfiler - monitor memory allocation and garbage collection in real-time
+
 Memory Management
 ========================
 
@@ -926,17 +934,14 @@ Over time, these accumulated memory leaks can lead to the exhaustion of availabl
     Improper use of Collections
 
 
-Detect
-------------
-Heap Dumps  - A heap dump is a snapshot of all the objects in Heap at a particular moment.
-JProfiler - monitor memory allocation and garbage collection in real-time
-
 OutOfMemoryError
 ---------------------
 Heap memory is full
 Surround the code with try-catch block
 
 Ex of OutOfMemoryError: Integer[] array = new Integer[10000 * 10000];
+
+--------------------------------------------------------------------------------------------------
 
 Functional Interface
 ------------------------------
