@@ -838,7 +838,7 @@ Garbage Collection Types ::
 	java -XX:+UseZGC Application.java
 
 
-JVM Memory = Heap memory + Stack memory + Metaspace + Others(GC, JIT Compiler, Socket Buffer...)
+JVM Memory = Heap memory + Stack memory + Metaspace (+ Others(GC, JIT Compiler, Socket Buffer...))
 
 Heap memory - Objects, Arrays, String Pool
 
@@ -860,7 +860,7 @@ Heap memory - Objects, Arrays, String Pool
             -S0
             -S1
 
-Stack memory  - references, Local variables
+Stack memory  - variables
 
             1. LIFO structure
             2. Every thread has its own stack
