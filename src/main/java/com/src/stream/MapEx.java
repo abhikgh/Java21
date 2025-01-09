@@ -109,8 +109,7 @@ public class MapEx {
 		//123 : {123=ItemData(itemNo=123, itemType=ART, buCode=BE, buType=Existing), 223=ItemData(itemNo=223, itemType=SPR, buCode=BE, buType=RR)}
 
 		//computeIfAbsent
-		// if key is present, return value
-		// if key is absent, compute value for the key and put key-value in map
+		// computs value for the key if key is absent and put the key-value
 		itemDataMap.clear();
 		itemDataMap.put("123",itemData);
 		itemDataMap.put("223",itemData2);
@@ -123,6 +122,9 @@ public class MapEx {
 			return itemNotPresent;
 		});
 		System.out.println("itemDataMap computeIfAbsent :: " + itemDataMap);
+
+		//putIfAbsent
+		// put value for the key if key is absent and put the key-value
 
 		//Immutable map
 		Map<String,String> mapImmutable = Map.copyOf(map1);
