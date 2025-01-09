@@ -352,6 +352,18 @@ public class StringEx {
             This is the fifth line
         */
 
+        String input = "aabbbccccddddd";
+        Map<Character, Integer> map2 = new HashMap<>();
+        input.chars().mapToObj(i -> (char)i).forEach(ch -> {
+            int count = map2.getOrDefault(ch, 0);
+            count = count+1;
+            map2.put(ch, count);
+        });
+        //reverse sort the map by value
+        map2.entrySet().stream().sorted(Comparator.comparing(Map.Entry::getValue, Comparator.reverseOrder())).findFirst().ifPresent(entry -> {
+            System.out.println("Max letter :: " + entry.getKey());
+            System.out.println("Max count :: " + entry.getValue());
+        });
 
         /*
         String Pool
