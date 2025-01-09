@@ -33,7 +33,7 @@ public class MapEx {
 		
 		Map<Integer,String> map = Map.of(1,"Mango", 2, "Apple", 3, "Banana"); //immutable map
 		System.out.println(map.getOrDefault(1, "Lemon"));//Mango
-		System.out.println(map.getOrDefault(12, "Lemon"));//Lemon
+		System.out.println(map.getOrDefault(12, "Lemon"));//Lemon //returns the defualt value , does not insert
 
 		var t = Stream.of("abc","def","iop").anyMatch(x -> x.equals("def"));
 		System.out.println(t); //true
