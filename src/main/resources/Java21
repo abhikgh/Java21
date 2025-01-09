@@ -837,7 +837,8 @@ Garbage Collection Types ::
 	ZGC outperform G1GC :: reduced garbage collection time, reduced latency, more throughput
 	java -XX:+UseZGC Application.java
 
-
+JVM Memory
+---------------------
 JVM Memory = Heap memory + Stack memory + Metaspace (+ Others(GC, JIT Compiler, Socket Buffer...))
 
 Heap memory - Objects, Arrays, String Pool
@@ -860,7 +861,7 @@ Heap memory - Objects, Arrays, String Pool
             -S0
             -S1
 
-Stack memory  - variables
+Stack memory  - local variables
 
             1. LIFO structure
             2. Every thread has its own stack
@@ -868,8 +869,7 @@ Stack memory  - variables
 Metaspace - Metadata, Classes, static data
 
             1. Can grow dynamically as against PermGen ( so no OutOfMemoryError)
-            2. This is why static keyword is accessible from anywhere because they are held in metaspace so every thread can reach it easily.
-
+            
 static data and Garbage Collection
 =======================================
 Static data lives throughout the life cycle of the class
