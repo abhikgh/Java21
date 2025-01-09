@@ -1048,15 +1048,22 @@ boolean allEmpsFollowRule = employeeList.stream()
 		    .orElse(false);
 System.out.println("allEmpsFollowRule :: " + allEmpsFollowRule);
 
+FunctionalInterface
+-----------------------------------------------------------
+1 abstract method (can have default,static, overridden methods)
+
 Lambda
 ------------------------------------------------------------
+Lambda is an anonymous function that implements FunctionalInterface
 
-//Functional nterface :: 1 abstract method (can have default,static, overridden methods)
-//Lambda is an anonymous function that implements FunctionalInterface
-//Lambda is a first-class function : 
+first-class function
+-----------------------------------
 	1. Function can be assigned to a variable 
 	2. Function can be passed to another function 
 	3. Function can be returned from another function
+
+Lambda is a first-class function
+
 	
 
 @FunctionalInterface
