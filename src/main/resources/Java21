@@ -837,6 +837,23 @@ Garbage Collection Types ::
 	ZGC outperform G1GC :: reduced garbage collection time, reduced latency, more throughput
 	java -XX:+UseZGC Application.java
 
+Mark and Sweep Algorithm 
+-----------------------------
+When a object is created its mark-bit=0
+Phase 1 - Mark : mark-bit = true (!) of all reachable objects 
+Phase 2 - Sweep : remove all the objects which has mar-bit=0 from Heap meomory and reset the mark-bit to 0 of live objects
+
+Generational Garbage Collection
+------------------------------------
+Generational Garbage Collection on the OLD gen
+  
+  YOUNG  gen                 
+
+    -Eden
+    -S0  and  S1
+
+  OLD	gen
+
 JVM Memory
 ---------------------
 JVM Memory = Heap memory + Stack memory + Metaspace (+ Others(GC, JIT Compiler, Socket Buffer...))
@@ -855,11 +872,12 @@ Heap memory - Objects, Arrays, String Pool
             Heap memory
             ----------------
 
-            YOUNG                       OLD
+            YOUNG gen                 
 
             -Eden
-            -S0
-            -S1
+            -S0  and  S1
+
+	    OLD	 gen
 
 Stack memory  - local variables
 
