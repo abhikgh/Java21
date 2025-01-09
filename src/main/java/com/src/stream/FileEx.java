@@ -105,6 +105,19 @@ public class FileEx {
         });
         System.out.println("Interim files written");
 
+	//read a file char-by-char as input stream
+	Path pathSt = Paths.get("src/main/resources/abc.txt");
+        File fileSt = path.toFile();
+        try (FileInputStream fis = new FileInputStream(fileSt)) {
+            int i;
+            while( (i = fis.read()) !=-1){
+                System.out.println((char)i);
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+
         //read the file line-by-line and check each line if the line contains the pattern and if so return the group
         Pattern pattern = Pattern.compile(".*(ipaddress:\\d{7}).*");
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader("src/main/resources/abcNew.txt"))) {
