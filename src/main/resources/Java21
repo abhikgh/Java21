@@ -624,6 +624,12 @@ Dependency Inversion Principle :  Interface abstraction layer between high-level
             }
      }
 
+//---------------------------------- Optional ------------------------------------//
+
+Optional.of         : when the value is non-nullable
+Optional.ofNullable : when the value is nullable
+orElse() 	    : always call
+orElseGet()	    : when the value is not present 
 
 
  // --------------------------- Remove if-else-if ----------------------------------//
@@ -1752,8 +1758,8 @@ Commonly used to create database connections to load the JDBC driver class.
 
 Parallel Stream
 ==================
-It leverages multicore processors by dividing the workload among multiple threads
-to improve performance and reduces the time required to process large datasets.
+Utlizes multicore processors by dividing the workload among multiple threads
+- improves performance and reduces latency
 
 Path pathFile = Paths.get("src/main/resources/abc.log");
 BigDecimal amountSumGTLakh = Files.lines(pathFile)
