@@ -339,6 +339,10 @@ public class Miscellaneous {
 
         // ------------------------------------ Flatmap -----------------------------------//
 
+        map()         vs                             flatmap()
+        ------------------------------------------------------------------------
+         produces a stream of value             produces a stream of streams
+
         //make individual items in the list a stream
 
         //Get all words
