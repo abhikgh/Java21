@@ -972,21 +972,21 @@ public interface Supplier <R> {
 }
 int a = list.stream().findAny().orElseGet(()->40);
 
-2. Function
-@FunctionalInterface
-public interface Function<T, R> {
-    R apply(T t);
-}
-Function<Integer, Integer> functionA = x -> x.intValue()*10;
-int y = functionA.apply(10);
-
-3. Consumer
+2. Consumer
 @FunctionalInterface
 public interface Consumer<T> {
     void accept(T t);
 }
 //Consumer<Integer> display = a -> System.out.println(a);
 //display.accept(10);
+
+3. Function
+@FunctionalInterface
+public interface Function<T, R> {
+    R apply(T t);
+}
+Function<Integer, Integer> functionA = x -> x.intValue()*10;
+int y = functionA.apply(10);
 
 4. Predicate
 @FunctionalInterface
@@ -1206,10 +1206,9 @@ public class LambdaEx {
 
 }
 
-Intermediate             vs                     Terminal           operations in Stream
+Intermediate             vs                     			Terminal           operations in Stream
 --------------------------------------------------------------------------------------------
--lazy
--returns Stream
+-returns Stream								-returns Integer/List/Boolean
 
 map()								        count()
 flatMap()							        collect()
