@@ -341,7 +341,7 @@ public class Miscellaneous {
 
         map()         vs                             flatmap()
         ------------------------------------------------------------------------
-         produces a stream of value             produces a stream of streams
+         produces a stream of values             flattening a stream of values into a stream
 
         //make individual items in the list a stream
 
