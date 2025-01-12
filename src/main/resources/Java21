@@ -629,7 +629,7 @@ Dependency Inversion Principle :  Interface abstraction layer between high-level
 Optional.of         : when the value is non-nullable
 Optional.ofNullable : when the value is nullable
 orElse() 	    : always call
-orElseGet()	    : when the value is not present 
+orElseGet()	    : when the value is not present
 
 
  // --------------------------- Remove if-else-if ----------------------------------//
@@ -818,67 +818,16 @@ public class InnerEx {
 3. Is any library used that was not needed OR an library thatcould have been used
 4. SOLID principles
 
-Java Memory Management
-===============================
-
-Physical memory is the RAM that our hardware provides
-Operating system allocates virtual memory space for each application.
-Virtual memory is stored in physical memory, and the OS is responsible for maintaining the mapping between the two. 
-
-multi-mapping
-				Physical memory
-
-	Virtual memory 1 	Virtual memory 2	Virtual memory 3
-
-Garbage Collection
----------------------
-Garbage Collection is freeing up memory by deleting objects that do not have a live reference. (live reference =  objects can be reached from the application through a chain of references )
-Garbage Collection Algorithm :: Mark and Sweep
-Garbage Collection Types ::
-1. Serial Garbage Collector -  runs on a single thread
-2. Parallel Garbage Collector - runs on multiple threads, but freezes the application
-3. G1 Garbage Collector - divides the Heap area into equal-sized heap regions, Mark and Sweep from the area that has most garbage(java -XX:+UseG1GC -jar Application.java)
-			  default
-4. Z Garbage Collector - divides the Heap area into Unequal-sized heap regions, ZGC performs all expensive work concurrently, without stopping the application for more than 10 ms
-	ZGC outperform G1GC :: reduced garbage collection time, reduced latency, more throughput
-	java -XX:+UseZGC Application.java
-
-Mark and Sweep Algorithm 
------------------------------
-When a object is created its mark-bit=0
-Phase 1 - Mark : mark-bit = true (!) of all reachable objects 
-Phase 2 - Sweep : remove all the objects which has mar-bit=0 from Heap meomory and reset the mark-bit to 0 of live objects
-
-Generational Garbage Collection
-------------------------------------
-Generational Garbage Collection on the OLD gen
-  
-  YOUNG  gen                 
-
-    -Eden
-    -S0  and  S1
-
-  OLD	gen
-
-JVM Memory
----------------------
-JVM Memory = Heap memory + Stack memory + Metaspace (+ Others(GC, JIT Compiler, Socket Buffer...))
+JVM Memory Management
+----------------------------------
+JVM Memory = Heap memory + Stack memory + Metaspace
 
 Heap memory - Objects, Arrays, String Pool
 
-	        1.        By default, the maximum heap size is 64 Mb.
+	         -Xms: Initial Heap Size (e.g., -Xms512m)
+             -Xmx: Maximum Heap Size (e.g., -Xmx2g) (default 64 Mb)
 
-	                     -Xms<size> - to set the initial Java Heap memory
-                         -Xmx<size> - to set the maximum Java Heap memory
-
-	        2.  Managed by the Garbage Collector
-                3.  Threads access the Heap
-                4.  If objects are moved more than 5 times , those objects are placed in old generation
-
-            Heap memory
-            ----------------
-
-            YOUNG gen                 
+            YOUNG gen
 
             -Eden
             -S0  and  S1
@@ -893,7 +842,42 @@ Stack memory  - local variables
 Metaspace - Metadata, Classes, static data
 
             1. Can grow dynamically as against PermGen ( so no OutOfMemoryError)
-            
+
+
+Garbage Collection
+---------------------
+Garbage Collection is freeing up memory by deleting objects that do not have a live reference. (live reference =  objects can be reached from the application through a chain of references )
+Garbage Collection Algorithm :: Mark and Sweep
+Garbage Collection Types ::
+1. Serial Garbage Collector -  runs on a single thread
+2. Parallel Garbage Collector - runs on multiple threads, but freezes the application
+3. G1 Garbage Collector - divides the Heap area into equal-sized heap regions
+                             Mark and Sweep from the area that has most garbage
+                             java -XX:+UseG1GC -jar Application.java
+                             default
+4. Z Garbage Collector - divides the Heap area into Unequal-sized heap regions,
+                            ZGC performs all expensive work concurrently, without stopping the application for more than 10 ms
+                            java -XX:+UseZGC -jar Application.java
+   	                     ZGC outperform G1GC :: reduced garbage collection time, reduced latency, more throughput
+
+Mark and Sweep Algorithm
+-----------------------------
+When a object is created its mark-bit=0
+Phase 1 - Mark : mark-bit = true (1) of all reachable objects
+Phase 2 - Sweep : remove all the objects which has mar-bit=0 from Heap meomory and reset the mark-bit to 0 of live objects
+
+Generational Garbage Collection
+------------------------------------
+Generational Garbage Collection on the OLD gen
+
+  YOUNG  gen
+
+    -Eden
+    -S0  and  S1
+
+  OLD	gen
+
+
 static data and Garbage Collection
 =======================================
 Static data lives throughout the life cycle of the class
@@ -901,48 +885,11 @@ Static variables can cause memory leaks if they hold references to objects that 
 
 Detect Thread dumps
 -----------------------
-jconsole -  inspect the stack trace of each thread
+JConsole -  inspect the stack trace of each thread
 
 Detect memory leaks
 -------------------------
 JProfiler - monitor memory allocation and garbage collection in real-time
-
-Memory Management
-========================
-
-# dev.jvm.conf
-# Override Application Property
-SERVER_TOMCAT_ACCEPT_COUNT=3
-SERVER_TOMCAT_MAX_CONNECTIONS=3
-SERVER_TOMCAT_THREADS_MAX=3
-SERVER_TOMCAT_THREADS_MIN_SPARE=1
-SPRING_MAIN_LAZY_INITIALIZATION=true
-
-# Set JVM Parameters
-JAVA_TOOL_OPTIONS=-XX:+UseSerialGC -Xss512k -XX:MaxRAM=200m
-
-# docker-compose.yml
-services:
-  service1:
-    image: service1:dev
-    env_file:
-      - dev.jvm.conf
-
-SERVER_TOMCAT_ACCEPT_COUNT: maximum queue length for incoming connection requests when all possible request processing
-                            threads are in use (100)
-
-SERVER_TOMCAT_MAX_CONNECTIONS: maximum number of connections that can be handled concurrently by the Tomcat server (8192)
-
-SERVER_TOMCAT_THREADS_MAX: maximum number of request processing threads that the Tomcat server will create (200)
-
-SERVER_TOMCAT_THREADS_MIN_SPARE: minimum number of spare threads (10)
-
-SPRING_MAIN_LAZY_INITIALIZATION: beans will be initialized lazily (true)
-
-JAVA_TOOL_OPTIONS :
-        -XX:+UseSerialGC: inline GC
-        -Xss512k: threads stack memory = 512KB
-        -XX:MaxRAM=200m: maximum memory usage = 200MiB
 
 Memory Leak
 =========================
@@ -1070,7 +1017,7 @@ first-class function
 
 Lambda is a first-class function
 
-	
+
 
 @FunctionalInterface
 interface MathsOperation {
