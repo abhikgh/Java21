@@ -339,9 +339,12 @@ public class Miscellaneous {
 
         // ------------------------------------ Flatmap -----------------------------------//
 
+        /*
         map()         vs                             flatmap()
         ------------------------------------------------------------------------
          produces a stream of values             flattening a stream of values into a stream
+
+         */
 
         //make individual items in the list a stream
 

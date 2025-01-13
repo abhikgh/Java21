@@ -143,7 +143,7 @@ public class ThreadEx {
         //AtomicInteger replaces synchronized
         AtomicInteger count = new AtomicInteger(0);
         for (int i = 0; i < 1000; i++) {
-           count.getAndIncrement();
+           count.incrementAndGet();
         }
         System.out.println("Final count (with AtomicInteger): " + count.get());
 
@@ -162,6 +162,8 @@ public class ThreadEx {
 
         t3.start();
         t3.join();
+
+
 
 
         //Virtual Threads

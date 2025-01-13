@@ -1,13 +1,12 @@
 package com.src.stream;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.src.model.OrderInput;
 import com.src.model.Sport;
-import com.src.model.Sports;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
@@ -77,7 +76,7 @@ public class FileEx {
         //Read all jsons in a folder
         ObjectMapper objectMapper = new ObjectMapper();
         Path pathJsonFilesInput = Paths.get("src/main/resources/json/input");
-        Map<String,OrderInput> orderInputMap = new LinkedHashMap<>();
+        Map<String, OrderInput> orderInputMap = new LinkedHashMap<>();
         Files.walk(pathJsonFilesInput)
                 .filter(path2 -> path2.toFile().isFile() && path2.getFileName().toString().endsWith(".json"))
                 .map(Path::toFile)

@@ -15,10 +15,14 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.StringJoiner;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 
@@ -354,10 +358,10 @@ public class StringEx {
 
         String input = "aabbbccccddddd";
         Map<Character, Integer> map2 = new HashMap<>();
+        AtomicInteger countLet = new AtomicInteger();
         input.chars().mapToObj(i -> (char)i).forEach(ch -> {
-            int count = map2.getOrDefault(ch, 0);
-            count = count+1;
-            map2.put(ch, count);
+            countLet.set(map2.getOrDefault(ch, 0));
+            map2.put(ch, countLet.incrementAndGet());
         });
         //reverse sort the map by value
         map2.entrySet().stream().sorted(Comparator.comparing(Map.Entry::getValue, Comparator.reverseOrder())).findFirst().ifPresent(entry -> {
