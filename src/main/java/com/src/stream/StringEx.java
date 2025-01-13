@@ -369,6 +369,16 @@ public class StringEx {
             System.out.println("Max count :: " + entry.getValue());
         });
 
+        System.out.println("abab n times...");
+        int n = 70;
+        String message = "a";
+        while (message.length() <=n){
+            char lastChar = message.charAt(message.length()-1);
+            char nextChar = lastChar == 'a'?'b':'a';
+            message = message.concat(String.valueOf(nextChar));
+        }
+        System.out.println(message);
+
         /*
         String Pool
         =======================

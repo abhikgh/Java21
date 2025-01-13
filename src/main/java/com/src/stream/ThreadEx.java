@@ -172,39 +172,6 @@ public class ThreadEx {
             }
         };
 
-        Thread thread1RELRead = new Thread(){
-            @Override
-            public void run() {
-                for(int i =0;i<3;i++) {
-                    reentrantReadWriteLock.readLock().lock();
-                    System.out.println(message);
-                    reentrantReadWriteLock.readLock().unlock();
-                }
-            }
-        };
-
-        Thread thread2RELWriteA = new Thread(){
-            @Override
-            public void run() {
-                for(int i =0;i<3;i++) {
-                    reentrantReadWriteLock.writeLock().lock();
-                    message = message.concat("a");
-                    reentrantReadWriteLock.writeLock().unlock();
-                }
-            }
-        };
-
-        Thread thread2RELWriteB = new Thread(){
-            @Override
-            public void run() {
-                for(int i =0;i<3;i++) {
-                    reentrantReadWriteLock.writeLock().lock();
-                    message = message.concat("b");
-                    reentrantReadWriteLock.writeLock().unlock();
-                }
-            }
-        };
-
         //AtomicInteger replaces synchronized
         AtomicInteger count = new AtomicInteger(0);
         for (int i = 0; i < 1000; i++) {
@@ -248,10 +215,6 @@ public class ThreadEx {
         thread1.join();
         thread2.join();
         thread3.join();*/
-
-        thread1RELRead.start();
-        thread2RELWriteA.start();
-        thread2RELWriteB.start();
 
 
 
