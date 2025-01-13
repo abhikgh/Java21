@@ -1626,6 +1626,21 @@ Caching
 Java Integer Cache
 =======================
 -128 to 127 numbers are cached
+new - always creates a object
+Integer.valueOf - checks whethere the integer is in caching range - if yes then doesnt create new object
+
+Integer a = new Integer("127");
+Integer b = new Integer("127");
+System.out.println(a == b);  // false
+
+Integer c = Integer.valueOf("127");
+Integer d = Integer.valueOf("127");
+System.out.println(c == d);  // true
+
+Integer e = Integer.valueOf("128");
+Integer f = Integer.valueOf("128");
+System.out.println(e == f);  // false
+
 Integer a = 128;
 Integer b = 128;
 System.out.println(a == b); // false
