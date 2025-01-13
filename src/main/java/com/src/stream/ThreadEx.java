@@ -8,6 +8,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 //Thread implements Runnable
 //Runnable is a FunctionalInterface - run()
@@ -48,6 +49,7 @@ public class ThreadEx {
 
 
     public static final ThreadLocal<Book> threadLocalBook = new ThreadLocal<>();
+    private static String message = "a";
 
     public static void main(String[] args) throws InterruptedException {
         
@@ -80,6 +82,9 @@ public class ThreadEx {
             }
         };
         threadAnonymous.start();
+
+        ReentrantReadWriteLock reentrantReadWriteLock = new ReentrantReadWriteLock(true);
+
 
         AtomicBoolean isFound = new AtomicBoolean(false);
         Thread t1 = new Thread() {
@@ -140,6 +145,66 @@ public class ThreadEx {
 
         };
 
+        Thread thread1 = new Thread(){
+           @Override
+            public void run() {
+               for(int i =0;i<3;i++) {
+                   System.out.println("AAA");
+               }
+            }
+        };
+
+        Thread thread2 = new Thread(){
+            @Override
+            public void run() {
+                for(int i =0;i<3;i++) {
+                    System.out.println("BBB");
+                }
+            }
+        };
+
+        Thread thread3 = new Thread(){
+            @Override
+            public void run() {
+                for(int i =0;i<3;i++) {
+                System.out.println("CCC");
+                }
+            }
+        };
+
+        Thread thread1RELRead = new Thread(){
+            @Override
+            public void run() {
+                for(int i =0;i<3;i++) {
+                    reentrantReadWriteLock.readLock().lock();
+                    System.out.println(message);
+                    reentrantReadWriteLock.readLock().unlock();
+                }
+            }
+        };
+
+        Thread thread2RELWriteA = new Thread(){
+            @Override
+            public void run() {
+                for(int i =0;i<3;i++) {
+                    reentrantReadWriteLock.writeLock().lock();
+                    message = message.concat("a");
+                    reentrantReadWriteLock.writeLock().unlock();
+                }
+            }
+        };
+
+        Thread thread2RELWriteB = new Thread(){
+            @Override
+            public void run() {
+                for(int i =0;i<3;i++) {
+                    reentrantReadWriteLock.writeLock().lock();
+                    message = message.concat("b");
+                    reentrantReadWriteLock.writeLock().unlock();
+                }
+            }
+        };
+
         //AtomicInteger replaces synchronized
         AtomicInteger count = new AtomicInteger(0);
         for (int i = 0; i < 1000; i++) {
@@ -163,6 +228,30 @@ public class ThreadEx {
         t3.start();
         t3.join();
 
+        //run one thread after another, thread1, thread2, thread3
+        thread1.start();
+        thread1.join();
+
+        thread2.start();
+        thread2.join();
+
+        thread3.start();
+        thread3.join();
+
+        System.out.println("***Done***");
+
+        //no guarantee of order
+        /*thread1.start();
+        thread2.start();
+        thread3.start();
+
+        thread1.join();
+        thread2.join();
+        thread3.join();*/
+
+        thread1RELRead.start();
+        thread2RELWriteA.start();
+        thread2RELWriteB.start();
 
 
 
