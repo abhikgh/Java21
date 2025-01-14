@@ -1732,7 +1732,7 @@ System.out.println("amountSumGTLakh :: " + amountSumGTLakh); //280000
 
 ----------------------------------------------------------------------------------
 
-How do you ensure thread safety in a multi-threaded environment?
+Build Thread-Safe Applications
 -------------------------------------------------------------------
 
 Key Principles of Thread Safety :
@@ -1746,10 +1746,48 @@ Common Problems in Multi-threading :
     Livelocks: Threads keep changing their states in response to each other but do no productive work.
     Starvation: A thread is perpetually denied access to resources.
 
-Race Condition
-------------------
+1. Critical section locking
+-----------------------------------
 
-//Semaphore + JOIN to prevent Race Condition
+public synchronized void transfer(Account from, Account to, int amount) {
+    from.withdraw(amount);
+    to.deposit(amount);
+}
+
+public void transfer(Account from, Account to, int amount) {
+    synchronized (from) {
+        from.withdraw(amount);
+    }
+    synchronized (to) {
+        to.deposit(amount);
+    }
+}
+
+2. ReentrantReadWriteLock
+------------------------------------
+for High-Read, Low-Write Scenarios
+
+public class ReentrantReadWriteLockExample {
+
+    private static final ReentrantReadWriteLock reEntrantRWLock = new ReentrantReadWriteLock(true);
+
+     public static void main(String[] args) {
+            reEntrantRWLock.writeLock().lock(); // no other threads can enter
+            message = message.concat("a");
+            reEntrantRWLock.writeLock().unlock();
+
+            reEntrantRWLock.readLock().lock();
+            System.out.println("Message is " + message);  //other threads can get readLock provided they dont have writeLock
+            reEntrantRWLock.readLock().unlock();
+
+     }
+
+}
+
+3. Avoid Race Condition (2/more threads competing to update the same resource)
+-----------------------------------------------------------------------
+
+//Semaphore + JOIN
 
 @AllArgsConstructor
 @Getter
@@ -1809,10 +1847,12 @@ public class RaceConditionEx {
     }
 }
 
-Deadlock
------------
 
-//synchronized + join to prevent Deadlock
+
+4. Avoid Deadlock (2/more threads block each other by holding resources that the others need)
+--------------------------------------------------------------------------------------
+
+//synchronized + JOIN
 
 public class DeadlockEx {
 
@@ -1871,8 +1911,8 @@ public class DeadlockEx {
 
 }
 
-Atomic variables
---------------------
+5. Atomic variables (lock-free)
+------------------------------------
 
 //AtomicInteger replaces synchronized
 
@@ -1881,6 +1921,19 @@ for (int i = 0; i < 1000; i++) {
    count.getAndIncrement();
 }
 System.out.println("Final count (with AtomicInteger): " + count.get());
+
+
+6. ThreadLocal (variables which are local to a thread, child class cannot access)
+------------------------------------------------------------------------------------
+
+public static final ThreadLocal<Book> threadLocalBook = new ThreadLocal<>();
+
+threadLocalBook.set(new Book("My First Book", "First Author", 1984, "0395489318", 230));
+Book book = threadLocalBook.get();
+
+
+
+----------------------------------------------------------------------------------
 
 ReentrantLock
 --------------------

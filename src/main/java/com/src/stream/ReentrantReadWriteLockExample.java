@@ -6,7 +6,6 @@ public class ReentrantReadWriteLockExample {
 
     private static final ReentrantReadWriteLock reEntrantRWLock = new ReentrantReadWriteLock(true);
 
-    // Initially the string contains only 1 character
     private static String message = "a";
 
     // Main driver method
