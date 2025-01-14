@@ -1594,19 +1594,6 @@ Advantages
 			int i = Integer.parseInt("345");
 			double d = Double.parseDouble("123.456");
 			byte b = Byte.parseByte("127");	
-		
-		
-AtomicInteger
-AtomicBoolean
-AtomicLong
-AtomicReference<String>
-AtomicReference<Double> atomicReference = new AtomicReference<>((double)0);
-    - BinaryOperator<Double> binaryOperator = (u,v) -> u+v;
-      atomicReference.accumulateAndGet(costOfItem, binaryOperator);
-AtomicReference<BigDecimal> highestSavingsAmount = new AtomicReference<>(BigDecimal.ZERO);
-    - loop -> {
-         highestSavingsAmount.getAndAccumulate(bigDecimal, BigDecimal::add);
-      }
 
 
 Class and Interface design patterns
@@ -1921,6 +1908,18 @@ for (int i = 0; i < 1000; i++) {
    count.getAndIncrement();
 }
 System.out.println("Final count (with AtomicInteger): " + count.get());
+
+AtomicInteger
+AtomicBoolean
+AtomicLong
+AtomicReference<String>
+AtomicReference<Double> atomicReference = new AtomicReference<>((double)0);
+    - BinaryOperator<Double> binaryOperator = (u,v) -> u+v;
+      atomicReference.accumulateAndGet(costOfItem, binaryOperator);
+AtomicReference<BigDecimal> highestSavingsAmount = new AtomicReference<>(BigDecimal.ZERO);
+    - loop -> {
+         highestSavingsAmount.getAndAccumulate(bigDecimal, BigDecimal::add);
+      }
 
 
 6. ThreadLocal (variables which are local to a thread, child class cannot access)
