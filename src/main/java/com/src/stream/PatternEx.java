@@ -3,8 +3,11 @@ package com.src.stream;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.regex.Matcher;
@@ -38,7 +41,7 @@ public class PatternEx {
 
     public static void main(String[] args) throws IOException {
 
-        //1. if(pattern.matcher(input).matches()) - checks if pattern Fully Matches the string
+        //1. if(pattern.matcher(input).matches()) - checks if pattern (Fully Matches) the string
 
         String input = "lkd22sA@3";
         Pattern pattern = Pattern.compile("[0-9a-zA-Z!@#]{4,10}");
@@ -77,14 +80,14 @@ public class PatternEx {
         if (pattern.matcher(input).matches())
             System.out.println("input matches pattern 5");
 
-        //2. if(pattern.asPredicate().test(input)) - checks if pattern Is Found in the String
+        //2. if(pattern.asPredicate().test(input)) - checks if pattern (Is Found) in the String
 
         input = "aaeebbeecceeddee3223ddew23ddedsd";
         pattern = Pattern.compile("\\d{4}[a-z]{4}\\d{2}");
         if (pattern.asPredicate().test(input))
             System.out.println("input contains pattern 1"); //true
 
-        //3. pattern.asMatchPredicate().test(input) :: check if pattern Fully Matches the string
+        //3. pattern.asMatchPredicate().test(input) :: check if pattern (Fully Matches) the string
 
         input = "aaeebbeecceeddee3223ddew23ddedsd";
         pattern = Pattern.compile("\\d{4}[a-z]{4}\\d{2}");
@@ -102,11 +105,21 @@ public class PatternEx {
         //check if input String contains the pattern and get the group
         input = "93939skksk3000202kd23-23-34ipAddress:1203023fkfkfkkfk";
         pattern = Pattern.compile(".*(ipAddress:\\d{7}).*");
-        if (pattern.asMatchPredicate().test(input)) {
+        if (pattern.asPredicate().test(input)) {
             System.out.println("input contains ipAddress");
             Matcher matcher = pattern.matcher(input);
             while (matcher.find()) {
                 System.out.println("ipAddress is :: " + matcher.group(1).split(":")[1]);
+            }
+        }
+
+        input = "93939skksk3000202kd23-23-34ipAddress:1203023fkfkfkkfk";
+        pattern = Pattern.compile("(ipAddress:\\d{7})");
+        if (pattern.asPredicate().test(input)) {   //asMatchPredicate -false
+            System.out.println("input contains ipAddress 2");
+            Matcher matcher = pattern.matcher(input);
+            while (matcher.find()) {
+                System.out.println("ipAddress 2 is :: " + matcher.group(1).split(":")[1]);
             }
         }
 
@@ -132,8 +145,10 @@ public class PatternEx {
              System.out.println("input contains pattern 4"); //true
 
         //read the file line-by-line and check each line if the line contains the pattern and if so return the group
+        Path path = Paths.get("src/main/resources/abcNew.txt");
+        File file = path.toFile();
         pattern = Pattern.compile(".*(ipaddress:\\d{7}).*");
-        try (BufferedReader bufferedReader = new BufferedReader(new FileReader("src/main/resources/abcNew.txt"))) {
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file))) {
             String line = bufferedReader.readLine();
             while (StringUtils.isNotBlank(line)) {
                 System.out.println("Line :: " + line);
@@ -153,8 +168,10 @@ public class PatternEx {
         }
 
         //read the file line-by-line and check each line if the line contains the pattern and if so return the group
+        path = Paths.get("src/main/resources/applesNew.txt");
+        file = path.toFile();
         pattern = Pattern.compile(".*(apple=\\w+\\s).*");
-        try (BufferedReader bufferedReader = new BufferedReader(new FileReader("src/main/resources/applesNew.txt"))) {
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file))) {
             String line = bufferedReader.readLine();
             while (StringUtils.isNotBlank(line)) {
                 if (pattern.asMatchPredicate().test(line)) {
@@ -218,16 +235,22 @@ public class PatternEx {
         pattern = Pattern.compile("<>(.*)</>");
         matcher = pattern.matcher(input);
         while (matcher.find()) {
-            System.out.println("Greedy match :: " + matcher.group(1)); // kdkdkdkd</><>jjrjdjdj</><>ridjdjd
+            System.out.println("Greedy match :: " + matcher.group(1));
         }
+        //Greedy match :: kdkdkdkd</><>jjrjdjdj</><>ridjdjd
 
         //Lazy match (Shortest match) (.*?)
         input = "<>kdkdkdkd</><>jjrjdjdj</><>ridjdjd</>";
         pattern = Pattern.compile("<>(.*?)</>");
         matcher = pattern.matcher(input);
         while (matcher.find()) {
-            System.out.println("Lazy match :: " + matcher.group(1)); //kdkdkdkd jjrjdjdj ridjdjd
+            System.out.println("Lazy match :: " + matcher.group(1));
         }
+        /*
+            Lazy match :: kdkdkdkd
+            Lazy match :: jjrjdjdj
+            Lazy match :: ridjdjd
+         */
 
         //replace occurence
         input = "{\"familyId\":\"fam123\",\"customerId\": \"XXXX,John\",\"customerName\":\"cusName123\",\"customerType\":\"XXXX,Regular\"}";

@@ -1346,7 +1346,8 @@ Cloning
 ===============
 
 Shallow clone :: referenced Object is shared between clones    (Clone)
-Deep clone    :: referenced Object is exclusive between clones (Clone + set + Clone)
+Deep clone    :: referenced Object is exclusive between clones (Clone + set + Clone
+
 
 @Getter
 @Setter
