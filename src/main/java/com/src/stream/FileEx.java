@@ -47,7 +47,7 @@ public class FileEx {
 
         Path path = Paths.get("src/main/resources/abc.txt");
 
-        //Read file
+        //Read full file
         String data = Files.readString(path);
         System.out.println("File contents :: ");
         System.out.println(data);
@@ -57,7 +57,6 @@ public class FileEx {
         Files.deleteIfExists(path);
         Files.createFile(path);
 
-
         //Write to file
         Files.writeString(path, "Sample text again", StandardOpenOption.APPEND);
 
@@ -66,11 +65,11 @@ public class FileEx {
         String directory = "D:\\workspaceI";
         System.out.println("Reading folders---------");
         Files.walk(Paths.get(directory))
-                .filter(Files::isDirectory)
+                .filter(path1 -> path1.toFile().isDirectory())
                 .forEach(c -> System.out.println(c.getFileName()));
         System.out.println("Reading files---------");
         Files.walk(Paths.get(directory))
-                .filter(Files::isRegularFile)
+                .filter(path1 -> path1.toFile().isFile())
                 .forEach(x -> System.out.println(x.getFileName()));
 
         //Read all jsons in a folder
@@ -104,8 +103,8 @@ public class FileEx {
         });
         System.out.println("Interim files written");
 
-	//read a file char-by-char as input stream
-	Path pathSt = Paths.get("src/main/resources/abc.txt");
+	    //read a file char-by-char as input stream
+	    Path pathSt = Paths.get("src/main/resources/abc.txt");
         File fileSt = path.toFile();
         try (FileInputStream fis = new FileInputStream(fileSt)) {
             int i;
@@ -118,8 +117,10 @@ public class FileEx {
         }
 
         //read the file line-by-line and check each line if the line contains the pattern and if so return the group
+        Path path2 = Paths.get("src/main/resources/abcNew.txt");
+        File file2 = path2.toFile();
         Pattern pattern = Pattern.compile(".*(ipaddress:\\d{7}).*");
-        try (BufferedReader bufferedReader = new BufferedReader(new FileReader("src/main/resources/abcNew.txt"))) {
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file2))) {
             String line = bufferedReader.readLine();
             while (Objects.nonNull(line)) {
                 boolean matches = pattern.asMatchPredicate().test(line);
@@ -137,8 +138,10 @@ public class FileEx {
         }
 
         //read the file line-by-line and check each line if the line contains the pattern and if so return the group
+        Path path3 = Paths.get("src/main/resources/abcNew.txt");
+        File file3 = path3.toFile();
         pattern = Pattern.compile(".*(apple=\\w+\\s).*");
-        try (BufferedReader bufferedReader = new BufferedReader(new FileReader("src/main/resources/applesNew.txt"))) {
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file3))) {
             String line = bufferedReader.readLine();
             while(Objects.nonNull(line)){
                 if(pattern.asMatchPredicate().test(line)){
