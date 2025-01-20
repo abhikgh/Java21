@@ -3,7 +3,6 @@ package com.src.stream;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.util.JSONPObject;
-import com.google.gson.JsonObject;
 import com.src.model.NewPerson;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -62,47 +61,53 @@ public class StringEx {
 
         //----String concat starts----------
         List<String> students = Arrays.asList("Tom", "Bob", "Victor");
+
         //Collectors.joining
         String concatenatedString = students.stream().collect(Collectors.joining(""));
         System.out.println("concatenatedString :: " + concatenatedString);
-        concatenatedString="";
 
         //string +
-        for(String s : students){
-            concatenatedString = concatenatedString+s;
+        //not recommended , many new strings are created
+        concatenatedString = "";
+        for (String s : students) {
+            concatenatedString = concatenatedString + s;
         }
         System.out.println("concatenatedString :: " + concatenatedString);
-        concatenatedString="";
 
         //string.concat
-        for(String s : students){
+        concatenatedString = "";
+        for (String s : students) {
             concatenatedString = concatenatedString.concat(s);
         }
         System.out.println("concatenatedString :: " + concatenatedString);
-        concatenatedString="";
+
+        String str00 = "hello";
+        str00.concat("world");
+        System.out.println(str00); //Hello
 
         //stringBuilder.append
+        concatenatedString = "";
         StringBuilder stringBuilder = new StringBuilder();
-        for(String s : students){
+        for (String s : students) {
             stringBuilder = stringBuilder.append(s);
         }
-        concatenatedString= stringBuilder.toString();
+        concatenatedString = stringBuilder.toString();
         System.out.println("concatenatedString :: " + concatenatedString);
-        concatenatedString="";
 
         //stringJoiner3.add
-        StringJoiner stringJoiner3 = new StringJoiner("","","");
-        for(String s : students){
+        concatenatedString = "";
+        StringJoiner stringJoiner3 = new StringJoiner("", "", "");
+        for (String s : students) {
             stringJoiner3 = stringJoiner3.add(s);
         }
         concatenatedString = stringJoiner3.toString();
         System.out.println("concatenatedString :: " + concatenatedString);
-        concatenatedString="";
+        concatenatedString = "";
 
         //String.join("",)
-        concatenatedString = String.join("",students);
+        concatenatedString = String.join("", students);
         System.out.println("concatenatedString :: " + concatenatedString);
-        concatenatedString="";
+        concatenatedString = "";
 
         //----String concat ends----------
 
@@ -148,13 +153,26 @@ public class StringEx {
 
         //Count of words in a line
         str = "Welcome to Java Hello World";
-        long noOfWordsInLine = Arrays.asList(str.split(" ")).stream().count();
+        long noOfWordsInLine = Arrays.stream(str.split(" ")).count();
         System.out.println("noOfWordsInLine :: " + noOfWordsInLine);
 
-        //String :: strip
+        //String :: trim -> removes all leading and trailing character whose ASCII value is less than or equal to 32 (‘U+0020’ or space).
+        strTest = "   Hi   ";
+        ans = strTest.trim();
+        System.out.println("after trim :: " + ans); //Hi
+
+        //String :: strip -> removes all leading and trailing Unicode whitespace.
         strTest = "   Hi   ";
         ans = strTest.strip();
         System.out.println("after strip :: " + ans); //Hi
+
+        String sTest = "test string\u205F";
+
+        String trimmed = sTest.trim();
+        System.out.printf("'%s'%n", trimmed);//'test string '
+
+        String striped = sTest.strip();
+        System.out.printf("'%s'%n", striped);//'test string'
 
         //String :: repeat
         String abc = "abc";
@@ -209,18 +227,18 @@ public class StringEx {
         System.out.println("substringBetween :: " + ans);  //abc123
 
         //StringUtils :: replace
-        inputStr="John plays and John sings and john dances";
-        ans = StringUtils.replace(inputStr,"John","Mary");
+        inputStr = "John plays and John sings and john dances";
+        ans = StringUtils.replace(inputStr, "John", "Mary");
         System.out.println("StringUtils replace :: " + ans);
 
         //StringUtils :: replace each
-        inputStr="John plays and John sings and john dances and sings well";
-        ans = StringUtils.replaceEach(inputStr,new String[]{"John", "sings"},new String[]{"Mary","dances"});
+        inputStr = "John plays and John sings and john dances and sings well";
+        ans = StringUtils.replaceEach(inputStr, new String[]{"John", "sings"}, new String[]{"Mary", "dances"});
         System.out.println("StringUtils replace each:: " + ans);
 
         //StringUtils :: replace each case-insensitive
-        inputStr="John plays and John sings and john dances";
-        ans = StringUtils.replaceIgnoreCase(inputStr,"John","Mary");
+        inputStr = "John plays and John sings and john dances";
+        ans = StringUtils.replaceIgnoreCase(inputStr, "John", "Mary");
         System.out.println("StringUtils replace each case-insensitive:: " + ans);
 
         //substring
@@ -230,7 +248,7 @@ public class StringEx {
 
         //switch-case 1
         inputStr = "test";
-        ans =  switch (inputStr.toUpperCase()) {
+        ans = switch (inputStr.toUpperCase()) {
             case null -> throw new RuntimeException("null input");
             case "XYZ", "ABC" -> inputStr;
             case "TEST" -> "testing";
@@ -250,7 +268,7 @@ public class StringEx {
 
         //switch-case-when
         final String inputStr2 = "yes";
-        switch(inputStr2){
+        switch (inputStr2) {
             case null -> throw new RuntimeException("its null value");
             case String s when "Yes".equalsIgnoreCase(inputStr2) -> ans = "Yes its a yes";
             case String s when "No".equalsIgnoreCase(inputStr2) -> ans = "No its a no";
@@ -259,15 +277,15 @@ public class StringEx {
         System.out.println("switch-case-when :: " + ans);  //Yes its a yes
 
         // Pattern Matching with switch (switch + instanceof)
-        Object object = new String("abc");
-        String someOutput =  switch (object) {
+        Object object = "abc";
+        String someOutput = switch (object) {
             case null -> throw new RuntimeException("its null value");
-            case String s      -> s;
+            case String s -> s;
             case JSONPObject json -> json.toString();
-            case BigDecimal bd   -> bd.toPlainString();
-            case Integer i       -> Integer.toString(i);
-            case LocalDate ld    -> ld.format(DateTimeFormatter.ISO_LOCAL_DATE);
-            default              -> "n/a";
+            case BigDecimal bd -> bd.toPlainString();
+            case Integer i -> Integer.toString(i);
+            case LocalDate ld -> ld.format(DateTimeFormatter.ISO_LOCAL_DATE);
+            default -> "n/a";
         };
         System.out.println("Pattern matching with switch :: " + someOutput); //abc
 
@@ -328,7 +346,7 @@ public class StringEx {
         //after Record pattern
         System.out.println("after Record pattern");
         NewPerson newPerson2 = new NewPerson("John", "little avenue");
-        if(newPerson2 instanceof NewPerson(String name, String address)){
+        if (newPerson2 instanceof NewPerson(String name, String address)) {
             System.out.println(name);
             System.out.println(address);
         }
@@ -364,7 +382,7 @@ public class StringEx {
         String input = "aabbbccccddddd";
         Map<Character, Integer> map2 = new HashMap<>();
         AtomicInteger countLet = new AtomicInteger();
-        input.chars().mapToObj(i -> (char)i).forEach(ch -> {
+        input.chars().mapToObj(i -> (char) i).forEach(ch -> {
             countLet.set(map2.getOrDefault(ch, 0));
             map2.put(ch, countLet.incrementAndGet());
         });
@@ -377,12 +395,23 @@ public class StringEx {
         System.out.println("abab n times...");
         int n = 70;
         String message = "a";
-        while (message.length() <=n){
-            char lastChar = message.charAt(message.length()-1);
-            char nextChar = lastChar == 'a'?'b':'a';
+        while (message.length() <= n) {
+            char lastChar = message.charAt(message.length() - 1);
+            char nextChar = lastChar == 'a' ? 'b' : 'a';
             message = message.concat(String.valueOf(nextChar));
         }
         System.out.println(message);
+
+        /*
+            str1.compareTo(str2)
+             = 0  Strings are equal.
+             < 0  str1 comes before str2
+             > 0  str1 comes after str2
+         */
+        String stringTest1 = "ajdjdjdj";
+        String stringTest2 = "fkfjfjfjf";
+        int compareTo = stringTest1.compareTo(stringTest2);
+        System.out.println("compareTo :: " + compareTo);
 
         /*
         String Pool
@@ -393,6 +422,8 @@ public class StringEx {
         If the string does not exist in the pool, then String is placed in pool and its reference is returned.
 
         String s = "abc";   //recommended , s is String literal which goes to String Pool
+
+        //intern
         String s = new String("abc"); //here 2 objects are created , 1 in Heap and 1 in String Pool.
                                 s refers to the Heap object,
                                 to have s refer to the String Pool object use s.intern()
@@ -408,11 +439,11 @@ public class StringEx {
         String s2 = "abc";
         System.out.println(s == s2);  //true
 
-        String s3 = new String("abc");
-        System.out.println(s ==s3); //false
+        String s3 = "abc";
+        System.out.println(s == s3); //false
         System.out.println(s.equals(s3)); //true
         s3 = s3.intern();
-        System.out.println(s ==s3); //true
+        System.out.println(s == s3); //true
         System.out.println(s.equals(s3)); //true
 
         /*
@@ -422,13 +453,19 @@ public class StringEx {
         Thread-safe
         Hashmap-key
         Class.forName(“X”).newInstance()
+        StringPool
 
         String          vs      StringBuffer            vs     StringBuilder
         ======================================================================================
-        immutable               synchronized                    fastest
+        immutable               synchronized                    fastest , reverse()
           SCP                    heap                           heap                                                      
 
          */
+
+        //multiple delimiters
+        String strDelimitTest = "apple,orange;banana";
+        String[] fruits = strDelimitTest.split("[,;]");
+        Arrays.stream(fruits).forEach(System.out::println);
 
 
     }
