@@ -19,6 +19,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.StringJoiner;
@@ -312,6 +313,10 @@ public class StringEx {
         str1 = "abcdefghijklmnopqrstuvwxyzjdjdj2k2k2sr9ndsnjdjd";
         boolean isStringHavingAllCharacters = str1.toLowerCase().chars().mapToObj(i -> (char) i).filter(c -> c >= 'a' && c <= 'z').distinct().count() == 26;
         System.out.println("isStringHavingAllCharacters :: " + isStringHavingAllCharacters);
+
+        str1 = "ajdjsjdjd";
+        String toUpperCase = str1.toUpperCase(Locale.ENGLISH);
+        System.out.println("toUpperCase : " + toUpperCase);
 
         //public record NewPerson(String name, String address) {}
         //before Record pattern
