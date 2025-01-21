@@ -2003,3 +2003,319 @@ public class ThreadRunByReentrantLock implements Runnable{
  */
 
 ----------------------------------------------------------------------------------
+
+Design Patterns
+=======================
+
+1. Singleton
+==================
+
+class Singleton {
+
+    private static volatile Singleton singletonEx = null;
+
+    // prevent Object creation by Constructor
+    private Singleton() {
+        // do nothing
+    }
+
+    // get Object instance by Double-check locking
+    public static Singleton getSingleInstance() {
+        if (Objects.isNull(singletonEx)) {
+            synchronized (Singleton.class) {
+                if (Objects.isNull(singletonEx)) {
+                    singletonEx = new Singleton();
+                }
+            }
+        }
+        return singletonEx;
+    }
+
+    // prevent Object creation by Cloning
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        throw new CloneNotSupportedException();
+    }
+
+}
+
+2. Observer
+=================
+
+/**
+ *  Observer Design Pattern
+ *
+ *  behavioral design pattern that defines a one-to-many dependency between objects.
+ *  When Observable changes state, all its Observers are notified and updated automatically.
+ */
+ @Getter
+ public class TemperatureObservable extends Observable {
+
+ 	private int temperature;
+
+ 	//1.setChanged() / notifyObservers()
+ 	public void setTemperature(int temperature) {
+ 		setChanged();
+ 		notifyObservers();
+ 		this.temperature = temperature;
+ 	}
+
+ 	public static void main(String[] args) {
+ 		TemperatureObservable t0 = new TemperatureObservable();
+ 		//add observers to observable
+ 		t0.addObserver(new TemperatureObserver());
+ 		t0.addObserver(new TemperatureIceCreamObserver());
+ 		t0.setTemperature(12); //cold Ice Cream
+ 	}
+ }
+
+ class TemperatureObserver implements Observer{
+ 	@Override
+ 	public void update(Observable observable, Object arg1) {
+ 		if(observable instanceof TemperatureObservable temperatureObservable) {
+ 			int temperature = temperatureObservable.getTemperature();
+ 			if(temperature<=15) {
+ 				System.out.println("cold");
+ 			}
+ 			else if(temperature>15 && temperature<30) {
+ 				System.out.println("mild");
+ 			}else {
+ 				System.out.println("cold");
+ 			}
+ 		}
+ 	}
+ }
+
+ class TemperatureIceCreamObserver implements Observer{
+
+ 	@Override
+ 	public void update(Observable observable, Object arg) {
+ 		if(observable instanceof TemperatureObservable temperatureObservable) {
+ 			int temperature = temperatureObservable.getTemperature();
+ 			if(temperature<=0) {
+ 				System.out.println("Ice Cream");
+ 			}
+ 			else {
+ 				System.out.println("no ice cream");
+ 			}
+ 		}
+ 	}
+
+ }
+
+3. Visitor
+==================
+
+/**
+ * Visitor Design Pattern
+ *
+ * behavioral design pattern that allows us to add further operations to objects without modifying their structure
+ */
+
+//Interface for all inventory items
+//Each item will accept the Visitor
+public interface Item {
+    void accept(Visitor visitor);
+}
+
+@Data
+@AllArgsConstructor
+public class BookItem implements Item{
+    private Double price;
+    private Double weight;
+    private String colour;
+
+    @Override
+    public void accept(Visitor visitor) {
+        visitor.visit(this);
+    }
+}
+
+@Data
+@AllArgsConstructor
+public class FruitItem implements Item {
+    private Double price;
+    private Double weight;
+    private String colour;
+
+    @Override
+    public void accept(Visitor visitor) {
+        visitor.visit(this);
+    }
+}
+
+@Data
+@AllArgsConstructor
+public class ElectronicItem implements Item{
+    private Double price;
+    private Double weight;
+    private String colour;
+
+    @Override
+    public void accept(Visitor visitor) {
+        visitor.visit(this);
+    }
+}
+
+//Visitor will visit all the items
+public interface Visitor {
+    void visit(BookItem bookItem);
+    void visit(FruitItem fruitItem);
+    void visit(ElectronicItem electronicItem);
+}
+
+public class PriceVisitor implements Visitor{
+    @Override
+    public void visit(BookItem bookItem) {
+        System.out.println("bookItem.getPrice() :: " + bookItem.getPrice());
+    }
+
+    @Override
+    public void visit(FruitItem fruitItem) {
+        System.out.println("fruitItem.getPrice() :: " + fruitItem.getPrice());
+    }
+
+    @Override
+    public void visit(ElectronicItem electronicItem) {
+        System.out.println("electronicItem.getPrice() :: " + electronicItem.getPrice());
+    }
+}
+
+public class WeightVisitor implements Visitor{
+
+    @Override
+    public void visit(BookItem bookItem) {
+        System.out.println("bookItem.getWeight() :: " + bookItem.getWeight());
+    }
+
+    @Override
+    public void visit(FruitItem fruitItem) {
+        System.out.println("fruitItem.getWeight() :: " + fruitItem.getWeight());
+    }
+
+    @Override
+    public void visit(ElectronicItem electronicItem) {
+        System.out.println("electronicItem.getWeight() :: " + electronicItem.getWeight());
+    }
+}
+
+public class ColourVisitor implements Visitor{
+
+    @Override
+    public void visit(BookItem bookItem) {
+        System.out.println("bookItem.getColour() :: " + bookItem.getColour());
+    }
+
+    @Override
+    public void visit(FruitItem fruitItem) {
+        System.out.println("fruitItem.getColour() :: " + fruitItem.getColour());
+    }
+
+    @Override
+    public void visit(ElectronicItem electronicItem) {
+        System.out.println("electronicItem.getColour() :: " + electronicItem.getColour());
+    }
+}
+
+public class ShoppingCart {
+    private List<Item> items = new ArrayList<>();
+
+    public void addItem(Item item) {
+        items.add(item);
+    }
+
+    public void applyVisitor(Visitor visitor) {
+        for (Item item : items) {
+           item.accept(visitor);
+        }
+    }
+}
+
+
+public class VisitorEx {
+
+    public static void main(String[] args) {
+
+        ShoppingCart cart = new ShoppingCart();
+        cart.addItem(new BookItem(19.99, 1.2, "black"));
+        cart.addItem(new FruitItem(2.99, 1.5, "red"));
+        cart.addItem(new ElectronicItem(2.99, 1.5, "blue"));
+
+        Visitor priceVisitor = new PriceVisitor();
+        Visitor weightVisitor = new WeightVisitor();
+        Visitor colourVisitor = new ColourVisitor();
+
+        cart.applyVisitor(priceVisitor);
+        cart.applyVisitor(weightVisitor);
+        cart.applyVisitor(colourVisitor);
+
+    }
+}
+
+/*
+    bookItem.getPrice() :: 19.99
+    fruitItem.getPrice() :: 2.99
+    electronicItem.getPrice() :: 2.99
+    bookItem.getWeight() :: 1.2
+    fruitItem.getWeight() :: 1.5
+    electronicItem.getWeight() :: 1.5
+    bookItem.getColour() :: black
+    fruitItem.getColour() :: red
+    electronicItem.getColour() :: blue
+*/
+
+4. Factory
+==================
+
+interface Food {
+	public String getType();
+}
+
+class Pizza implements Food {
+	public String getType() {
+		return "Someone ordered a Fast Food!";
+	}
+}
+
+class Cake implements Food {
+
+	public String getType() {
+		return "Someone ordered a Dessert!";
+	}
+}
+
+class FoodFactory {
+	public Food getFood(String order) {
+		if (order.equalsIgnoreCase("cake")) {
+			return new Cake();
+		} else if (order.equalsIgnoreCase("pizza")) {
+			return new Pizza();
+		}
+		return null;
+	}
+
+}
+
+public class FactoryEx {
+
+	public static void main(String args[]) {
+
+		try {
+
+			Scanner sc = new Scanner(System.in);
+			// creating the factory
+			FoodFactory foodFactory = new FoodFactory();
+
+			// factory instantiates an object
+			Food food = foodFactory.getFood(sc.nextLine());
+
+			System.out.println("The factory returned " + food.getClass());
+			System.out.println(food.getType());
+		} catch (Exception e) {
+			System.out.println("Unsuccessful Termination!!");
+		}
+	}
+
+}
+
+----------------------------------------------------------------------------------

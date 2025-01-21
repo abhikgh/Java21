@@ -26,8 +26,8 @@ Why Observable is deprecated
 public class TemperatureObservable extends Observable {
 
 	private int temperature;
-	private String weather;
 
+	//1.setChanged() / notifyObservers()
 	public void setTemperature(int temperature) {
 		setChanged();
 		notifyObservers();
@@ -36,6 +36,7 @@ public class TemperatureObservable extends Observable {
 	
 	public static void main(String[] args) {
 		TemperatureObservable t0 = new TemperatureObservable();
+		//add observers to observable
 		t0.addObserver(new TemperatureObserver());
 		t0.addObserver(new TemperatureIceCreamObserver());
 		t0.setTemperature(12); //cold Ice Cream
