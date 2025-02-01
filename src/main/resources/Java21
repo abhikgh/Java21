@@ -271,6 +271,10 @@ Java 14
 
 record
 --------------------------
+Record is an immutable data transfer object
+- Constructor
+  Getters (without the “get” prefix)
+  equals(), hashCode(), and toString() implementations
 
 record NewPerson (@NotNull String name, @NotNull String address){
 }
@@ -281,6 +285,8 @@ System.out.println(newPerson.name());
 System.out.println(newPerson.address());
 
 NewPerson newPerson2 = new NewPerson("John", "little avenue");
+System.out.println(newPerson.name());
+System.out.println(newPerson.address());
 if(newPerson2 instanceof NewPerson(String name, String address)){
     System.out.println(name);
     System.out.println(address);
