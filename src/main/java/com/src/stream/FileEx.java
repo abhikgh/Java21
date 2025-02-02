@@ -2,6 +2,7 @@ package com.src.stream;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.src.model.Sport;
+import com.src.model.Stats;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
@@ -16,6 +17,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.util.AbstractMap;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -23,6 +25,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class FileEx {
 
@@ -161,6 +164,25 @@ public class FileEx {
 		List<Sport> sportList = Arrays.asList(objectMapper.readValue(data, Sport[].class));
 		sportList.forEach(sport -> System.out.println(sport.getSportName()+"-"+sport.getStatus()));
 
+        path = Paths.get("src/main/resources/stats.txt");
+        List<String>  lines = Files.readAllLines(path);
+        Map<String, Stats> statsMap =
+        lines.parallelStream()
+                .map(line -> line.split(";"))
+                .filter(parts -> parts.length ==2)
+                .map(parts -> new AbstractMap.SimpleEntry<>(parts[0], Double.parseDouble(parts[1])))
+                .collect(Collectors.toConcurrentMap(e-> e.getKey(), e -> {
+                    Stats stats = new Stats();
+                    stats.setMin(e.getValue());
+                    stats.setMax(e.getValue());
+                    return stats;
+                }, (v1, v2) -> processVal(v1, v2)));
+        System.out.println("statsMap");
+        System.out.println(statsMap);
+        statsMap.entrySet().forEach(entry -> System.out.println(entry.getKey() + "-" + entry.getValue()));
+
+
+
         //Encode file to String and Decode
         path = Paths.get("src/main/resources/Flight Ticket.pdf");
         byte[] bArrFile = Files.readAllBytes(path); // Files.readString cannot read pdf
@@ -183,6 +205,13 @@ public class FileEx {
         System.out.println("amountSumGTLakh :: " + amountSumGTLakh); //280000
 
 
+    }
+
+    private static Stats processVal(Stats v1, Stats v2) {
+        Stats result = new Stats();
+        result.setMin(Math.min(v1.getMin(), v2.getMin()));
+        result.setMax(Math.max(v1.getMin(), v2.getMin()));
+        return result;
     }
 
     public static BigDecimal getAmountFromLog(String line){
