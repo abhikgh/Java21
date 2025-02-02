@@ -1,6 +1,7 @@
 package com.src.stream;
 
 import com.src.model.Books;
+import com.src.model.Fruits;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -172,6 +173,16 @@ public class MapEx {
 				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (o,n)->n, LinkedHashMap::new))
 				.entrySet().iterator().next();
 		System.out.println("highest occurring number :: " + mapEntry2.getKey() + " with occurrence " + mapEntry2.getValue());
+
+		//concurrentHashMap
+		Fruits apple = new Fruits("Apple", "All");
+		Fruits banana = new Fruits("Banana", "All");
+		Fruits mango = new Fruits("Mango", "Summer");
+		List<Fruits> fruitsList = List.of(apple, banana, mango);
+		Map<String, String> concurrentHashMap2 = fruitsList.stream().collect(Collectors.toConcurrentMap(
+													fruits -> fruits.getFruitName(),
+													fruits -> fruits.getFruitType()));
+		System.out.println("concurrentHashMap2 :" + concurrentHashMap2);
 
 		// ConcurrentHashMap
 		// Divides the map into 16 parts
