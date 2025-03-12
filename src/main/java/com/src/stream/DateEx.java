@@ -107,6 +107,20 @@ public class DateEx {
         System.out.println("localDateDT2 :: "   + localDateDT); //2024-11-27
 
 
+        //2015-02-26T00:00:00Z
+        //String to localdateTime
+        String input1 = "2016-09-09T00:00:00Z";
+        //var dateTimeFormatter101 = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        //var localDateTime1 = LocalDateTime.parse(input1, dateTimeFormatter1);
+
+        //Change date format
+        SimpleDateFormat inputFormat010 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        SimpleDateFormat outputFormat010 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+        String outputFormatStr = outputFormat010.format(inputFormat010.parse(input1));
+        System.out.println("outputFormatStr:: " + outputFormatStr);
+        var localDateTime010 = LocalDateTime.parse(outputFormatStr, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"));
+        System.out.println("localDateTime010 = " + localDateTime010);
+
 
         //LocalDate to sql.Date
         java.sql.Date date = java.sql.Date.valueOf(localDateDT);
@@ -258,6 +272,15 @@ public class DateEx {
         localDateTime = LocalDateTime.parse(inputDateTime, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'"));
         System.out.println("localDateTime = " + localDateTime); // 2023-06-02T00:00
 
+        //String to LocalDateTime
+        inputDateTime = "2015-02-06 12:13:14.000";
+        localDateTime = LocalDateTime.parse(inputDateTime, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"));
+        System.out.println("localDateTime222= " + localDateTime); // 2023-06-02T00:00
+
+      /*  SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+        System.out.println(outputFormat.format(inputFormat.parse("2016-02-03T16:23:18"))); //2016-02-03 16:23:18.000
+*/
         //LocalDateTime to String
         String localDateDTStr = DateTimeFormatter.ofPattern("yyyy-MM-dd").format(LocalDateTime.now());
         System.out.println("localDateDTStr = " + localDateDTStr); //2023-09-07
