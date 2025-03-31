@@ -270,6 +270,11 @@ public class ListEx {
 
         System.out.println(myList); //[AAA, AKDS, FDSDF, KJLKJ, NADS]
 
+        //List check case-insensitive
+        List<String> listCheck = List.of("HU","CA","RN");
+        boolean isMatchFound = listCheck.stream().anyMatch(str -> str.equalsIgnoreCase("cA"));
+        System.out.println("isMatchFound :: " + isMatchFound); //true
+
         List<ABCE> listPersons = new ArrayList<>();
         ABCE abce1 = new ABCE("Ruri", "Muku", 25);
         ABCE abce2 = new ABCE("Awadh", "Bonku", 36);
