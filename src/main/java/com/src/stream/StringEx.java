@@ -109,6 +109,8 @@ public class StringEx {
         System.out.println("concatenatedString :: " + concatenatedString);
         concatenatedString = "";
 
+
+
         //----String concat ends----------
 
         //String :: split
@@ -326,6 +328,12 @@ public class StringEx {
         str1 = "This is a test string, check count of letter a";
         long count = str1.chars().mapToObj(i -> (char) i).filter(c -> c == 'a').count();
         System.out.println("count of a ::" + count);
+
+        //check if a string contains another String
+        String stringToCheck = "HU,CA,RN";
+        String inputStringToCheck = "rN";
+        boolean subStringPresent = stringToCheck.toUpperCase().contains(inputStringToCheck.toUpperCase());
+        System.out.println("subStringPresent ---" + subStringPresent);
 
         //check if a String has all the characters between [a-z]
         str1 = "abcdefghijklmnopqrstuvwxyzjdjdj2k2k2sr9ndsnjdjd";
