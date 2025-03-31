@@ -6,6 +6,8 @@ import com.src.model.Department;
 import com.src.model.Emp;
 import com.src.model.Employee;
 import com.src.model.Order;
+import com.src.model.UserMemo;
+import com.src.model.UserSource;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -26,6 +28,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
@@ -199,6 +202,22 @@ public class ListEx {
                 }).toList();
         System.out.println("summerFruits :: " + summerFruits);
         //[SummerFruit(name=mango, colour=yellow, season=summer, price=10), SummerFruit(name=litchi, colour=red, season=summer, price=10)]
+
+        //2 separate lists and trying to match data based on a common id
+        List<UserSource> userSourcesList = getUserSourcesList();
+        List<UserMemo> userMemoList = getUserMemosList();
+        Map<String, List<UserMemo>> finalMap = new LinkedHashMap<>();
+
+        Map<Integer, List<UserMemo>> userAndMemoMap = userMemoList.stream()
+                .collect(Collectors.groupingBy(UserMemo::getUserId, Collectors.mapping(userMemo -> userMemo, Collectors.toList())));
+        for(UserSource userSource:userSourcesList){
+            Integer userId = userSource.getUserId();
+            var userSourceStr = userSource.getUserSource();
+            finalMap.put(userId+"-".concat(userSourceStr), userAndMemoMap.get(userId));
+        }
+        System.out.println("------------finalMap---------------");
+        System.out.println(finalMap);
+
 
         //replace element in a list - 1
         allFruits = getAllFruits();
@@ -907,6 +926,25 @@ public class ListEx {
         int randomNum = new Random().nextInt((100 - 10) + 1) + 10;
         System.out.println("randomNum :: " + randomNum);
 
+    }
+
+    private static List<UserSource> getUserSourcesList() {
+        UserSource userSource1 = new UserSource(1, "first");
+        UserSource userSource2 = new UserSource(2, "second");
+        UserSource userSource3 = new UserSource(3, "third");
+        return List.of(userSource1, userSource2, userSource3);
+    }
+
+    private static List<UserMemo> getUserMemosList() {
+        List<UserMemo> userMemoList = new ArrayList<>();
+        UserMemo userMemo1 = new UserMemo(1, "abcd", "red");
+        UserMemo userMemo2 = new UserMemo(1, "abcde", "blue");
+        UserMemo userMemo3 = new UserMemo(2, "sdfs", "green");
+        UserMemo userMemo4 = new UserMemo(1, "gdfgdg", "yellow");
+        UserMemo userMemo5 = new UserMemo(3, "xvxvxcv", "orange");
+        UserMemo userMemo6 = new UserMemo(2, "fghgd", "pink");
+        userMemoList.addAll(List.of(userMemo1, userMemo2, userMemo3, userMemo4, userMemo5, userMemo6));
+        return  userMemoList;
     }
 
     private static Fruit getNewFruit(Fruit fruit) {
