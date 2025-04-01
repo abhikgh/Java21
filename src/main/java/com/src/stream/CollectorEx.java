@@ -2,11 +2,27 @@ package com.src.stream;
 
 
 import com.src.model.User;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import org.apache.commons.lang3.StringUtils;
 
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Scanner;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
@@ -74,10 +90,10 @@ class Book {
 @NoArgsConstructor
 class Person {
 
-	private String name;
-	private Integer age;
-	private long salary;
-	private String department;
+    private String name;
+    private Integer age;
+    private long salary;
+    private String department;
 
 }
 
@@ -207,12 +223,12 @@ public class CollectorEx {
         System.out.println(count); //5
 
         //Half of sum
-        int halfOfSum = list.stream().collect(Collectors.collectingAndThen(Collectors.summingInt(v-> v), summation -> summation/2));
+        int halfOfSum = list.stream().collect(Collectors.collectingAndThen(Collectors.summingInt(v -> v), summation -> summation / 2));
         System.out.println("halfOfSum :: " + halfOfSum); //75
 
         //Square of sum
         int squareOfSum =
-        list.stream().collect(Collectors.collectingAndThen(Collectors.summingInt(v -> v), result -> result * result));
+                list.stream().collect(Collectors.collectingAndThen(Collectors.summingInt(v -> v), result -> result * result));
         System.out.println("squareOfSum :: " + squareOfSum); //22500
 
         List<String> strings = Arrays.asList("abc", "", "bc", "efg", "abcd", "", "    ", "jkl");
@@ -248,8 +264,8 @@ public class CollectorEx {
         System.out.println("list2 :: " + list2);
 
         //Join all non-null,non-empty Strings with , prefix+, suffix-
-        String joined = list2.stream().filter(StringUtils::isNotBlank).collect(Collectors.joining(",","+","-"));
-        System.out.println("joined ::" +joined);
+        String joined = list2.stream().filter(StringUtils::isNotBlank).collect(Collectors.joining(",", "+", "-"));
+        System.out.println("joined ::" + joined);
 
         //---------------------------------------------------------------------------------------------------------------------//
 
@@ -260,35 +276,35 @@ public class CollectorEx {
         List<ItemX> uniqueItemXList = itemXList.stream().filter(itemX -> uniqueKeys.add(itemX.getItemType().concat(itemX.getItemCC()))).toList();
         System.out.println("uniqueItemXList :: " + uniqueItemXList);
 
-	   //remove duplicates(itemType+itemCC) from a list
+        //remove duplicates(itemType+itemCC) from a list
         Map<String, ItemX> nodupsMap = new HashMap<>();
-        for(ItemX itemX: itemXList) {
-            if(!nodupsMap.containsKey(itemX.getItemType().concat(itemX.getItemCC()))){
+        for (ItemX itemX : itemXList) {
+            if (!nodupsMap.containsKey(itemX.getItemType().concat(itemX.getItemCC()))) {
                 nodupsMap.put(itemX.getItemType().concat(itemX.getItemCC()), itemX);
             }
         }
         List<ItemX> noDupsList = nodupsMap.values().stream().toList();
-        System.out.println("noDupsList ::" + noDupsList);    
+        System.out.println("noDupsList ::" + noDupsList);
 
-	//-------- Collectors.groupingBy-----------------------------------
-	    // Map<Integer, List<Book>> bookMap = books.stream().collect(Collectors.groupingBy(Book::getReleaseYear));
-	    //.collect(Collectors.groupingBy(x, Collectors.mapping(y, Collectors.joining("."));
-	    //.collect(Collectors.groupingBy(x, Collectors.counting());
-	    //.collect(Collectors.groupingBy(x, Collectors.reducing(BigDecimal.ZERO, Saving::getAmount, BigDecimal::add)));
-	    //.collect(Collectors.groupingBy(compositeKey, Collectors.toList()));
-	    
-	    
+        //-------- Collectors.groupingBy-----------------------------------
+        // Map<Integer, List<Book>> bookMap = books.stream().collect(Collectors.groupingBy(Book::getReleaseYear));
+        //.collect(Collectors.groupingBy(x, Collectors.mapping(y, Collectors.joining("."));
+        //.collect(Collectors.groupingBy(x, Collectors.counting());
+        //.collect(Collectors.groupingBy(x, Collectors.reducing(BigDecimal.ZERO, Saving::getAmount, BigDecimal::add)));
+        //.collect(Collectors.groupingBy(compositeKey));
+
+
         //for each item type get all itemNos in that type in a String
         System.out.println("get each type of item and all the items in that type ----------------------");
         Map<String, String> mapItemTypeAndItemsMap =
-        itemXList.stream().collect(Collectors.groupingBy(ItemX::getItemType, Collectors.mapping(ItemX::getItemNumber, Collectors.joining(","))));
+                itemXList.stream().collect(Collectors.groupingBy(ItemX::getItemType, Collectors.mapping(ItemX::getItemNumber, Collectors.joining(","))));
         System.out.println("mapItemTypeAndItemsMap");
         System.out.println(mapItemTypeAndItemsMap);
         //{bedside-table=DMDSV2,DMDSV3, bed=DGDSV2,DMDSV2, sofa=DMDSV2, chair=RESRD1,RESRD2, lamp=DRDBV2, table=DRDSV2,DMDSV2}
 
         //get count of each itemClassfication
         Map<String, Long> mapitemClassificationNum =
-        itemXList.stream().collect(Collectors.groupingBy(ItemX::getItemClassification, Collectors.counting()));
+                itemXList.stream().collect(Collectors.groupingBy(ItemX::getItemClassification, Collectors.counting()));
         System.out.println("mapitemClassificationNum");
         mapitemClassificationNum.forEach((key, value) -> System.out.println(key + "-" + value));
 
@@ -310,8 +326,8 @@ public class CollectorEx {
 
         //groupBy servicePriceID for the isAppliedPrice = true on savings
         Map<String, String> mapOfSaving =
-        servicePriceList.stream().collect(Collectors.groupingBy(ServicePrice::getServicePriceId,
-                Collectors.mapping(servicePrice -> servicePrice.getSavingList().stream().filter(Saving::getIsApplied).map(Saving::getCode).collect(Collectors.joining(",")), Collectors.joining(","))));
+                servicePriceList.stream().collect(Collectors.groupingBy(ServicePrice::getServicePriceId,
+                        Collectors.mapping(servicePrice -> servicePrice.getSavingList().stream().filter(Saving::getIsApplied).map(Saving::getCode).collect(Collectors.joining(",")), Collectors.joining(","))));
         System.out.println("mapOfSaving");
         System.out.println(mapOfSaving); //{servicePrice2=UD3U9222,939SMSMSMS, servicePrice3=9292MM22,9939SMMS033, servicePrice1=DMDM2O2MS,383JSSMSM3,3I3SMSRNND}
 
@@ -327,13 +343,13 @@ public class CollectorEx {
 
         //highest saving amount
         AtomicReference<BigDecimal> highestSavingsAmount = new AtomicReference<>(BigDecimal.ZERO);
-        servicePriceList.stream().flatMap(servicePrice -> servicePrice.getSavingList().stream()).max(Comparator.comparing(Saving::getAmount)).stream().findFirst().ifPresent(saving ->  highestSavingsAmount.set(saving.getAmount()));
+        servicePriceList.stream().flatMap(servicePrice -> servicePrice.getSavingList().stream()).max(Comparator.comparing(Saving::getAmount)).stream().findFirst().ifPresent(saving -> highestSavingsAmount.set(saving.getAmount()));
         System.out.println("highestSavingsAmount :: " + highestSavingsAmount.get()); //2000
 
         //highest savings amount for savings isapplied=true
         BigDecimal highestSavingIsAppliedTrue =
-        servicePriceList.stream().flatMap(servicePrice -> servicePrice.getSavingList().stream())
-                .filter(Saving::getIsApplied).max(Comparator.comparing(Saving::getAmount)).get().getAmount();
+                servicePriceList.stream().flatMap(servicePrice -> servicePrice.getSavingList().stream())
+                        .filter(Saving::getIsApplied).max(Comparator.comparing(Saving::getAmount)).get().getAmount();
         System.out.println("highestSavingIsAppliedTrue :: " + highestSavingIsAppliedTrue); //400
 
         //total savings amount for SP1
@@ -345,18 +361,18 @@ public class CollectorEx {
 
         //total savings amount for savings isapplied=true
         BigDecimal totalSavingIsAppliedTrue =
-        servicePriceList.stream()
-                .flatMap(servicePrice -> servicePrice.getSavingList().stream())
-                .filter(Saving::getIsApplied)
-                .map(Saving::getAmount)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
+                servicePriceList.stream()
+                        .flatMap(servicePrice -> servicePrice.getSavingList().stream())
+                        .filter(Saving::getIsApplied)
+                        .map(Saving::getAmount)
+                        .reduce(BigDecimal.ZERO, BigDecimal::add);
         System.out.println("totalSavingIsAppliedTrue :: " + totalSavingIsAppliedTrue); //1216
 
         //sum of each savings type (isApplied or not)
         Map<Boolean, BigDecimal> sumOfEachTypeOfSaving =
-        servicePriceList.stream()
-                .flatMap(servicePrice -> servicePrice.getSavingList().stream())
-                .collect(Collectors.groupingBy(Saving::getIsApplied, Collectors.reducing(BigDecimal.ZERO, Saving::getAmount, BigDecimal::add)));
+                servicePriceList.stream()
+                        .flatMap(servicePrice -> servicePrice.getSavingList().stream())
+                        .collect(Collectors.groupingBy(Saving::getIsApplied, Collectors.reducing(BigDecimal.ZERO, Saving::getAmount, BigDecimal::add)));
         System.out.println("sumOfEachTypeOfSaving :: " + sumOfEachTypeOfSaving); //{false=3300, true=1216}
 /*
 	@Getter
@@ -398,10 +414,10 @@ public class ItemNo {
         System.out.println("mapCountOfDiscountTypes :: " + mapCountOfDiscountTypes); //{Sale=3, Coupon=2, Promotion=2, Voucher=3}
 
         //sum of each discountType
-        Map<String, BigDecimal> mapSumOfDiscountTypes  =
-        servicePriceList.stream()
-                .flatMap(servicePrice -> servicePrice.getSavingList().stream())
-                .collect(Collectors.groupingBy(Saving::getDiscountType, Collectors.reducing(BigDecimal.ZERO,Saving::getAmount,BigDecimal::add)));
+        Map<String, BigDecimal> mapSumOfDiscountTypes =
+                servicePriceList.stream()
+                        .flatMap(servicePrice -> servicePrice.getSavingList().stream())
+                        .collect(Collectors.groupingBy(Saving::getDiscountType, Collectors.reducing(BigDecimal.ZERO, Saving::getAmount, BigDecimal::add)));
         System.out.println("mapSumOfDiscountTypes :: " + mapSumOfDiscountTypes); //{Sale=1300, Coupon=366, Promotion=700, Voucher=2150}
 
 
@@ -409,7 +425,7 @@ public class ItemNo {
         //Rule : .flatmap().map()
 
         List<Person> personList = List.of(
-                new Person("Paul", 24, 20000 ,"Admin"),
+                new Person("Paul", 24, 20000, "Admin"),
                 new Person("Mark", 30, 30000, "Finance"),
                 new Person("Will", 28, 28000, "IT"),
                 new Person("William", 28, 28000, "Admin"),
@@ -418,7 +434,7 @@ public class ItemNo {
         //Group by name and age
         //group-by multiple fields -> group by compositeKey
         Function<Person, String> compositeKey = person -> person.getName().concat(person.getAge().toString());
-        Map<String, List<Person>> mapGroupByNameAndAge = personList.stream().collect(Collectors.groupingBy(compositeKey, Collectors.toList()));
+        Map<String, List<Person>> mapGroupByNameAndAge = personList.stream().collect(Collectors.groupingBy(compositeKey));
         System.out.println("mapGroupByNameAndAge :: " + mapGroupByNameAndAge);
         //{William28=[Person(name=William, age=28, salary=28000, department=Admin)], Will28=[Person(name=Will, age=28, salary=28000, department=IT), Person(name=Will, age=28, salary=30000, department=Finance)], Mark30=[Person(name=Mark, age=30, salary=30000, department=Finance)], Paul24=[Person(name=Paul, age=24, salary=20000, department=Admin)]}
 
@@ -428,22 +444,22 @@ public class ItemNo {
         //group-by multiple fields
         Function<Item, String> compositeKeyItem = item -> item.getItemNo().concat("-").concat(item.getPriceType());
         List<String> itemsWithMultiplePricesOfSameType =
-        itemList.stream().collect(Collectors.collectingAndThen(Collectors.groupingBy(compositeKeyItem, Collectors.counting()),
-                map -> map.entrySet().stream().filter(entry -> entry.getValue()> 1).map(Map.Entry::getKey).toList()));
-        System.out.println("itemsWithMultiplePricesOfSameType :: "  +itemsWithMultiplePricesOfSameType);
+                itemList.stream().collect(Collectors.collectingAndThen(Collectors.groupingBy(compositeKeyItem, Collectors.counting()),
+                        map -> map.entrySet().stream().filter(entry -> entry.getValue() > 1).map(Map.Entry::getKey).toList()));
+        System.out.println("itemsWithMultiplePricesOfSameType :: " + itemsWithMultiplePricesOfSameType);
 
         //check if any item has >1 price of the same type
         //group-by multiple fields
         boolean noItemsHaveMultiplePriceOfSameType =
-        itemList.stream().collect(Collectors.collectingAndThen(Collectors.groupingBy(compositeKeyItem, Collectors.counting()),
-                map -> map.entrySet().stream().map(entry->entry.getValue()==1).reduce(Boolean::logicalAnd).orElse(false)
-        ));
-        System.out.println("noItemsHaveMultiplePriceOfSameType :: "  +noItemsHaveMultiplePriceOfSameType);
+                itemList.stream().collect(Collectors.collectingAndThen(Collectors.groupingBy(compositeKeyItem, Collectors.counting()),
+                        map -> map.entrySet().stream().map(entry -> entry.getValue() == 1).reduce(Boolean::logicalAnd).orElse(false)
+                ));
+        System.out.println("noItemsHaveMultiplePriceOfSameType :: " + noItemsHaveMultiplePriceOfSameType);
 
         //itemNo with highest price
         //highest = Collectors.maxBy(Comparator.comparing())
         String itemNoWithHighestPrice =
-                      itemList.stream().max(Comparator.comparing(Item::getPrice)).get().getItemNo();
+                itemList.stream().max(Comparator.comparing(Item::getPrice)).get().getItemNo();
         System.out.println("itemNoWithHighestPrice :: " + itemNoWithHighestPrice);
 
         //highest price
@@ -476,7 +492,7 @@ public class ItemNo {
 
         //Get number of books of 1984
         Long countOfBooks1984 =
-                books.stream().filter(book -> book.getReleaseYear()==1984).count();
+                books.stream().filter(book -> book.getReleaseYear() == 1984).count();
        /* books.stream().collect(Collectors.collectingAndThen(Collectors.groupingBy(Book::getReleaseYear, Collectors.counting()),
                     map -> map.get(1984)));*/
         System.out.println("countOfBooks1984 :: " + countOfBooks1984); //2
@@ -486,13 +502,13 @@ public class ItemNo {
         int sumOfPrice1984 =
                 /*books.stream().collect(Collectors.collectingAndThen(Collectors.groupingBy(Book::getReleaseYear, Collectors.summingInt(Book::getPrice)),
                                         map -> map.get(1984)));*/
-        books.stream().filter(book -> book.getReleaseYear() == 1984).map(Book::getPrice).collect(Collectors.summingInt(value -> value));
+                books.stream().filter(book -> book.getReleaseYear() == 1984).map(Book::getPrice).collect(Collectors.summingInt(value -> value));
         System.out.println("sumOfPrice1984 :: " + sumOfPrice1984); // 764
 
         //authors who has >1 books
         List<String> authorWithMoreThan1Book =
-        books.stream().collect(Collectors.collectingAndThen(Collectors.groupingBy(Book::getAuthor, Collectors.counting()),
-                map -> map.entrySet().stream().filter(entry -> entry.getValue()>1).map(Map.Entry::getKey).toList()));
+                books.stream().collect(Collectors.collectingAndThen(Collectors.groupingBy(Book::getAuthor, Collectors.counting()),
+                        map -> map.entrySet().stream().filter(entry -> entry.getValue() > 1).map(Map.Entry::getKey).toList()));
         System.out.println("authorWithMoreThan1Book :: " + authorWithMoreThan1Book); //[Second Author]
 
         //----------------------------------------------------------------------
@@ -505,17 +521,16 @@ public class ItemNo {
         //Select word with highest occurrence in a String
         String str2 = "This is the test string which contains lots of words.Please select the word with the highest occurrence.";
         String maxWord = Arrays.stream(str2.split(" ")).collect(Collectors.collectingAndThen(Collectors.groupingBy(Function.identity(), Collectors.counting()),
-                    map -> map.entrySet().stream().sorted(Comparator.comparing(Map.Entry::getValue, Comparator.reverseOrder()))
-                                    .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (o,n)->n, LinkedHashMap::new))
-                                            .entrySet().iterator().next().getKey()));
+                map -> map.entrySet().stream().sorted(Comparator.comparing(Map.Entry::getValue, Comparator.reverseOrder()))
+                        .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (o, n) -> n, LinkedHashMap::new))
+                        .entrySet().iterator().next().getKey()));
         System.out.println("maxWord :: " + maxWord); //the
-
 
         Integer[] arr3 = new Integer[]{12, 33, 223, 33, 223, 77, 882, 929, 828, 49, 50, 843, 33};
         int maxOccurredInteger =
                 Arrays.stream(arr3).collect(Collectors.collectingAndThen(Collectors.groupingBy(Function.identity(), Collectors.counting()),
                         map -> map.entrySet().stream().sorted(Comparator.comparing(Map.Entry::getValue, Comparator.reverseOrder()))
-                                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (o,n) -> n, LinkedHashMap::new))
+                                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (o, n) -> n, LinkedHashMap::new))
                                 .entrySet().iterator().next().getKey()));
         System.out.println("maxOccurredInteger :: " + maxOccurredInteger); //33
 
@@ -532,7 +547,7 @@ public class ItemNo {
         Map<String, String> userLangMap = userList.stream().collect(Collectors.groupingBy(User::getUser, Collectors.mapping(User::getLanguage, Collectors.joining(","))));
         System.out.println("userLangMap :: " + userLangMap); //{apollo=html, sam=java,js}
 
-	    List<User> userList2 = new ArrayList<>();
+        List<User> userList2 = new ArrayList<>();
         userList.stream().collect(Collectors.groupingBy(User::getUser, Collectors.mapping(User::getLanguage, Collectors.joining(","))))
                 .forEach((key, value) -> {
                     User user = new User();
@@ -543,21 +558,21 @@ public class ItemNo {
         System.out.println("userList2 :: " + userList2);
 
         Map<String, Integer> output = Stream.of("this", "word", "is", "the", "best")
-                .collect(Collectors.groupingBy(x-> x.substring(0, 1), Collectors.reducing(0, x-> x.length(), (x, y)-> x + y)));
+                .collect(Collectors.groupingBy(x -> x.substring(0, 1), Collectors.reducing(0, x -> x.length(), (x, y) -> x + y)));
         System.out.println("output :: " + output); //output :: {b=4, t=7, w=4, i=2}
 
         List<List<Integer>> list10 = Arrays.asList(
                 Arrays.asList(1, 2, 3, 4, 5, 6),
                 Arrays.asList(7, 8, 9, 10));
-        Map<Integer, List<Integer>> map10=
-        list10.stream().collect(Collectors.groupingBy(Collection::size, Collectors.flatMapping(l -> l.stream().filter(i -> i%2==0), Collectors.toList())));
+        Map<Integer, List<Integer>> map10 =
+                list10.stream().collect(Collectors.groupingBy(Collection::size, Collectors.flatMapping(l -> l.stream().filter(i -> i % 2 == 0), Collectors.toList())));
         System.out.println("map10 :: " + map10); //{4=[8, 10], 6=[2, 4, 6]}
 
         System.out.println("-------------Calculate basket-------------");
-        AtomicReference<Double> atomicReference = new AtomicReference<>((double)0);
+        AtomicReference<Double> atomicReference = new AtomicReference<>((double) 0);
         Scanner scanner = new Scanner(System.in);
         Map<String, Integer> itemDetailsMap = new HashMap<>();
-        for (int i=0;i<5;i++){
+        for (int i = 0; i < 5; i++) {
             String item = scanner.next();
             int quantity = scanner.nextInt();
             itemDetailsMap.put(item, quantity);
@@ -565,14 +580,14 @@ public class ItemNo {
         Map<String, Double> itemPricesMap = new HashMap<>();
         itemPricesMap.put("apple", 20.0);
         itemPricesMap.put("banana", 2.5);
-        itemPricesMap.put("lemon",3.5);
+        itemPricesMap.put("lemon", 3.5);
         itemPricesMap.put("mango", 10.0);
         itemPricesMap.put("oranges", 4.5);
 
         itemDetailsMap.forEach((key, value) -> {
             Double priceOfItem = itemPricesMap.get(key);
             Double costOfItem = priceOfItem * value;
-            BinaryOperator<Double> binaryOperator = (u,v) -> u+v;
+            BinaryOperator<Double> binaryOperator = (u, v) -> u + v;
             atomicReference.accumulateAndGet(costOfItem, binaryOperator);
         });
 
@@ -581,16 +596,16 @@ public class ItemNo {
     }
 
     public static List<Item> getItemsWithPrice() {
-        Item item1 = new Item("929292", "RegularSalesUnitPrice" ,new BigDecimal(123.23));
-        Item item2 = new Item("929292", "FamilyPrice" ,new BigDecimal(123.23));
-        Item item3 = new Item("3533", "RegularSalesUnitPrice" ,new BigDecimal(123.23));
-        Item item4 = new Item("343435", "RegularSalesUnitPrice" ,new BigDecimal(332.23));
-        Item item5 = new Item("45646", "RegularSalesUnitPrice" ,new BigDecimal(332.23));
-        Item item6 = new Item("23424", "FamilyPrice" ,new BigDecimal(123.23));
-        Item item7 = new Item("6456456", "RegularSalesUnitPrice" ,new BigDecimal(123.23));
-        Item item8 = new Item("4344343", "RegularSalesUnitPrice" ,new BigDecimal(4234));
-        Item item9 = new Item("45646", "RegularSalesUnitPrice" ,new BigDecimal(24234));
-        Item item10 = new Item("23423", "RegularSalesUnitPrice" ,new BigDecimal(2424));
+        Item item1 = new Item("929292", "RegularSalesUnitPrice", new BigDecimal("123.23"));
+        Item item2 = new Item("929292", "FamilyPrice", new BigDecimal("123.23"));
+        Item item3 = new Item("3533", "RegularSalesUnitPrice", new BigDecimal("123.23"));
+        Item item4 = new Item("343435", "RegularSalesUnitPrice", new BigDecimal("332.23"));
+        Item item5 = new Item("45646", "RegularSalesUnitPrice", new BigDecimal("332.23"));
+        Item item6 = new Item("23424", "FamilyPrice", new BigDecimal("123.23"));
+        Item item7 = new Item("6456456", "RegularSalesUnitPrice", new BigDecimal("123.23"));
+        Item item8 = new Item("4344343", "RegularSalesUnitPrice", new BigDecimal(4234));
+        Item item9 = new Item("45646", "RegularSalesUnitPrice", new BigDecimal(24234));
+        Item item10 = new Item("23423", "RegularSalesUnitPrice", new BigDecimal(2424));
         return List.of(item1, item2, item3, item4, item5, item6, item7, item8, item9, item10);
     }
 

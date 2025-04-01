@@ -209,7 +209,7 @@ public class ListEx {
         Map<String, List<UserMemo>> finalMap = new LinkedHashMap<>();
 
         Map<Integer, List<UserMemo>> userAndMemoMap = userMemoList.stream()
-                .collect(Collectors.groupingBy(UserMemo::getUserId, Collectors.mapping(userMemo -> userMemo, Collectors.toList())));
+                .collect(Collectors.groupingBy(UserMemo::getUserId));
         for(UserSource userSource:userSourcesList){
             Integer userId = userSource.getUserId();
             var userSourceStr = userSource.getUserSource();
