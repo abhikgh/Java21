@@ -270,6 +270,14 @@ public class CollectorEx {
         List<ItemX> noDupsList = nodupsMap.values().stream().toList();
         System.out.println("noDupsList ::" + noDupsList);    
 
+	//-------- Collectors.groupingBy-----------------------------------
+	    // Map<Integer, List<Book>> bookMap = books.stream().collect(Collectors.groupingBy(Book::getReleaseYear));
+	    //.collect(Collectors.groupingBy(x, Collectors.mapping(y, Collectors.joining("."));
+	    //.collect(Collectors.groupingBy(x, Collectors.counting());
+	    //.collect(Collectors.groupingBy(x, Collectors.reducing(BigDecimal.ZERO, Saving::getAmount, BigDecimal::add)));
+	    //.collect(Collectors.groupingBy(compositeKey, Collectors.toList()));
+	    
+	    
         //for each item type get all itemNos in that type in a String
         System.out.println("get each type of item and all the items in that type ----------------------");
         Map<String, String> mapItemTypeAndItemsMap =
@@ -301,7 +309,6 @@ public class CollectorEx {
         List<ServicePrice> servicePriceList = getAllServicePrices();
 
         //groupBy servicePriceID for the isAppliedPrice = true on savings
-        //Collectors.groupingBy, Collectors.mapping
         Map<String, String> mapOfSaving =
         servicePriceList.stream().collect(Collectors.groupingBy(ServicePrice::getServicePriceId,
                 Collectors.mapping(servicePrice -> servicePrice.getSavingList().stream().filter(Saving::getIsApplied).map(Saving::getCode).collect(Collectors.joining(",")), Collectors.joining(","))));
