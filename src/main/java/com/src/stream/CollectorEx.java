@@ -109,56 +109,9 @@ class Item {
 }
 
 /*
-         Collectors.groupingBy
-         ---------------------------
-        .collect(Collectors.groupingBy(Student::getStandard, Collectors.counting()));
+         
 
-
-            Collectors.mapping
-            -----------------------------
-             If map Value has >1 values which has to be transformed
-              - Collectors.groupingBy , Collectors.mapping
-                    Collector<T, ?, R> mapping(Function<? super T, ? extends U> mapper,
-                               Collector<? super U, A, R> downstream) {
-
-        .collect(Collectors.groupingBy(Student::getStandard, Collectors.mapping(Student::getFullName, Collectors.toList())));
-	    .collect(Collectors.groupingBy(Student::getStandard, Collectors.mapping(Student::getHouse, Collectors.joining(","))));
-        .collect(Collectors.groupingBy(Student::getStandard, Collectors.mapping(student -> student.getHobbies().stream().collect(Collectors.joining(",")),Collectors.joining(","))));
-        .collect(Collectors.groupingBy(ServicePrice::getServicePriceId,
-                Collectors.mapping(servicePrice -> servicePrice.getSavingList().stream().filter(Saving::getIsApplied).map(Saving::getCode).collect(Collectors.joining(",")), Collectors.joining(","))));
-
-
-            Collectors.reducing
-            --------------------------
-             If map Value has >1 values which has to be reduced to a single value - use Collectors.reducing
-                    java.util.stream.Collectors:reducing((U least,
-                                Function<? super T, ? extends U> mapper,
-                                BinaryOperator<U> binaryOp) {
-
-                                }
-                    If you want to just summarize the elements of an Integer stream into an integer, you could use
-                          Collectors.reducing(0, x -> x, (x, y) -> x + y).
-                    If you want to summarize the lengths of Strings in a String stream, you could use
-                          Collectors.reducing(0, String::length, (x, y) -> x + y).
-                    If you want to get the maximum Double from a stream of Doubles, but no less than Math.PI, you could use
-                          Collectors.reducing(Math.PI, x -> x, Math::max).
-
-            .collect(Collectors.groupingBy(Saving::getIsApplied, Collectors.reducing(BigDecimal.ZERO, Saving::getAmount, BigDecimal::add)));
-            .collect(Collectors.groupingBy(x-> x.substring(0, 1),Collectors.reducing(0, x-> x.length(), (x, y)-> x + y)));
-            .collect(Collectors.groupingBy(User::getUser, Collectors.reducing(
-                        "", User::getLanguage, (l1,l2)-> String.join(",", l1, l2)
-                )));
-            .collect(Collectors.groupingBy(User::getUser, Collectors.reducing(
-                    "", User::getLanguage, (l1,l2)-> String.join(",", l1, l2)
-            ))).entrySet().forEach(entry -> {
-                User user = new User();
-                user.setUser(entry.getKey());
-                user.setLanguage(entry.getValue());
-                userList2.add(user);
-            });
-            .collect(Collectors.groupingBy(Saving::getDiscountType, Collectors.reducing(BigDecimal.ZERO, Saving::getAmount, BigDecimal::add)));
-
-
+           
             Collectors.toMap
             --------------------
                 If map Value has 1 value which has to be transformed - use Collectors.toMap`
