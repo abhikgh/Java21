@@ -111,7 +111,8 @@ class Item {
 /*
          
 
-           
+
+
             Collectors.toMap
             --------------------
                 If map Value has 1 value which has to be transformed - use Collectors.toMap`
@@ -321,12 +322,7 @@ public class CollectorEx {
                         .reduce(BigDecimal.ZERO, BigDecimal::add);
         System.out.println("totalSavingIsAppliedTrue :: " + totalSavingIsAppliedTrue); //1216
 
-        //sum of each savings type (isApplied or not)
-        Map<Boolean, BigDecimal> sumOfEachTypeOfSaving =
-                servicePriceList.stream()
-                        .flatMap(servicePrice -> servicePrice.getSavingList().stream())
-                        .collect(Collectors.groupingBy(Saving::getIsApplied, Collectors.reducing(BigDecimal.ZERO, Saving::getAmount, BigDecimal::add)));
-        System.out.println("sumOfEachTypeOfSaving :: " + sumOfEachTypeOfSaving); //{false=3300, true=1216}
+
 /*
 	@Getter
 @Setter
@@ -353,6 +349,36 @@ public class ItemNo {
         System.out.println("map6 :: " + map6);
 
 	    */
+
+        //-------- Collectors.reducing-----------------------------------
+        //  Collectors:reducing((least, attribute/mapper, operation);
+        // .map(attribute/mapper)
+
+        //.collect(Collectors.reducing(0, String::length, (x, y) -> x + y));
+            //.map(String::length).reduce(0, (x, y) -> x + y);
+        //doubleList.stream().reduce(Math.PI, (x, y) -> x > y ? x : y);
+        // Collectors.reducing(BigDecimal.ZERO, Saving::getAmount, BigDecimal::add)));
+
+        //sum of length of strings
+        int lengthOfAllString = strings.stream().map(String::length).reduce(0, Integer::sum);
+        System.out.println("lengthOfAllString :: " + lengthOfAllString);
+
+        //maximum Double from a stream of Doubles, but no less than Math.PI
+        List<Double> doubleList = Arrays.asList(1.0d, 21.1d, 31.3d);
+        Double maxDouble = doubleList.stream().reduce(Math.PI, (x, y) -> x > y ? x : y);
+        System.out.println("maxDouble :: " + maxDouble);
+
+        //sum of each savings type (isApplied or not)
+        Map<Boolean, BigDecimal> sumOfEachTypeOfSaving =
+                servicePriceList.stream()
+                        .flatMap(servicePrice -> servicePrice.getSavingList().stream())
+                        .collect(Collectors.groupingBy(Saving::getIsApplied, Collectors.reducing(BigDecimal.ZERO, Saving::getAmount, BigDecimal::add)));
+        System.out.println("sumOfEachTypeOfSaving :: " + sumOfEachTypeOfSaving); //{false=3300, true=1216}
+
+        Map<String, Integer> output = Stream.of("this", "word", "is", "the", "best")
+                .collect(Collectors.groupingBy(x -> x.substring(0, 1), Collectors.reducing(0, x -> x.length(), (x, y) -> x + y)));
+        System.out.println("output :: " + output); //output :: {b=4, t=7, w=4, i=2}
+
 
         //each of the distinct discountTypes
         List<String> distinctDiscountTypes =
@@ -510,9 +536,7 @@ public class ItemNo {
                 });
         System.out.println("userList2 :: " + userList2);
 
-        Map<String, Integer> output = Stream.of("this", "word", "is", "the", "best")
-                .collect(Collectors.groupingBy(x -> x.substring(0, 1), Collectors.reducing(0, x -> x.length(), (x, y) -> x + y)));
-        System.out.println("output :: " + output); //output :: {b=4, t=7, w=4, i=2}
+
 
         List<List<Integer>> list10 = Arrays.asList(
                 Arrays.asList(1, 2, 3, 4, 5, 6),
