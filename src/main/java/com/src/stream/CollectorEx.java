@@ -323,39 +323,12 @@ public class CollectorEx {
         System.out.println("totalSavingIsAppliedTrue :: " + totalSavingIsAppliedTrue); //1216
 
 
-/*
-	@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
-public class ItemNo {
-
-    private String lineId;
-    private String itemNo;
-    private BigDecimal unitPrice;
-}
-
-	List<ItemNo> itemNoList = new ArrayList<>();
-        ItemNo itemNo1 = new ItemNo("1","100", BigDecimal.valueOf(10));
-        ItemNo itemNo2 = new ItemNo("2","100", BigDecimal.valueOf(10));
-        ItemNo itemNo3 = new ItemNo("3","200", BigDecimal.valueOf(20));
-        ItemNo itemNo4 = new ItemNo("4","200", BigDecimal.valueOf(20));
-        ItemNo itemNo5 = new ItemNo("5","200", BigDecimal.valueOf(20));
-        ItemNo itemNo6 = new ItemNo("6","300", BigDecimal.valueOf(30));
-        itemNoList.addAll(List.of(itemNo1, itemNo2, itemNo3, itemNo4, itemNo5, itemNo6));
-
-        Map<String, BigDecimal> map6 =
-        itemNoList.stream().collect(Collectors.groupingBy(ItemNo::getItemNo, Collectors.reducing(BigDecimal.ZERO, ItemNo::getUnitPrice, BigDecimal::add)));
-        System.out.println("map6 :: " + map6);
-
-	    */
-
         //-------- Collectors.reducing-----------------------------------
         //  Collectors:reducing((least, attribute/mapper, operation);
         // .map(attribute/mapper)
 
         //.collect(Collectors.reducing(0, String::length, (x, y) -> x + y));
-            //.map(String::length).reduce(0, (x, y) -> x + y);
+        //.map(String::length).reduce(0, (x, y) -> x + y);
         //doubleList.stream().reduce(Math.PI, (x, y) -> x > y ? x : y);
         // Collectors.reducing(BigDecimal.ZERO, Saving::getAmount, BigDecimal::add)));
 
@@ -378,6 +351,11 @@ public class ItemNo {
         Map<String, Integer> output = Stream.of("this", "word", "is", "the", "best")
                 .collect(Collectors.groupingBy(x -> x.substring(0, 1), Collectors.reducing(0, x -> x.length(), (x, y) -> x + y)));
         System.out.println("output :: " + output); //output :: {b=4, t=7, w=4, i=2}
+
+        Map<String, Integer> outputLengthOFEachWord = new HashMap<>();
+        Stream.of("this", "word", "is", "the", "best")
+                .forEach(x -> outputLengthOFEachWord.put(x, x.length()));
+        System.out.println("outputLengthOFEachWord :: " + outputLengthOFEachWord); //{the=3, this=4, is=2, best=4, word=4}
 
 
         //each of the distinct discountTypes
@@ -535,7 +513,6 @@ public class ItemNo {
                     userList2.add(user);
                 });
         System.out.println("userList2 :: " + userList2);
-
 
 
         List<List<Integer>> list10 = Arrays.asList(
