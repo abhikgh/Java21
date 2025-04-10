@@ -1040,7 +1040,7 @@ public class LambdaEx {
 		MathsOperation addition = (a, b) -> a + b;  //(a, b) -> a + b; :: Lambda 
 		System.out.println(addition.mathsOp(10, 5)); // 15
 
-		//Lambda variables are final / effectively final - to reduce concurrency issues
+		//Lambda variables are final - to reduce concurrency issues
 		List<String> list = Stream.of("abc", "def", "mno", "xyz").toList();
 		AtomicInteger i = new AtomicInteger(0);
 		list.forEach(s -> {
@@ -1075,7 +1075,7 @@ public class LambdaEx {
 		int y = functionA.apply(10);
 		System.out.println("function :: " + y); //100
 
-	//BiFunction :: Functional interface with 2 inputs
+	    //BiFunction :: Functional interface with 2 inputs
         /*
             @FunctionalInterface
             public interface BiFunction<T, U, R> {
@@ -1729,7 +1729,7 @@ Build Thread-Safe Applications
 -------------------------------------------------------------------
 
 Key Principles of Thread Safety :
-    Atomicity: Operations must be performed as a single, indivisible step.
+    Atomicity: Operations must be atomic(single step)
     Visibility: Changes made by one thread should be visible to others.
     Order: Operations must execute in the correct sequence.
 
@@ -1777,7 +1777,7 @@ public class ReentrantReadWriteLockExample {
 
 }
 
-3. Avoid Race Condition (2/more threads competing to update the same resource)
+3. Avoid Race Condition (2/more threads competing to acquire the same resource)
 -----------------------------------------------------------------------
 
 //Semaphore + JOIN
@@ -1787,6 +1787,7 @@ public class ReentrantReadWriteLockExample {
 @Setter
 class JointAccount extends Thread {
     public static int BALANCE = 100;
+
     private Semaphore semaphore;
     private String threadName;
 
@@ -1839,8 +1840,6 @@ public class RaceConditionEx {
          */
     }
 }
-
-
 
 4. Avoid Deadlock (2/more threads block each other by holding resources that the others need)
 --------------------------------------------------------------------------------------
@@ -1915,6 +1914,13 @@ for (int i = 0; i < 1000; i++) {
 }
 System.out.println("Final count (with AtomicInteger): " + count.get());
 
+List<String> list = Stream.of("abc", "def", "mno", "xyz").toList();
+AtomicInteger i = new AtomicInteger(0);
+list.forEach(s -> {
+    System.out.print(i + ":" + s + ":"); //0-abc:1-def:2-mno:3-xyz:
+    i.getAndIncrement();
+});
+
 AtomicInteger
 AtomicBoolean
 AtomicLong
@@ -1935,7 +1941,6 @@ public static final ThreadLocal<Book> threadLocalBook = new ThreadLocal<>();
 
 threadLocalBook.set(new Book("My First Book", "First Author", 1984, "0395489318", 230));
 Book book = threadLocalBook.get();
-
 
 
 ----------------------------------------------------------------------------------
