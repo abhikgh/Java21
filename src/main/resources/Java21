@@ -825,7 +825,7 @@ public class InnerEx {
 4. SOLID principles
 
 JVM Memory Management
-----------------------------------
+--------------------------------------------------------------------
 JVM Memory = Heap memory + Stack memory + Metaspace
 
 Heap memory - Objects, Arrays, String Pool
@@ -833,12 +833,15 @@ Heap memory - Objects, Arrays, String Pool
 	         -Xms: Initial Heap Size (e.g., -Xms512m)
              -Xmx: Maximum Heap Size (e.g., -Xmx2g) (default 64 Mb)
 
-            YOUNG gen
+            YOUNGGen                            OLDGen
 
-            -Eden
-            -S0  and  S1
+            (Eden SO S1)
+        Referred objects in Eden are put into S0, unreferred objects are cleared out
+        This pattern continues until the eden space becomes full once more
+        All the marked objects that survive both the eden space and S0 are moved to S1
 
-	    OLD	 gen
+                  Any object that have survived a certain number of cycles in the survivor space are moved by the algorithm to the OLD Gen
+                  Generational Garbage Collection on the OLD gen
 
 Stack memory  - local variables
 
@@ -851,43 +854,36 @@ Metaspace - Metadata, Classes, static data
 
 
 Garbage Collection
----------------------
+------------------------------------------------------------------------------------------------------
 Garbage Collection is freeing up memory by deleting objects that do not have a live reference. (live reference =  objects can be reached from the application through a chain of references )
-Garbage Collection Algorithm :: Mark and Sweep
-Garbage Collection Types ::
-1. Serial Garbage Collector -  runs on a single thread
-2. Parallel Garbage Collector - runs on multiple threads, but freezes the application
-3. G1 Garbage Collector - divides the Heap area into equal-sized heap regions
-                             Mark and Sweep from the area that has most garbage
-                             java -XX:+UseG1GC -jar Application.java
-                             default
-4. Z Garbage Collector - divides the Heap area into Unequal-sized heap regions,
-                            ZGC performs all expensive work concurrently, without stopping the application for more than 10 ms
-                            java -XX:+UseZGC -jar Application.java
-   	                     ZGC outperform G1GC :: reduced garbage collection time, reduced latency, more throughput
 
 Mark and Sweep Algorithm
 -----------------------------
 When a object is created its mark-bit=0
-Phase 1 - Mark : mark-bit = true (1) of all reachable objects
-Phase 2 - Sweep : remove all the objects which has mar-bit=0 from Heap meomory and reset the mark-bit to 0 of live objects
+Phase 1 - Mark : all live objects are marked mark-bit = 1
+Phase 2 - Sweep : all objects with mark-bit=0 are removed and live objects reset to mark-bit=0
 
-Generational Garbage Collection
-------------------------------------
-Generational Garbage Collection on the OLD gen
-
-  YOUNG  gen
-
-    -Eden
-    -S0  and  S1
-
-  OLD	gen
-
+Garbage Collection Types
+-----------------------------
+1. Serial Garbage Collector -  runs on a single thread
+2. Parallel Garbage Collector - runs on multiple threads, but freezes the application
+3. G1 Garbage Collector - divides the Heap area into equal-sized regions
+                         Mark and Sweep from the area that has most garbage
+                         java -XX:+UseG1GC -jar Application.java
+                         default
+4. Z Garbage Collector - divides the Heap area into Unequal-sized regions,
+                        ZGC performs all expensive work concurrently, without stopping the application for more than 10 ms
+                        java -XX:+UseZGC -jar Application.java
+   	                    ZGC outperform G1GC :: reduced garbage collection time, reduced latency, more throughput
 
 static data and Garbage Collection
-=======================================
+-------------------------------------------
 Static data lives throughout the life cycle of the class
-Static variables can cause memory leaks if they hold references to objects that are no longer accessed but cannot be garbage collected.
+Static variables can cause memory leaks if they hold references to objects that are no longer accessed
+but cannot be garbage collected.
+
+--------------------------------------------------------------------------------
+
 
 Detect Thread dumps
 -----------------------
