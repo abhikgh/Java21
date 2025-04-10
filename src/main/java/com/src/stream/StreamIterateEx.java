@@ -1,9 +1,9 @@
 package com.src.stream;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -50,11 +50,20 @@ public class StreamIterateEx {
 		  .forEach(System.out::println);
 		
 		System.out.println("**********************");
+		System.out.println("Print 20 fibonacci numbers");
 		//Print 20 fibonacci numbers
 		Stream.iterate(0, n->n+1)
-		      .map(i -> getFibonacci(i))
+		      .map(StreamIterateEx::fibonacci)
 		      .limit(20)
 		      .forEach(System.out::println);
+
+		System.out.println("**********************");
+		System.out.println("Print 20 fibonacci numbers Dynamic Programming");
+		//Print 20 fibonacci numbers Dynamic Programming
+		Stream.iterate(0, n->n+1)
+				.map(StreamIterateEx::fibonacciDP)
+				.limit(20)
+				.forEach(System.out::println);
 		
 		System.out.println("**********************");
 		Stream.iterate("", str-> str+"x")
@@ -98,16 +107,30 @@ public class StreamIterateEx {
 	}
 	
 	
-	private static Integer getFibonacci(int i) {
-		int ret=0;
-		if(i==0 || i==1) {
-			ret=i;
+	private static Integer fibonacci(int n) {
+		if(n<=1) {
+			return n;
 		}
 		else {
-			ret= list.get(i-1)+list.get(i-2);
+			return fibonacci(n-1) + fibonacci(n-2);
 		}
-		list.add(ret);
-		return ret;
+	}
+
+	private static Integer fibonacciDP(int n) {
+		int[] arr = new int[n+1];
+		Arrays.fill(arr, -1);
+		return helper(n, arr);
+	}
+
+	private static Integer helper(int n, int[] arr) {
+		if(n<=1) {
+			return n;
+		}
+		if(arr[n] != -1){
+			return arr[n];
+		}
+		arr[n] = helper(n-1, arr) + helper(n-2, arr);
+		return arr[n];
 	}
 
 }
