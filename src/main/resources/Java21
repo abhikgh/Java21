@@ -562,28 +562,95 @@ Open-Closed Principle : open for extension, closed for modification (abstract cl
 
 Liskov Substitution Principle : sub class object can substitute super class object
 
-    public abstract class Bird {
-        public abstract void move();
-    }
+	class Animal {
+	    public void makeSound() {
+	        System.out.println("Some sound...");
+	    }
+	}
+	
+	class Cat extends Animal {
+	    @Override
+	    public void makeSound() {
+	        System.out.println("Meow");
+	    }
+	}
+	
+	public class Main {
+	    public static void main(String[] args) {
+	        Animal myCat = new Cat();
+	        myCat.makeSound(); // Output: Meow
+	    }
+	}
 
-    public class Sparrow extends Bird {
-        @Override
-        public void move() {
-            // Flying logic
-        }
-    }
+		Liskov Substitution Principle with wildcards
+		-----------------------------------------------------------
 
-    public class Ostrich extends Bird {
-        @Override
-        public void move() {
-            // Running logic
-        }
-    }
+		class Animal {
+		    public void makeSound() {
+		        System.out.println("Some sound...");
+		    }
+		}
+		
+		class Cat extends Animal {
+		    @Override
+		    public void makeSound() {
+		        System.out.println("Meow");
+		    }
+		}
+		
+		class Dog extends Animal {
+		    @Override
+		    public void makeSound() {
+		        System.out.println("Woof");
+		    }
+		}
+		
+		public class WildcardExample {
+		    // Method using an unbounded wildcard
+		    public static void printList(List<?> list) {
+		        for (Object elem : list) {
+		            System.out.println(elem);
+		        }
+		    }
+		
+		    // Method using an upper bounded wildcard
+		    public static void makeAnimalsSound(List<? extends Animal> animals) {
+		        for (Animal animal : animals) {
+		            animal.makeSound();
+		        }
+		    }
+		
+		    // Method using a lower bounded wildcard
+		    public static void addCat(List<? super Cat> cats) {
+		        cats.add(new Cat());
+		    }
+		
+		    public static void main(String[] args) {
+		        List<Cat> cats = new ArrayList<>();
+		        cats.add(new Cat());
+		        
+		        List<Dog> dogs = new ArrayList<>();
+		        dogs.add(new Dog());
+		
+		        // Unbounded wildcard example
+		        printList(cats);
+		        printList(dogs);
+		
+		        // Upper bounded wildcard example
+		        makeAnimalsSound(cats);
+		        makeAnimalsSound(dogs);
+		
+		        // Lower bounded wildcard example
+		        List<Animal> animals = new ArrayList<>();
+		        addCat(animals);
+		        makeAnimalsSound(animals); // Output includes "Meow"
+		    }
+		}
 
-Interface Segregation Principle : segregate interfaces into smaller interfaces
+Interface Segregation Principle : segregate interfaces into smaller interfaces - Interfaces should be tailored to the needs of the classes that implement them 
 
 
-Dependency Inversion Principle :  Interface abstraction layer between high-level and low-level software components
+Dependency Inversion Principle :  Interface abstraction layer between high-level and low-level modules
 
     //before DIP
     public class SpellChecker {
