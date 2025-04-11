@@ -1430,71 +1430,6 @@ ArrayList				vs					LinkedList
 
 -------------------------------------------------------------------------
 
-Cloning
-===============
-
-Shallow clone :: referenced Object is shared between clones    (Clone)
-Deep clone    :: referenced Object is exclusive between clones (Clone + set + Clone
-
-
-@Getter
-@Setter
-@AllArgsConstructor
-@ToString
-@NoArgsConstructor
-public class Employee implements Cloneable{
-
-    private int employeeId;
-    private String employeeName;
-    private Department department;
-
-    //clone() has protected access in java.lang.Object
-    @Override
-    public Object clone() throws CloneNotSupportedException {
-        //return super.clone(); //Shallow clone
-
-        //Deep clone
-        Employee employee = (Employee) super.clone();
-        employee.setDepartment((Department) employee.getDepartment().clone());
-        return employee;
-    }
-}
-
-Department deptG = new Department(28383, "Geography", "Associate");
-Employee empG1 = new Employee(111, "John", deptG); //prototype object
-
-/*
-Employee empG2 = (Employee) empG1.clone();
-empG2.getDepartment().setDesignation("VP");
-System.out.println("designation empG2 : " + empG2.getDepartment().getDesignation()); //VP
-System.out.println("designation empG1 : " + empG1.getDepartment().getDesignation()); //VP
-*/
-
-//Deep clone
-Employee empG3 = (Employee) empG1.clone();
-empG3.getDepartment().setDesignation("VP");
-System.out.println("designation empG3 : " + empG3.getDepartment().getDesignation()); //VP
-System.out.println("designation empG1 : " + empG1.getDepartment().getDesignation()); //Associate
-
-//Shallow clone a list
-List<Employee> shallowCloneList = new ArrayList<>(empList);
-
-//Deep clone a list
-List<Employee> deepCloneList = empList.stream().forEach(emp -> {
-Employee empClone = (Employee) super.clone();
-empClone.setSkills(new ArrayList<>(empClone.getSkills().clone());
-return empClone;
-}).collect(Collectors.toList());
-
-//Deep clone a list using mapstruct
-@Mapper(mappingControl= Deepclone.class, componentModel="spring", unmappedTargetPolicy= ReportingPolicy.IGNORE,unmappedSourcePolicy= ReportingPolicy.IGNORE)
-public interface ABCMapper{
-
-	Set<Item> deeplCloneItems(List<Item> items);
-}
-
--------------------------------------------------------------------------
-
 Exception Hierarchy
 ================================
 
@@ -2100,8 +2035,15 @@ public class ThreadRunByReentrantLock implements Runnable{
 Design Patterns
 =======================
 
-1. Singleton
-==================
+Creational Pattern                  Structural Pattern                      Behavioral Pattern
+------------------------------------------------------------------------------------------------------
+Singleton                                Proxy                                  Observer
+Factory                                  Facade                                 Visitor
+Prototype                                                                       Strategy
+Builder
+
+1. Singleton (Creational Pattern)
+========================================
 
 class Singleton {
 
@@ -2132,8 +2074,248 @@ class Singleton {
 
 }
 
-2. Observer
-=================
+
+2. Factory (Creational Pattern)
+====================================
+
+interface Food {
+	public String getType();
+}
+
+class Pizza implements Food {
+	public String getType() {
+		return "Someone ordered a Fast Food!";
+	}
+}
+
+class Cake implements Food {
+
+	public String getType() {
+		return "Someone ordered a Dessert!";
+	}
+}
+
+class FoodFactory {
+	public Food getFood(String order) {
+		if (order.equalsIgnoreCase("cake")) {
+			return new Cake();
+		} else if (order.equalsIgnoreCase("pizza")) {
+			return new Pizza();
+		}
+		return null;
+	}
+
+}
+
+public class FactoryEx {
+
+	public static void main(String args[]) {
+
+		try {
+
+			Scanner sc = new Scanner(System.in);
+			// creating the factory
+			FoodFactory foodFactory = new FoodFactory();
+
+			// factory instantiates an object
+			Food food = foodFactory.getFood(sc.nextLine());
+
+			System.out.println("The factory returned " + food.getClass());
+			System.out.println(food.getType());
+		} catch (Exception e) {
+			System.out.println("Unsuccessful Termination!!");
+		}
+	}
+
+}
+
+3. Prototype (Creational Pattern)
+====================================
+
+Cloning
+===============
+
+Shallow clone :: referenced Object is shared     (Clone)
+Deep clone    :: referenced Object is cloned     (Clone + set + Clone)
+
+
+@Getter
+@Setter
+@AllArgsConstructor
+@ToString
+@NoArgsConstructor
+public class Employee implements Cloneable{
+
+    private int employeeId;
+    private String employeeName;
+    private Department department;
+
+    //clone() has protected access in java.lang.Object
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        //return super.clone(); //Shallow clone
+
+        //Deep clone
+        Employee employee = (Employee) super.clone();
+        employee.setDepartment((Department) employee.getDepartment().clone());
+        return employee;
+    }
+}
+
+Department deptG = new Department(28383, "Geography", "Associate");
+Employee empG1 = new Employee(111, "John", deptG); //prototype object
+
+/*
+Employee empG2 = (Employee) empG1.clone();
+empG2.getDepartment().setDesignation("VP");
+System.out.println("designation empG2 : " + empG2.getDepartment().getDesignation()); //VP
+System.out.println("designation empG1 : " + empG1.getDepartment().getDesignation()); //VP
+*/
+
+//Deep clone
+Employee empG3 = (Employee) empG1.clone();
+empG3.getDepartment().setDesignation("VP");
+System.out.println("designation empG3 : " + empG3.getDepartment().getDesignation()); //VP
+System.out.println("designation empG1 : " + empG1.getDepartment().getDesignation()); //Associate
+
+//Shallow clone a list
+List<Employee> shallowCloneList = new ArrayList<>(empList);
+
+//Deep clone a list
+List<Employee> deepCloneList = empList.stream().forEach(emp -> {
+Employee empClone = (Employee) super.clone();
+empClone.setSkills(new ArrayList<>(empClone.getSkills().clone());
+return empClone;
+}).collect(Collectors.toList());
+
+//Deep clone a list using mapstruct
+@Mapper(mappingControl= Deepclone.class, componentModel="spring", unmappedTargetPolicy= ReportingPolicy.IGNORE,unmappedSourcePolicy= ReportingPolicy.IGNORE)
+public interface ABCMapper{
+	Set<Item> deeplCloneItems(List<Item> items);
+}
+
+4. Builder (Creational Pattern)
+====================================
+Fluid API
+selective args
+
+@Builder
+User user = User.builder()
+                .username("john_doe")
+                .email("john@example.com")
+                .age(30)
+                .build();
+
+5. Proxy (Structural Pattern)
+==================================
+Placeholder
+Caching
+
+public class ProxyImage implements Image {
+    private RealImage realImage;
+    private String filename;
+
+    public ProxyImage(String filename) {
+        this.filename = filename;
+    }
+
+    public void display() {
+        if (realImage == null) {
+            realImage = new RealImage(filename);
+        }
+        realImage.display();
+    }
+}
+public class ProxyPatternMain {
+    public static void main(String[] args) {
+        Image image1 = new ProxyImage("image1.jpg");
+        Image image2 = new ProxyImage("image2.jpg");
+
+        image1.display(); // Image 1 will be loaded and displayed
+        image2.display(); // Image 2 will be loaded and displayed
+
+        // Image 1 is already loaded, so it will be displayed without loading again
+        image1.display();
+    }
+}
+
+6. Facade (Structural Pattern)
+=================================
+
+interface Mobile{
+    String getModel();
+    Integer getPrice();
+}
+
+class IPhone8 implements Mobile{
+
+    @Override
+    public String getModel() {
+        return "Iphone 8";
+    }
+
+    @Override
+    public Integer getPrice() {
+        return 65000;
+    }
+}
+
+class SamsungGT implements Mobile{
+
+    @Override
+    public String getModel() {
+        return "Samsung Galaxy Tab 3";
+    }
+
+    @Override
+    public Integer getPrice() {
+        return 45000;
+    }
+}
+
+class MobileFacade{
+    IPhone8 iPhone;
+    SamsungGT samsung;
+
+    public MobileFacade(){
+        iPhone = new IPhone8();
+        samsung = new SamsungGT();
+    }
+
+    public String getIPhoneDetails(){
+        return iPhone.getModel() + "--" + iPhone.getPrice();
+    }
+
+    public String getSamsungDetails(){
+        return samsung.getModel() + "--" + samsung.getPrice();
+    }
+}
+
+public class FacadeEx {
+
+    public static void main(String[] args) {
+
+        Scanner scanner = new Scanner(System.in);
+        String inputMobile = scanner.nextLine();
+        MobileFacade mobileFacade = new MobileFacade();
+        switch (inputMobile){
+            case "samsung":{
+                System.out.println(mobileFacade.getSamsungDetails());
+                break;
+            }
+            case "iphone":{
+                System.out.println(mobileFacade.getIPhoneDetails());
+                break;
+            }
+            default:{
+                System.out.println("NA");
+            }
+        }
+    }
+}
+
+6. Observer (Behavioral Pattern)
+====================================
 
 /**
  *  Observer Design Pattern
@@ -2196,8 +2378,8 @@ class Singleton {
 
  }
 
-3. Visitor
-==================
+4. Visitor (Behavioural Pattern)
+=================================
 
 /**
  * Visitor Design Pattern
@@ -2357,59 +2539,10 @@ public class VisitorEx {
     electronicItem.getColour() :: blue
 */
 
-4. Factory
-==================
 
-interface Food {
-	public String getType();
-}
+5. Strategy Design Pattern (Behavioural Pattern)
+=======================================================
 
-class Pizza implements Food {
-	public String getType() {
-		return "Someone ordered a Fast Food!";
-	}
-}
-
-class Cake implements Food {
-
-	public String getType() {
-		return "Someone ordered a Dessert!";
-	}
-}
-
-class FoodFactory {
-	public Food getFood(String order) {
-		if (order.equalsIgnoreCase("cake")) {
-			return new Cake();
-		} else if (order.equalsIgnoreCase("pizza")) {
-			return new Pizza();
-		}
-		return null;
-	}
-
-}
-
-public class FactoryEx {
-
-	public static void main(String args[]) {
-
-		try {
-
-			Scanner sc = new Scanner(System.in);
-			// creating the factory
-			FoodFactory foodFactory = new FoodFactory();
-
-			// factory instantiates an object
-			Food food = foodFactory.getFood(sc.nextLine());
-
-			System.out.println("The factory returned " + food.getClass());
-			System.out.println(food.getType());
-		} catch (Exception e) {
-			System.out.println("Unsuccessful Termination!!");
-		}
-	}
-
-}
 
 ----------------------------------------------------------------------------------
 
