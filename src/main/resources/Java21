@@ -652,50 +652,69 @@ Interface Segregation Principle : segregate interfaces into smaller interfaces -
 
 Dependency Inversion Principle :  Interface abstraction layer between high-level and low-level modules
 
-    //before DIP
-    public class SpellChecker {
-        public void checkSpelling(String text) {
-            // Spell checking logic
-        }
+
+//get all employees from all departments in a Company using Dependency Inversion Principle
+interface Company {
+    List<DEmployee> getAllEmployees();
+}
+
+interface CDepartment {
+    List<DEmployee> getEmployees();
+}
+
+@AllArgsConstructor
+@Data
+class DEmployee {
+    private int employeeId;
+    private String employeeName;
+}
+
+class Admin implements CDepartment {
+    @Override
+    public List<DEmployee> getEmployees() {
+        return List.of(new DEmployee(1, "Aaa"), new DEmployee(2, "Bbb"));
+    }
+}
+
+class IT implements CDepartment {
+    @Override
+    public List<DEmployee> getEmployees() {
+        return List.of(new DEmployee(3, "Ccc"), new DEmployee(4, "Ddd"));
+    }
+}
+
+class IBM implements Company{
+
+    private List<CDepartment> departmentList;
+
+    public IBM(List<CDepartment> departmentList){
+        this.departmentList = departmentList;
     }
 
-    public class TextEditor {
-        private SpellChecker spellChecker;
+    private List<DEmployee> employees = new ArrayList<>();
 
-        public TextEditor() {
-            this.spellChecker = new SpellChecker();
+    @Override
+    public List<DEmployee> getAllEmployees() {
+        for(CDepartment cDepartment : departmentList){
+            employees.addAll(cDepartment.getEmployees());
         }
-
-        public void processText(String text) {
-            spellChecker.checkSpelling(text);
-            // Other processing logic
-        }
+        return employees;
     }
+}
 
-    //after DIP
-    public interface SpellChecker {
-        void checkSpelling(String text);
+public class DependencyInversionPEx {
+    public static void main(String[] args) {
+        List<DEmployee> employees = new ArrayList<>();
+
+        CDepartment admin = new Admin();
+        employees.addAll(admin.getEmployees());
+        CDepartment it = new IT();
+        employees.addAll(it.getEmployees());
+
+        Company ibm = new IBM(List.of(admin, it));
+        ibm.getAllEmployees().forEach(System.out::println);
     }
-
-    public class TextEditor {
-        private SpellChecker spellChecker;
-
-        public TextEditor(SpellChecker spellChecker) {
-            this.spellChecker = spellChecker;
-        }
-
-        public void processText(String text) {
-            spellChecker.checkSpelling(text);
-            // Other processing logic
-        }
-    }
-
-    public class EnglishSpellChecker implements SpellChecker {
-            @Override
-            public void checkSpelling(String text) {
-                // Spell checking logic
-            }
-     }
+}
 
 //---------------------------------- Optional ------------------------------------//
 
