@@ -101,12 +101,14 @@ public class EmployeeStream {
 		Employee1 e3=new Employee1("Mary",31,20000);
 		Employee1 e4=new Employee1("Stephan",18, 6000);
 		Employee1 e5=new Employee1("Gary",26, 15000);
+		Employee1 e6=new Employee1("Kara",26, 15000);
  
 		employeeList.add(e1);
 		employeeList.add(e2);
 		employeeList.add(e3);
 		employeeList.add(e4);
 		employeeList.add(e5);
+		employeeList.add(e6);
  
 		return employeeList;
 	}

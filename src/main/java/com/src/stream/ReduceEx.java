@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import static com.src.stream.CollectorEx.getAllServicePrices;
@@ -25,6 +26,24 @@ public class ReduceEx {
                 .reduce(Boolean::logicalAnd)
                 .orElse(false);
         System.out.println("allSuccess :: " + allSuccess); //false
+
+        //Rule Engine
+        Predicate<Employee1> predicate1 = employee -> employee.getName().startsWith("K");
+        Predicate<Employee1> predicate2 = employee -> employee.getName().startsWith("A");
+        List<Predicate<Employee1>> predicates = List.of(predicate1, predicate2);
+        List<Employee1> employeeList = EmployeeStream.getEmployeeList();
+
+        //filter out employees with names starting with A and K
+        List<Employee1> employeesKA = employeeList.stream().filter(employee -> predicates.stream().anyMatch(predicate -> predicate.test(employee))).toList();
+        System.out.println("employeesKA List---------");
+        employeesKA.forEach(emp -> System.out.println(emp.getName() + "-" + emp.getSalary()));
+
+        //check if all employees start with name A or K
+        boolean allEmpsNameStartsWithAOrK = employeeList.stream()
+                .map(employee -> employee.getName().startsWith("K") || employee.getName().startsWith("A"))
+                .reduce(Boolean::logicalAnd)
+                .orElse(false);
+        System.out.println("allEmpsNameStartsWithAOrK :: " + allEmpsNameStartsWithAOrK);
 
         //sum
         List<TaxationDetail> taxationDetailsList = getTaxationDetailsList();

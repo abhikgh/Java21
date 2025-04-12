@@ -1070,24 +1070,6 @@ public static void testVoid(Callable<Void> callable) throws Exception {
 	callable.call();
 }
 
-Rule engine for multiple conditions (OR) - with multiple predicates
----------------------------------------------------------------------------
-Predicate<Employee> predicate1 = employee -> employee.getEmployeeName().startsWith("K");
-Predicate<Employee> predicate2 = employee -> employee.getEmployeeName().startsWith("A");
-List<Predicate<Employee>> predicates = List.of(predicate1, predicate2);
-List<Employee> employeesKA2 = employeeList.stream().filter(employee -> predicates.stream().anyMatch(predicate -> predicate.test(employee))).toList(); //OR - AND - allMatch
-System.out.println("employeesKA2 List---------");
-employeesKA2.forEach(emp -> System.out.println(emp.getEmployeeName() + "-" + emp.getDepartment().getDepartmentName()));
-
-Reduce
------------------
-
-//check if all employees follow the rule
-boolean allEmpsFollowRule = employeeList.stream()
-            .map(employee -> predicates.stream().anyMatch(predicate -> predicate.test(employee)))
-		    .reduce(Boolean::logicalAnd)
-		    .orElse(false);
-System.out.println("allEmpsFollowRule :: " + allEmpsFollowRule);
 
 FunctionalInterface
 -----------------------------------------------------------
