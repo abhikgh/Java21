@@ -168,7 +168,7 @@ public class StringEx {
         ans = strTest.strip();
         System.out.println("after strip :: " + ans); //Hi
 
-        String sTest = "test string\u205F";
+        String sTest = "test string\u2005";
 
         String trimmed = sTest.trim();
         System.out.printf("'%s'%n", trimmed);//'test string '
