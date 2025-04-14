@@ -938,9 +938,37 @@ Metaspace - Metadata, Classes, static data
 
             1. Can grow dynamically as against PermGen ( so no OutOfMemoryError)
 
+------------------------------------------------------------------------------------------------------
+
+Memory Leaks
+===========================
+Situation where there are objects in the Heap that are no longer used, but cannot be GCed
+	- can result in java.lang.OutOfMemoryError.
+
+The garbage collector removes unreferenced objects periodically, but it never collects the objects that are still being referenced.
+This is where memory leaks occur
+
+Causes : 
+
+   1. Static variables can cause memory leaks
+(As Static data lives throughout the life cycle of the class,they can hold references to objects that are no longer accessed)
+
+   2. Unclosed resources
+	- try-with-resources
+
+   3. Full-load
+	- Streaming
+
+Tracking : 
+
+1. JConsole -  inspect the stack trace of each thread
+2. JProfiler - monitor memory allocation and garbage collection in real-time
+
+
+--------------------------------------------------------------------------------------------------
 
 Garbage Collection
-------------------------------------------------------------------------------------------------------
+===================================
 Garbage Collection is freeing up memory by deleting objects that do not have a live reference. (live reference =  objects can be reached from the application through a chain of references )
 
 Mark and Sweep Algorithm
@@ -962,45 +990,10 @@ Garbage Collection Types
                         java -XX:+UseZGC -jar Application.java
    	                    ZGC outperform G1GC :: reduced garbage collection time, reduced latency, more throughput
 
-static data and Garbage Collection
--------------------------------------------
-Static data lives throughout the life cycle of the class
-Static variables can cause memory leaks if they hold references to objects that are no longer accessed
-but cannot be garbage collected.
+
 
 --------------------------------------------------------------------------------
 
-
-Detect Thread dumps
------------------------
-JConsole -  inspect the stack trace of each thread
-
-Detect memory leaks
--------------------------
-JProfiler - monitor memory allocation and garbage collection in real-time
-
-Memory Leak
-=========================
-Program does not release the memory after use
-
-Over time, these accumulated memory leaks can lead to the exhaustion of available memory resources, causing the program to slow down or eventually crash due to insufficient memory
-    DB Connections not closed
-    File not closed
-    Large Objects
-    Loading full data sets (use streaming instead)
-    Static references
-    Cached Objects
-    Improper use of Collections
-
-
-OutOfMemoryError
----------------------
-Heap memory is full
-Surround the code with try-catch block
-
-Ex of OutOfMemoryError: Integer[] array = new Integer[10000 * 10000];
-
---------------------------------------------------------------------------------------------------
 
 Functional Interface
 ------------------------------
