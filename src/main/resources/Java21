@@ -950,13 +950,16 @@ This is where memory leaks occur
 
 Causes : 
 
-   1. Static variables can cause memory leaks
+   1. Islands of Isolation
+	- removed by Mark and Sweep Algorithm
+
+   2. Static variables can cause memory leaks
 (As Static data lives throughout the life cycle of the class,they can hold references to objects that are no longer accessed)
 
-   2. Unclosed resources
+   3. Unclosed resources
 	- try-with-resources
 
-   3. Full-load
+   4. Full-load
 	- Streaming
 
 Tracking : 
@@ -974,7 +977,7 @@ Garbage Collection is freeing up memory by deleting objects that do not have a l
 Mark and Sweep Algorithm
 -----------------------------
 When a object is created its mark-bit=0
-Phase 1 - Mark : all live objects are marked mark-bit = 1
+Phase 1 - Mark : all live objects::  mark-bit = 1
 Phase 2 - Sweep : all objects with mark-bit=0 are removed and live objects reset to mark-bit=0
 
 Garbage Collection Types
@@ -989,7 +992,6 @@ Garbage Collection Types
                         ZGC performs all expensive work concurrently, without stopping the application for more than 10 ms
                         java -XX:+UseZGC -jar Application.java
    	                    ZGC outperform G1GC :: reduced garbage collection time, reduced latency, more throughput
-
 
 
 --------------------------------------------------------------------------------
