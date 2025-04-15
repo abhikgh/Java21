@@ -31,6 +31,11 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
                  Runs application logic      Background processes - like Garbage Collection, Timer
                  JVM waits to finish         JVM doesn't wait to finish
 
+                 Thread Pool   vs     Creating New Threads
+                 --------------------------------------------
+                Reused thread            New threads
+                Resource usage: low      Resource usage: high (expensive context switching)
+
 
 */
 
@@ -87,6 +92,9 @@ public class ThreadEx {
             }
         };
         threadAnonymous.start();
+
+        //make a thread a Daemon thread
+        //t.setDaemon(true);
 
         ReentrantReadWriteLock reentrantReadWriteLock = new ReentrantReadWriteLock(true);
 
