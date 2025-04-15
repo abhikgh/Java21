@@ -26,6 +26,11 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
                 Inter-thread communication is easy
                     (wait, notify)
 
+                 User Thread     vs             Daemon Thread   
+                 ---------------------------------------------------
+                 Runs application logic      Background processes - like Garbage Collection, Timer
+                 JVM waits to finish         JVM doesn't wait to finish
+
 
 */
 
