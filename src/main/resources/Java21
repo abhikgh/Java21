@@ -953,11 +953,11 @@ Causes :
    1. Islands of Isolation
 	- removed by Mark and Sweep Algorithm
 
-   2. Static variables can cause memory leaks
-(As Static data lives throughout the life cycle of the class,they can hold references to objects that are no longer accessed)
-
-   3. Unclosed resources
+   2. Unclosed resources
 	- try-with-resources
+
+   3. Static variables can cause memory leaks
+      (As Static data lives throughout the life cycle of the class,they can hold references to objects that are no longer accessed)
 
    4. Full-load
 	- Streaming
