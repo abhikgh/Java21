@@ -51,13 +51,24 @@ public class RaceConditionEx {
         JointAccount jointAccountA = new JointAccount(semaphore, "tA");
         JointAccount jointAccountB = new JointAccount(semaphore, "tB");
 
+          // If any ordering of jointAccountA, jointAccountB to run b ut whichever runs wil complete and then the other will run
+
+         jointAccountA.start();
+         jointAccountB.start();
+
+          System.out.println("Balance :: " + BALANCE);
+
+        // If jointAccountA to run before jointAccountB
+
         jointAccountA.start();
         jointAccountA.join();
 
         jointAccountB.start();
         jointAccountB.join();
 
-        System.out.println("Balance :: " + BALANCE);
+         System.out.println("Balance :: " + BALANCE);
+
+      
 
         /*
                 Thread :: tA gets object lock
