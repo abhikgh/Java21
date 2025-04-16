@@ -91,7 +91,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 }
 
-/*
+
     thread1 running now
     thread1 exiting
     thread2 running now
@@ -101,7 +101,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
     thread4 running now
     thread4 exiting
 
- */
+
 
 wait()              vs           sleep()                      vs           yield()
 --------------------------------------------------------------------------------------------------------  
@@ -111,6 +111,20 @@ t.wait() - t releases lock, waits to get it back by notify()/notifyAll()
 
                                                       Thread.yield() - static method that hints to the thread scheduler that the current thread is willing to pause execution
                 and allow threads with the same priority to execute, though it does not guarantee a pause.
+
+                synchronized (obj) {
+                    obj.wait();  // Releases lock, waits for notify()
+                    obj.notify();  // Wakes up waiting thread
+                }
+                //if obj not synchronized - IllegalMonitorStateException
+
+
+    Deadlock             vs         Livelock                vs           Starvation            
+    ------------------------------------------------------------------------------------------------
+    2 or more threads waiting for each other
+                              Thread keeps changing state but no work done
+                                                                      Thread does nt get to run as higher priority thread runs
+                
 */
 
 
