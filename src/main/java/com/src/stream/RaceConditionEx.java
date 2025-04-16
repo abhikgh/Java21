@@ -10,7 +10,7 @@ import java.util.concurrent.Semaphore;
 import static com.src.stream.JointAccount.BALANCE;
 
 //Race Condition :: 2/more threads competing to update the same resource
-//Semaphore + JOIN to prevent Race Condition
+//Semaphore to prevent Race Condition
 
 @AllArgsConstructor
 @Getter
