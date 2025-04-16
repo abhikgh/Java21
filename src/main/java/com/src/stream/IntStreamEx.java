@@ -51,7 +51,12 @@ public class IntStreamEx {
 		System.out.println(happys);
 
 
-
+		String testStr = "trEjdJjdQjdjPkdVkdOjdAiiR";
+		List<Character> characterList = new ArrayList<>();
+		IntStream.rangeClosed(1, testStr.length())
+				.filter(n -> n%3==0)
+				.forEach(n ->  characterList.add(testStr.charAt(n-1)));
+		System.out.println("characterList :: " + characterList);
 		         
 		
 

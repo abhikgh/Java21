@@ -13,7 +13,9 @@ import org.apache.commons.lang3.StringUtils;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -24,6 +26,7 @@ import java.util.Set;
 import java.util.StringJoiner;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 
@@ -70,7 +73,22 @@ public class StringEx {
         boolean anyMatch = Stream.of("abc", "def").anyMatch(string -> string.equalsIgnoreCase("abc"));
         System.out.println("anyMatch :: " + anyMatch);
 
-        //string +
+        //every 3rd letter in a string
+        String testStr = "trEjdJjdQjdjPkdVkdOjdAiiR";
+        List<Character> characterList = new ArrayList<>();
+        for(int n=1;n<=testStr.length();n++){
+            if(n%3==0)
+                characterList.add(testStr.charAt(n-1));
+        }
+        System.out.println("characterList :: " + characterList);
+        characterList.clear();
+
+        IntStream.rangeClosed(1, testStr.length())
+                .filter(n -> n%3==0)
+                .forEach(n ->  characterList.add(testStr.charAt(n-1)));
+        System.out.println("characterList :: " + characterList);
+
+                //string +
         //not recommended , many new strings are created
         concatenatedString = "";
         for (String s : students) {

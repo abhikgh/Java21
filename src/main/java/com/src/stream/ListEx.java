@@ -43,6 +43,8 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
+import static com.src.stream.CollectorEx.getItemsWithPrice;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -174,6 +176,10 @@ public class ListEx {
         Number highestNumber = numberList.stream().map(Number::doubleValue).max(Double::compareTo).get();
         System.out.println("highestNumber :: " + highestNumber);  //123.34
 
+        List<Item> itemList = getItemsWithPrice();
+        BigDecimal highestPrice = itemList.stream().map(Item::getPrice).max(BigDecimal::compareTo).orElse(null);
+        System.out.println("highestPrice :: " + highestPrice);
+
         //Largest word
         List<String> words = Arrays.asList("GFG", "Geeks", "for", "GeeksQuiz", "GeeksforGeeks");
         String largestWord = words.stream().reduce((word1, word2) -> word1.length()>word2.length() ? word1:word2).orElse(null);
@@ -293,6 +299,17 @@ public class ListEx {
         List<String> listCheck = List.of("HU","CA","RN");
         boolean isMatchFound = listCheck.stream().anyMatch(str -> str.equalsIgnoreCase("cA"));
         System.out.println("isMatchFound :: " + isMatchFound); //true
+
+        //unique numbers in a list
+        List<Integer> numbers = Arrays.asList(1, 2, 2, 3, 4, 4, 5);
+        List<Integer> uniqueNumbers = numbers.stream().filter(num -> Collections.frequency(numbers,num) == 1).toList();
+        System.out.println("uniqueNumbers :: " + uniqueNumbers);
+
+        List<Character> characters = Arrays.asList('a', 'a', 'q', 'q', 'l', 's', 'k', 's', 'p');
+        List<Character> uniqueCharacters = characters.stream().filter(character -> Collections.frequency(characters, character)==1).toList();
+        System.out.println("uniqueCharacters :: " + uniqueCharacters);
+
+
 
         List<ABCE> listPersons = new ArrayList<>();
         ABCE abce1 = new ABCE("Ruri", "Muku", 25);
