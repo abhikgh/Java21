@@ -382,6 +382,7 @@ public class ThreadEx {
         };
 
         long startV = System.currentTimeMillis();
+        //executor service that creates a new Virtual Thread for each task submitted to it
         try(ExecutorService executorService = Executors.newVirtualThreadPerTaskExecutor()){
             for(int i =0;i<10000; i++) {
                 executorService.submit(virtualThreadTask);
