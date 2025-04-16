@@ -24,6 +24,7 @@ import java.util.Set;
 import java.util.StringJoiner;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 @AllArgsConstructor
@@ -65,6 +66,9 @@ public class StringEx {
         //Collectors.joining
         String concatenatedString = students.stream().collect(Collectors.joining(""));
         System.out.println("concatenatedString :: " + concatenatedString);
+
+        boolean anyMatch = Stream.of("abc", "def").anyMatch(string -> string.equalsIgnoreCase("abc"));
+        System.out.println("anyMatch :: " + anyMatch);
 
         //string +
         //not recommended , many new strings are created
