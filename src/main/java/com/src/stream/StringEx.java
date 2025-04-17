@@ -25,6 +25,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.StringJoiner;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -134,6 +135,12 @@ public class StringEx {
 
 
         //----String concat ends----------
+
+        //frequency of each character
+        String input = "hello world";
+        Map<Character, Long> charMap = input.chars().mapToObj(i -> (char)i).toList().stream().collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+        System.out.println("charMap :: " + charMap);
+
 
         //String :: split
         String str = "Welcome-to-Java-Hello-World";
@@ -409,7 +416,7 @@ public class StringEx {
             This is the fifth line
         */
 
-        String input = "aabbbccccddddd";
+        input = "aabbbccccddddd";
         Map<Character, Integer> map2 = new HashMap<>();
         AtomicInteger countLet = new AtomicInteger();
         input.chars().mapToObj(i -> (char) i).forEach(ch -> {

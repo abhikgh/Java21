@@ -300,6 +300,15 @@ public class CollectorEx {
         servicePriceList.stream().flatMap(servicePrice -> servicePrice.getSavingList().stream()).max(Comparator.comparing(Saving::getAmount)).stream().findFirst().ifPresent(saving -> highestSavingsAmount.set(saving.getAmount()));
         System.out.println("highestSavingsAmount :: " + highestSavingsAmount.get()); //2000
 
+        //list of list
+        List<List<Integer>> nestedLists = Arrays.asList(
+                Arrays.asList(1, 2, 3),
+                Arrays.asList(3, 4, 5),
+                Arrays.asList(5, 6, 7)
+        );
+        List<Integer> sqList = nestedLists.stream().flatMap(listInt -> listInt.stream()).distinct().sorted(Comparator.reverseOrder()).map(x -> x*x).toList();
+        System.out.println("sqList :: " + sqList);
+
         //highest savings amount for savings isapplied=true
         BigDecimal highestSavingIsAppliedTrue =
                 servicePriceList.stream().flatMap(servicePrice -> servicePrice.getSavingList().stream())
