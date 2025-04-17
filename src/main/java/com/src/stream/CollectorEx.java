@@ -264,7 +264,8 @@ public class CollectorEx {
 
         //for each item type get count of items which have itemClassification=Living
         Map<String, Long> mapItemTypeCountLiving =
-                itemXList.stream().collect(Collectors.groupingBy(ItemX::getItemType, Collectors.mapping(itemX -> itemX.getItemClassification().equalsIgnoreCase("Living"), Collectors.counting())));
+                itemXList.stream().collect(Collectors.groupingBy(ItemX::getItemType,
+                        Collectors.mapping(itemX -> itemX.getItemClassification().equalsIgnoreCase("Living"), Collectors.counting())));
         System.out.println("mapItemTypeCountLiving");
         mapItemTypeCountLiving.forEach((key, value) -> System.out.println(key + "-" + value));
 

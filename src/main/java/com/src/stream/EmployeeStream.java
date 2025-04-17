@@ -67,7 +67,19 @@ public class EmployeeStream {
 		/*
 		 * Gary-1 Stephan-2 John-2 Martin-1 Mary-1
 		 */
-														
+
+		//employees with same salary
+		List<List<Employee1>> empSameSalLis= employeeList.stream().collect(Collectors.collectingAndThen(Collectors.groupingBy(Employee1::getSalary),
+						mapE -> mapE.values().stream().filter(list -> list.size()> 1).toList()));
+		System.out.println("empSameSalLis :: " + empSameSalLis);
+
+		//top 3 salaries
+		List<Integer> salaryList = employeeList.stream().map(Employee1::getSalary).sorted(Comparator.reverseOrder()).limit(3).toList();
+		System.out.println("salaryList :: " + salaryList);
+
+		//employee with top 3 salaries
+		List<Employee1> empSalaryList = employeeList.stream().sorted(Comparator.comparing(Employee1::getSalary, Comparator.reverseOrder())).limit(3).toList();
+		System.out.println("empSalaryList :: " + empSalaryList);
 		
 		//the first employee with the salary greater than 10000 is returned.
 		//If no such employee exists, then null is returned.
