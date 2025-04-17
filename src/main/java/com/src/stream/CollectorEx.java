@@ -297,7 +297,7 @@ public class CollectorEx {
 
         //highest saving amount
         AtomicReference<BigDecimal> highestSavingsAmount = new AtomicReference<>(BigDecimal.ZERO);
-        servicePriceList.stream().flatMap(servicePrice -> servicePrice.getSavingList().stream()).max(Comparator.comparing(Saving::getAmount)).stream().findFirst().ifPresent(saving -> highestSavingsAmount.set(saving.getAmount()));
+        servicePriceList.stream().flatMap(servicePrice -> servicePrice.getSavingList().stream()).max(Comparator.comparing(Saving::getAmount)).ifPresent(saving -> highestSavingsAmount.set(saving.getAmount()));
         System.out.println("highestSavingsAmount :: " + highestSavingsAmount.get()); //2000
 
         //list of list

@@ -35,7 +35,11 @@ public class EmployeeStream {
 			maxAge2.set(employee1.getAge());
 		});
 		System.out.println("maxAge :: " + maxAge2.get()); //31
-		
+
+		//second highest salary
+		int secondHighestSal = employeeList.stream().map(Employee1::getSalary).distinct().sorted(Comparator.reverseOrder()).skip(1).toList().getFirst();
+		System.out.println("secondHighestSal :: " + secondHighestSal);
+
 		//find maximum aged employee
 		Employee1 maxAgedEmployee =
 		employeeList.stream().max(Comparator.comparing(Employee1::getAge)).stream().findFirst().orElse(null);
