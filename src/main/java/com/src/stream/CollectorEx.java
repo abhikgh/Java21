@@ -21,6 +21,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Scanner;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
@@ -404,6 +405,24 @@ public class CollectorEx {
         Map<String, List<Person>> mapGroupByNameAndAge = personList.stream().collect(Collectors.groupingBy(compositeKey));
         System.out.println("mapGroupByNameAndAge :: " + mapGroupByNameAndAge);
         //{William28=[Person(name=William, age=28, salary=28000, department=Admin)], Will28=[Person(name=Will, age=28, salary=28000, department=IT), Person(name=Will, age=28, salary=30000, department=Finance)], Mark30=[Person(name=Mark, age=30, salary=30000, department=Finance)], Paul24=[Person(name=Paul, age=24, salary=20000, department=Admin)]}
+
+        //department with highest average salary
+        Map.Entry<String, Double> mapDeptHighestAvgSalary =
+                personList.stream().collect(Collectors.groupingBy(Person::getDepartment,Collectors.averagingDouble(Person::getSalary)))
+                .entrySet().stream().sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                        .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (o,n)->n, LinkedHashMap::new))
+                        .entrySet().iterator().next();
+        System.out.println("mapDeptHighestAvgSalary");
+        System.out.println(mapDeptHighestAvgSalary.getKey() +"--" + mapDeptHighestAvgSalary.getValue());
+
+        //count of employees in each department
+        Map<String, Long> countOfEmployeesPerDept = personList.stream().collect(Collectors.groupingBy(Person::getDepartment, Collectors.counting()));
+        System.out.println("countOfEmployeesPerDept :: " + countOfEmployeesPerDept);
+
+        //Employees with highest salary department wise
+        Map<String, Person> mapHighestSalaryDeptWise = personList.stream().collect(Collectors.groupingBy(Person::getDepartment,
+                Collectors.collectingAndThen(Collectors.reducing((p1,p2) -> p1.getSalary() > p2.getSalary() ? p1:p2), Optional::get)));
+        System.out.println("mapHighestSalaryDeptWise :: " + mapHighestSalaryDeptWise);
 
         List<Item> itemList = getItemsWithPrice();
 
