@@ -443,9 +443,8 @@ public class CollectorEx {
         System.out.println("noItemsHaveMultiplePriceOfSameType :: " + noItemsHaveMultiplePriceOfSameType);
 
         //itemNo with highest price
-        //highest = Collectors.maxBy(Comparator.comparing())
         String itemNoWithHighestPrice =
-                itemList.stream().max(Comparator.comparing(Item::getPrice)).get().getItemNo();
+                itemList.stream().sorted(Comparator.comparing(Item::getPrice)).toList().getFirst().getItemNo();
         System.out.println("itemNoWithHighestPrice :: " + itemNoWithHighestPrice);
 
         //highest price
