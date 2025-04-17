@@ -335,6 +335,7 @@ public class CollectorEx {
 
 
         //-------- Collectors.reducing-----------------------------------
+        // -- reducing the grouping value list to a single value ---
         //  Collectors:reducing((least, attribute/mapper, operation);
         // .map(attribute/mapper)
 

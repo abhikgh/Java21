@@ -13,6 +13,7 @@ import org.springframework.util.CollectionUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -199,6 +200,11 @@ public class DemoEx {
                                                     }));
         System.out.println("map13");
         map13.forEach((key, value) -> System.out.println(key + "-" + value));
+
+        //for each standard , give the sum of Maths marks
+        Map<Integer, Integer> mathsMarksPerStd = reportCard.getStudents().stream().collect(Collectors.groupingBy(Student::getStandard,
+                    Collectors.reducing(0, st-> st.getMarks().getMaths(), Integer::sum)));
+        System.out.println("mathsMarksPerStd :: " + mathsMarksPerStd);
 
         //9. For each Student, print the hobbies, if no hobby is present show NA in a map
         Map<String, String> map9 =
