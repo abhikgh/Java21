@@ -205,6 +205,10 @@ public class DemoEx {
         Map<Integer, Integer> mathsMarksPerStd = reportCard.getStudents().stream().collect(Collectors.groupingBy(Student::getStandard,
                     Collectors.reducing(0, st-> st.getMarks().getMaths(), Integer::sum)));
         System.out.println("mathsMarksPerStd :: " + mathsMarksPerStd);
+        //for each standard , give the sum of English marks
+        Map<Integer, Integer> engMarksPerStd = reportCard.getStudents().stream().collect(Collectors.groupingBy(Student::getStandard,
+                Collectors.reducing(0, st-> st.getMarks().getEnglish(), Integer::sum)));
+        System.out.println("engMarksPerStd :: " + engMarksPerStd);
 
         //9. For each Student, print the hobbies, if no hobby is present show NA in a map
         Map<String, String> map9 =
