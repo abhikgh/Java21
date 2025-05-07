@@ -277,10 +277,14 @@ public class DateEx {
         localDateTime = LocalDateTime.parse(inputDateTime, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"));
         System.out.println("localDateTime222= " + localDateTime); // 2023-06-02T00:00
 
-      /*  SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-        SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-        System.out.println(outputFormat.format(inputFormat.parse("2016-02-03T16:23:18"))); //2016-02-03 16:23:18.000
-*/
+        //String to LocalDateTime
+        String validFrom = "2016-05-23T00:00:00Z";
+        SimpleDateFormat inputFormat11 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        SimpleDateFormat outputFormat11 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+        String dateStr = outputFormat11.format(inputFormat11.parse(validFrom));
+        LocalDateTime localDateTime11 = LocalDateTime.parse(dateStr, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"));
+        System.out.println("localDateTime11 :: " + localDateTime11);
+
         //LocalDateTime to String
         String localDateDTStr = DateTimeFormatter.ofPattern("yyyy-MM-dd").format(LocalDateTime.now());
         System.out.println("localDateDTStr = " + localDateDTStr); //2023-09-07
@@ -311,7 +315,6 @@ public class DateEx {
         var hoursDiffNextDay = ChronoUnit.HOURS.between(currentUTCDateTime, nextDaytUTCDateTime);
         System.out.println("hoursDiffNextDay " + hoursDiffNextDay);
 
-        //String to LocalDateTime
         LocalDateTime localDateTime1 = LocalDateTime.parse("2023-08-31T23:59:59Z", DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'"));
         System.out.println("localDateTime1 :: " + localDateTime1);
         LocalDateTime localDateTime2 = LocalDateTime.parse("2023-06-13T23:59:59Z", DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'"));
