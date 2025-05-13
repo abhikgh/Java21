@@ -379,6 +379,9 @@ Virtual Thread  :: lightweight implementation of threads - fully managed by the 
 Platform Thread :: Platform Thread runs on top of OS Thread and has a 1-1 mapping with OS Thread(carrier Thread  :: Platform Thread which are carrying a Virtual Thread)
 OS Thread
 
+ Virtual Threads doesn’t improve latency but it is highly beneficial for requests with blocking IO operations
+
+spring.threads.virtual.enabled=true
 									      
 Runnable r = () -> System.out.println("New virtual thread");
 Thread.ofVirtual().start(r);
