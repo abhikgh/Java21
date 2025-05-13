@@ -33,7 +33,7 @@ public class ReduceEx {
         List<Predicate<Employee1>> predicates = List.of(predicate1, predicate2);
         List<Employee1> employeeList = EmployeeStream.getEmployeeList();
 
-        //filter out employees with names starting with A and K
+        //filter out employees with names starting with A or K
         List<Employee1> employeesKA = employeeList.stream().filter(employee -> predicates.stream().anyMatch(predicate -> predicate.test(employee))).toList();
         System.out.println("employeesKA List---------");
         employeesKA.forEach(emp -> System.out.println(emp.getName() + "-" + emp.getSalary()));
