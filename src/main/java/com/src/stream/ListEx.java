@@ -18,7 +18,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.util.CollectionUtils;
 
 import java.math.BigDecimal;
-//import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -694,9 +693,13 @@ public class ListEx {
             //Collections.synchronizedList(list)
 
         //Immutable list
+            //.toList()
             //List.of("","")
             //List.copyOf(list)
             //Collections.unmodifiableList(list)
+
+        //Mutable list
+            //.collect(Collectors.toList())
 
         List<String> mutableList = Arrays.asList("aaaa","bbbb","cccc");
         //mutableList.add(0,"00000"); //not allowed
