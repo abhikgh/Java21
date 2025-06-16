@@ -148,6 +148,11 @@ public class StringEx {
         String ans = str.split("-")[1];
         System.out.println(ans); //to
 
+        System.out.println("List of systems :: ");
+        String test = "API|MicroServices|BlockChain";
+        List<String> systemsList = Arrays.asList(test.split("\\|"));
+        systemsList.forEach(System.out::println);
+
         //split(splitter, limit) : limit - how many Strings the original String will be split into
         ans = str.split("-", 2)[1];
         System.out.println(ans); //to-Java-Hello-World
