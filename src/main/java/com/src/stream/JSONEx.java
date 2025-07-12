@@ -40,6 +40,7 @@ import java.util.Optional;
 @JsonIgnoreProperties(ignoreUnknown = true)     //spring.jackson.deserialization.fail-on-unknown-properties=false
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({"sfgOrgId", "subOrgTxt", "sfgId", "personId"})
+@JsonFormat(shape = JsonFormat.Shape.OBJECT)
 class PersistPersonResponse {
 
     @JsonProperty("sfgOrgId")
@@ -55,7 +56,7 @@ class PersistPersonResponse {
     private String personId;
 
     @JsonProperty("priceType")
-    private String priceType;
+    private EnumEx.PriceType priceType;
 
     //for property to be NOT serialized to JSON / NOT deserialized from JSON - add @JsonIgnore AND remove @JsonProperty
     @JsonIgnore
@@ -157,7 +158,7 @@ public class JSONEx {
         list.add("44444");
         persistPersonResponse.setList(list);
         persistPersonResponse.setAddress("aa", "bb");
-        persistPersonResponse.setPriceType(EnumEx.PriceType.FAMILY_PRICE.name());
+        persistPersonResponse.setPriceType(EnumEx.PriceType.FAMILY_PRICE);
         System.out.println("---------JAVA to JSON---------");
         String jsonRequest = objectMapper.writeValueAsString(persistPersonResponse);
         System.out.println(jsonRequest);
@@ -184,8 +185,9 @@ public class JSONEx {
         System.out.println("---------JSON to JAVA---------");
         File file = new File("src/main/resources/Input.json");
         PersistPersonResponse persistPersonResponse2 = objectMapper.readValue(file, PersistPersonResponse.class);
+        System.out.println("persistPersonResponse2..........");
         System.out.println(persistPersonResponse2);
-        //PersistPersonResponse(sfgOrgId=fdslkjs, subOrgTxt=sadfsf, sfgId=132esf, personId=13123, priceType=RegularSalesUnitPrice, test=null, testBoolean=true, testBoolean2=null, validFromDate=1993-12-13'T14:56:23, discount=Familyff, list=[33333, 11111, 22222, 44444], map={}, addressDetails={mapKey2=3222, mapKey1=332})
+       //PersistPersonResponse(sfgOrgId=fdslkjs, subOrgTxt=sadfsf, sfgId=132esf, personId=13123, priceType=FAMILY_PRICE, test=null, testBoolean=true, testBoolean2=null, validFromDate=1993-12-13'T14:56:23, discount=Familyff, list=[33333, 11111, 22222, 44444], map={}, addressDetails={mapKey2=3222, mapKey1=332})
 
         //JSON array to Java list
         System.out.println("---------JSON array to JAVA list ---------");

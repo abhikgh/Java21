@@ -9,5 +9,5 @@
   "discount" : "Familyff",
   "mapKey2" : "3222",
   "mapKey1" : "332",
-"priceType" : "RegularSalesUnitPrice"
+  "priceType" : "FAMILY_PRICE"
 }
