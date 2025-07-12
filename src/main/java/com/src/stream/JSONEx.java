@@ -54,6 +54,9 @@ class PersistPersonResponse {
     @JsonProperty("personId")
     private String personId;
 
+    @JsonProperty("priceType")
+    private String priceType;
+
     //for property to be NOT serialized to JSON / NOT deserialized from JSON - add @JsonIgnore AND remove @JsonProperty
     @JsonIgnore
     private String test;
@@ -154,15 +157,35 @@ public class JSONEx {
         list.add("44444");
         persistPersonResponse.setList(list);
         persistPersonResponse.setAddress("aa", "bb");
+        persistPersonResponse.setPriceType(EnumEx.PriceType.FAMILY_PRICE.name());
         System.out.println("---------JAVA to JSON---------");
         String jsonRequest = objectMapper.writeValueAsString(persistPersonResponse);
         System.out.println(jsonRequest);
+       /*
+            {
+        "sfgOrgId" : "fdslkjs",
+        "subOrgTxt" : "sadfsf",
+        "sfgId" : "132esf",
+        "personId" : "13123",
+        "addressDetails" : {
+        "aa" : "bb"
+        },
+        "list" : [ "33333", "11111", "22222", "44444" ],
+        "priceType" : "FAMILY_PRICE",
+        "testBoolean" : true,
+        "validFromDate" : "1993-12-13 14:56:23",
+        "discount" : "Familyff",
+        "mapKey2" : "3222",
+        "mapKey1" : "332"
+        }
+       */
 
         //JSON to Java
         System.out.println("---------JSON to JAVA---------");
         File file = new File("src/main/resources/Input.json");
         PersistPersonResponse persistPersonResponse2 = objectMapper.readValue(file, PersistPersonResponse.class);
         System.out.println(persistPersonResponse2);
+        //PersistPersonResponse(sfgOrgId=fdslkjs, subOrgTxt=sadfsf, sfgId=132esf, personId=13123, priceType=RegularSalesUnitPrice, test=null, testBoolean=true, testBoolean2=null, validFromDate=1993-12-13'T14:56:23, discount=Familyff, list=[33333, 11111, 22222, 44444], map={}, addressDetails={mapKey2=3222, mapKey1=332})
 
         //JSON array to Java list
         System.out.println("---------JSON array to JAVA list ---------");

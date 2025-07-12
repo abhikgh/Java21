@@ -8,5 +8,6 @@
   "validFromDate" : "1993-12-13'T14:56:23",
   "discount" : "Familyff",
   "mapKey2" : "3222",
-  "mapKey1" : "332"
+  "mapKey1" : "332",
+"priceType" : "RegularSalesUnitPrice"
 }
