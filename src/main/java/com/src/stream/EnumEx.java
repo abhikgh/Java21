@@ -1,7 +1,10 @@
 package com.src.stream;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.HashMap;
 import java.util.Map;
+
 
 //Enum :: When a variable have a fixed set of values we use Enum as it provides Type Safety
 //       as Enum allows only certain values
@@ -10,7 +13,10 @@ public class EnumEx {
     public enum PriceType{
 
         //1st thing of Enum is the actual values
+        @JsonProperty("RegularSalesUnitPrice")
         REGULAR_PRICES("RegularSalesUnitPrice"),
+
+        @JsonProperty("FamilySalesUnitPrice")
         FAMILY_PRICE("FamilySalesUnitPrice");
 
         private String priceTypeVar;
