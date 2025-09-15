@@ -192,8 +192,22 @@ public class DateEx {
         System.out.println("zonedDateTime :: " + zonedDateTime);
         Date dateNow = Date.from(zonedDateTime.toInstant());
         System.out.println("dateNow :: " + dateNow);
-       
-        zonedDateTime = Instant.now().atZone(ZoneId.of("Europe/Berlin"));
+
+        @Schema(
+    		description = "Price valid to date",
+    		example = "2018-09-12",
+    		pattern = "yyyy-MM-dd"
+    	)
+    	@JsonProperty("validToDate")
+    	private java.util.Date validToDate;
+    	
+    	private String timezoneId;	
+    
+        var localDateTimeUTC = LocalDateTime.ofInstant(unitPrice.getValidToDate().toInstant(),ZoneId.of("UTC"));
+        var java.util.Date date = Date.from(ZonedDateTime.of(localDateTimeUTC, ZoneId.of(iCartResponse.getTimezoneId())).toInstant());
+					
+					
+		zonedDateTime = Instant.now().atZone(ZoneId.of("Europe/Berlin"));
         System.out.println("zonedDateTime ::" + zonedDateTime); //:2024-07-06T11:40:36.984765300+02:00[Europe/Berlin]
 
         //util.Date to sql.Date
