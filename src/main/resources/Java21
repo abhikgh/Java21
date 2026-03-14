@@ -2129,7 +2129,7 @@ Cloning
 ===============
 
 Shallow clone :: referenced Object is shared     (Clone)
-Deep clone    :: referenced Object is cloned     (Clone + set + Clone)
+Deep clone    :: referenced Object is cloned     (Clone + Clone-set)
 
 
 @Getter
@@ -2182,6 +2182,7 @@ return empClone;
 }).collect(Collectors.toList());
 
 //Deep clone a list using mapstruct
+import org.mapstruct.Mapper;
 @Mapper(mappingControl= Deepclone.class, componentModel="spring", unmappedTargetPolicy= ReportingPolicy.IGNORE,unmappedSourcePolicy= ReportingPolicy.IGNORE)
 public interface ABCMapper{
 	Set<Item> deeplCloneItems(List<Item> items);
