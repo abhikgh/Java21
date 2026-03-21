@@ -1839,7 +1839,6 @@ public class RaceConditionEx {
          System.out.println("Balance :: " + BALANCE);
 
       
-
         /*
                 Thread :: tA gets object lock
                 Thread :: tA releases object lock
@@ -1854,7 +1853,7 @@ public class RaceConditionEx {
 4. Avoid Deadlock (2/more threads block each other by holding resources that the others need)
 --------------------------------------------------------------------------------------
 
-//synchronized + JOIN
+//join
 
 public class DeadlockEx {
 
@@ -1862,6 +1861,8 @@ public class DeadlockEx {
 
 		String resource1 = "resource1";
 		String resource2 = "resource2";
+
+        //Problem
 
 		Thread t1 = new Thread() {
 			@Override
@@ -1897,6 +1898,8 @@ public class DeadlockEx {
 			}
 
 		};
+
+	    //Solution
 
 		t1.start();
 		t1.join(); //Solution to deadlock :: t1 to complete before main thread can run
