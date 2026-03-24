@@ -1001,7 +1001,6 @@ Garbage Collection Types
 
 --------------------------------------------------------------------------------
 
-
 Functional Interface
 ------------------------------
 Interface with only 1 abstract method (can have default,static, overridden methods)
@@ -1070,10 +1069,6 @@ public static void testVoid(Callable<Void> callable) throws Exception {
 	callable.call();
 }
 
-
-FunctionalInterface
------------------------------------------------------------
-1 abstract method (can have default,static, overridden methods)
 
 Lambda
 ------------------------------------------------------------
