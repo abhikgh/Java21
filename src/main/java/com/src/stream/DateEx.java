@@ -536,6 +536,14 @@ public class DateEx {
         String dayOfWeek = calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.US);
         System.out.println("dayOfWeek :: " + dayOfWeek); //Thursday
 
+		/*
+		var ccvmCoupons = promoCart.getCoupons().stream().filter(coupon -> Objects.nonNull(coupon.getValue()))
+        .sorted(Comparator.comparing(o -> OffsetDateTime.parse(o.getValidToDateUTC(), DATE_FORMATTER).toLocalDateTime()))
+        .toList();
+         private String validToDateUTC;
+        public static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ISO_OFFSET_DATE_TIME;
+		*/
+
     }
 
 }
