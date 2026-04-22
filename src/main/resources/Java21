@@ -373,40 +373,61 @@ Java 21
 1. Virtual Threads
 ==============================
 
-Virtual Thread   ::        VT1-VT6    VT10-VT16   VT100-VT106  VT120-VT126  VT130-VT136
-(on top of PT - do not block PT - For blocking operations, Virtual Threads can be suspended and resumed)
-(When a VT needs to perform a blocking op it is unmounted from the PT and put in heap. When the blocking operation has completed it is taken from the heap and moved to a waiting list for the platform thread it was initially mounted on)
+Lightweight threads managed by JVM , which runs on top of traditional Platform Threads
+Many Virtual Threads are pooled into a Platform Thread.
+Benefits :: Cheap - Stack starts very small 
+			IO operations - runs millions concurrently
+		    Thread-per-request model at massive scale
 
-Platform Thread  ::         PT1         PT2         PT3          PT4           PT5
+
+Virtual Thread   ::        VT1-VT6    VT10-VT16   VT100-VT106  VT120-VT126  VT130-VT136			-- tasks
+Platform Thread  ::         PT1         PT2         PT3          PT4           PT5				-- workers , JVM scheduler assigns tasks to workers efficiently
+																									for I/O, JVM can “park” a virtual thread and reuse the platform thread.
 (1-1 mapping)
 OS Thread        ::         OT1         OT2         OT3          OT4           OT5
 
-Virtual Threads doesn’t improve latency but it is highly beneficial for requests with blocking IO operations
+
+Platform Thread					Virtual Thread
+---------------------------------------------------
+Managed by	OS						JVM
+Cost		Heavy (~1MB)		Lightweight
+Blocking	Blocks OS thread	Unmounts carrier
+Concurrency	Thousands			Millions
+Pooling	Recommended				Not needed
+
+
+
+// 1. Using Thread.ofVirtual()
+Thread vt = Thread.ofVirtual().start(() -> {
+    System.out.println("Hello from virtual thread!");
+});
+
+// 2. Using an Executor (recommended for most use cases)
+try (var executor = Executors.newVirtualThreadPerTaskExecutor()) {
+    executor.submit(() -> System.out.println("Task running"));
+}
+
+// 3. Using Thread.startVirtualThread()
+Thread.startVirtualThread(() -> doSomeWork());
 
 spring.threads.virtual.enabled=true
-									      
-Runnable r = () -> System.out.println("New virtual thread");
-Thread.ofVirtual().start(r);
-Thread.sleep(1000);
 
-//executor service that creates a new Virtual Thread for each task submitted to it
-try(ExecutorService executorService = Executors.newVirtualThreadPerTaskExecutor()){
-    Future<?> future = executorService.submit( () -> System.out.println("aaa"));
-    future.get();
-}catch (Exception e ){
-    e.printStackTrace();
+private ExecutorService virtualThreadExecutorService;
+@Bean(name = "virtualThreadExecutor")
+public Executor virtualThreadExecutor() {
+	virtualThreadExecutorService = Executors.newVirtualThreadPerTaskExecutor();
+	var contextSnapshotFactory = ContextSnapshotFactory.builder().build();
+	Executor delegate = ContextExecutorService.wrap(virtualThreadExecutorService, contextSnapshotFactory::captureAll);
+	// preserve your TaskDecorator behavior
+	return task -> delegate.execute(applicationContextCustomTaskDecorator.decorate(task));
 }
 
-Thread virtualThread = Thread.startVirtualThread(() -> {
-    System.out.println("Running task in a virtual thread: "
-	    + Thread.currentThread().getName());
-});
-try {
-    virtualThread.join();
-} catch (InterruptedException e) {
-    e.printStackTrace();
+@PreDestroy
+public void shutdownVirtualThreadExecutor() {
+	if (virtualThreadExecutorService != null) {
+		virtualThreadExecutorService.close(); // Java 21 ExecutorService AutoCloseable
+	}
 }
-
 
 2. Record patterns
 ==============================
