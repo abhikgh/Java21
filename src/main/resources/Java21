@@ -416,8 +416,8 @@ private ExecutorService virtualThreadExecutorService;
 @Bean(name = "virtualThreadExecutor")
 public Executor virtualThreadExecutor() {
 	virtualThreadExecutorService = Executors.newVirtualThreadPerTaskExecutor();
-	var contextSnapshotFactory = ContextSnapshotFactory.builder().build();
-	Executor delegate = ContextExecutorService.wrap(virtualThreadExecutorService, contextSnapshotFactory::captureAll);
+	var contextSnapshotFactory = ContextSnapshotFactory.builder().build(); // capture the current execution context (Logging, Tracing, Security, Thread local)
+	Executor delegate = ContextExecutorService.wrap(virtualThreadExecutorService, contextSnapshotFactory::captureAll); // transfers context
 	// preserve your TaskDecorator behavior
 	return task -> delegate.execute(applicationContextCustomTaskDecorator.decorate(task));
 }
