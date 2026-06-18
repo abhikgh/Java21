@@ -183,6 +183,14 @@ public class StringEx {
 
         //\ (backslash) is still a special symbol. You have to escape it by doubling it \\
 
+        String name = "Alice";
+        int age = 30;
+        String message = "Hello " + name + "! You are " + age + " years old.";
+        //String.format:
+        String formattedMessage = String.format("Hello %s! You are %d years old.", name, age);
+        //String templates
+        String message = STR."Hello \{name}! You are \{age} years old."; // STR = template processor
+
         //Count of words in a paragraph
         long noOfWordsInParagraph = Arrays.asList(strTest.lines().collect(Collectors.joining()).split(" ")).stream().count();
         System.out.println("noOfWordsInParagraph :: " + noOfWordsInParagraph);

@@ -294,11 +294,16 @@ public class Miscellaneous {
 
         String str0 = "some sample test string";
 
-        //Encode String to Base64 and Decode
-        String encodedString = java.util.Base64.getEncoder().encodeToString(str0.getBytes(StandardCharsets.UTF_8));
-        System.out.println("encodedString :: " + encodedString); //c29tZSBzYW1wbGUgdGVzdCBzdHJpbmc=
-        String decodedString = new String(java.util.Base64.getDecoder().decode(encodedString.getBytes(StandardCharsets.UTF_8)));
-        System.out.println("decodedString :: " + decodedString); //some sample test string
+        // --- Encoding ---
+        byte[] encodedBytes = Base64.getEncoder().encode(originalString.getBytes(StandardCharsets.UTF_8));
+        String encodedString = new String(encodedBytes, StandardCharsets.UTF_8);
+        System.out.println("Encoded String: " + encodedString);
+
+        // --- Decoding ---
+        byte[] decodedBytes = Base64.getDecoder().decode(encodedBytes);
+        String decodedString = new String(decodedBytes, StandardCharsets.UTF_8);
+        System.out.println("Decoded String: " + decodedString);
+        
 
         //Encode file to String and Decode
         Path path = Paths.get("src/main/resources/Flight Ticket.pdf");

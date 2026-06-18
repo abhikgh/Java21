@@ -62,6 +62,12 @@ public class DateEx {
                
         */
 
+		/**
+			ISO 8601 UTC Date–Time ::
+				"validFromDate": "2018-08-09T00:00:00Z",
+				"validToDate": "3019-07-31T23:59:59Z"
+		*/
+
         /**
          * Setting the Default Time Zone
          *
@@ -192,8 +198,22 @@ public class DateEx {
         System.out.println("zonedDateTime :: " + zonedDateTime);
         Date dateNow = Date.from(zonedDateTime.toInstant());
         System.out.println("dateNow :: " + dateNow);
-       
-        zonedDateTime = Instant.now().atZone(ZoneId.of("Europe/Berlin"));
+
+        @Schema(
+    		description = "Price valid to date",
+    		example = "2018-09-12",
+    		pattern = "yyyy-MM-dd"
+    	)
+    	@JsonProperty("validToDate")
+    	private java.util.Date validToDate;
+    	
+    	private String timezoneId;	
+    
+        var localDateTimeUTC = LocalDateTime.ofInstant(unitPrice.getValidToDate().toInstant(),ZoneId.of("UTC"));
+        var java.util.Date date = Date.from(ZonedDateTime.of(localDateTimeUTC, ZoneId.of(iCartResponse.getTimezoneId())).toInstant());
+					
+					
+		zonedDateTime = Instant.now().atZone(ZoneId.of("Europe/Berlin"));
         System.out.println("zonedDateTime ::" + zonedDateTime); //:2024-07-06T11:40:36.984765300+02:00[Europe/Berlin]
 
         //util.Date to sql.Date
@@ -515,6 +535,14 @@ public class DateEx {
         calendar.set(Calendar.YEAR, 2023);
         String dayOfWeek = calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.US);
         System.out.println("dayOfWeek :: " + dayOfWeek); //Thursday
+
+		/*
+		var ccvmCoupons = promoCart.getCoupons().stream().filter(coupon -> Objects.nonNull(coupon.getValue()))
+        .sorted(Comparator.comparing(o -> OffsetDateTime.parse(o.getValidToDateUTC(), DATE_FORMATTER).toLocalDateTime()))
+        .toList();
+         private String validToDateUTC;
+        public static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ISO_OFFSET_DATE_TIME;
+		*/
 
     }
 
