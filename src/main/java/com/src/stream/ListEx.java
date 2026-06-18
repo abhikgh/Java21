@@ -946,6 +946,13 @@ public class ListEx {
         int randomNum = new Random().nextInt((100 - 10) + 1) + 10;
         System.out.println("randomNum :: " + randomNum);
 
+        //check if there is anymatch between 2 lists
+        List<String> essentialItemNosList = List.of("A1234", "jfjfj","C37373");
+        List<String> itemNosList = List.of("a1234", "fddfgdfg","dfdfgdgdgdfg");
+
+        boolean anyMatch = itemNosList.stream().anyMatch(essentialItemNosList::contains);
+        System.out.println("anymatch :: " + anyMatch);
+
     }
 
     private static List<UserSource> getUserSourcesList() {
