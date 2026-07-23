@@ -157,6 +157,19 @@ public class MapEx {
 		countryCapitalMap = countryCapitalMap.entrySet().stream().sorted(Map.Entry.comparingByValue(Comparator.reverseOrder())).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (o,n) -> n , LinkedHashMap::new));
 		System.out.println("mapSortedByValuesReversed :: " + countryCapitalMap);
 
+		Map<String, String> map = Map.of(
+		    "country", "SE",
+		    "city", "Stockholm"
+		);
+		
+		// The ENTIRE map
+		Map<String, String> wholeMap = map;  // 2 entries
+		
+		// ONE entry from the map
+		Map.Entry<String, String> oneEntry = map.entrySet().iterator().next();
+		oneEntry.getKey();    // "country"
+oneEntry.getValue();  // "SE"
+
 		//Count highest occurrences
 		String test = "This is a test string with lots of words. Get the word with the highest occurrence";
 		Map.Entry<String, Long> mapEntry = Arrays.stream(test.split(" "))
