@@ -373,61 +373,48 @@ Java 21
 1. Virtual Threads
 ==============================
 
-Lightweight threads managed by JVM , which runs on top of traditional Platform Threads
-Many Virtual Threads are pooled into a Platform Thread.
-Benefits :: Cheap - Stack starts very small 
-			IO operations - runs millions concurrently
-		    Thread-per-request model at massive scale
+Virtual Thread   ::        VT1-VT6    VT10-VT16   VT100-VT106  VT120-VT126  VT130-VT136			— tasks
+(lightweight thread managed by JVM)
+(many Virtual Threads are pooled into a Platform Thread)
+(When a virtual thread blocks (e.g., on I/O), the JVM unmounts it from the Platform thread and parks it — the Platform thread is freed to run other virtual threads)
+(Cheap , I/O operations - runs millions concurrently)
 
+Platform Thread  ::         PT1         PT2         PT3          PT4           PT5			-- workers , JVM scheduler assigns tasks to workers efficiently
+ (Java thread)
+ (1-1 mapping : runs on OS thread so for I/O blocks the OS thread)
 
-Virtual Thread   ::        VT1-VT6    VT10-VT16   VT100-VT106  VT120-VT126  VT130-VT136			-- tasks
-Platform Thread  ::         PT1         PT2         PT3          PT4           PT5				-- workers , JVM scheduler assigns tasks to workers efficiently
-																									for I/O, JVM can “park” a virtual thread and reuse the platform thread.
-(1-1 mapping)
 OS Thread        ::         OT1         OT2         OT3          OT4           OT5
 
 
-Platform Thread					Virtual Thread
----------------------------------------------------
-Managed by	OS						JVM
-Cost		Heavy (~1MB)		Lightweight
-Blocking	Blocks OS thread	Unmounts carrier
-Concurrency	Thousands			Millions
-Pooling	Recommended				Not needed
-
-
-
-// 1. Using Thread.ofVirtual()
-Thread vt = Thread.ofVirtual().start(() -> {
-    System.out.println("Hello from virtual thread!");
-});
-
-// 2. Using an Executor (recommended for most use cases)
-try (var executor = Executors.newVirtualThreadPerTaskExecutor()) {
-    executor.submit(() -> System.out.println("Task running"));
-}
-
-// 3. Using Thread.startVirtualThread()
-Thread.startVirtualThread(() -> doSomeWork());
-
-spring.threads.virtual.enabled=true
-
 private ExecutorService virtualThreadExecutorService;
-@Bean(name = "virtualThreadExecutor")
-public Executor virtualThreadExecutor() {
-	virtualThreadExecutorService = Executors.newVirtualThreadPerTaskExecutor();
-	var contextSnapshotFactory = ContextSnapshotFactory.builder().build(); // capture the current execution context (Logging, Tracing, Security, Thread local)
-	Executor delegate = ContextExecutorService.wrap(virtualThreadExecutorService, contextSnapshotFactory::captureAll); // transfers context
-	// preserve your TaskDecorator behavior
-	return task -> delegate.execute(applicationContextCustomTaskDecorator.decorate(task));
-}
 
-@PreDestroy
-public void shutdownVirtualThreadExecutor() {
-	if (virtualThreadExecutorService != null) {
-		virtualThreadExecutorService.close(); // Java 21 ExecutorService AutoCloseable
-	}
-}
+Task submitted
+    → TaskDecorator wraps it (Spring context propagation)
+        → Micrometer wraps it (tracing/MDC propagation)
+            → Runs on a new virtual thread
+
+  @Bean(name = "virtualThreadExecutor")
+    public Executor virtualThreadExecutor() {
+        virtualThreadExecutorService = Executors.newVirtualThreadPerTaskExecutor(); // Creates a Virtual Thread executor (Java 21+) — each submitted task runs on its own lightweight virtual thread 
+											instead of a platform (OS) thread.
+										   // Enables high concurrency with low overhead.
+        var contextSnapshotFactory = ContextSnapshotFactory.builder().build();
+        Executor delegate = ContextExecutorService.wrap(virtualThreadExecutorService, contextSnapshotFactory::captureAll);
+
+//Wraps the executor with Micrometer's context propagation, so things like tracing context (e.g. OpenTelemetry trace IDs), MDC logging values, and security context are automatically carried over from the calling thread to the virtual thread.
+
+        // preserve your TaskDecorator behavior
+        return task -> delegate.execute(applicationContextCustomTaskDecorator.decorate(task));
+    }
+
+    @PreDestroy
+    public void shutdownVirtualThreadExecutor() {
+        if (virtualThreadExecutorService != null) {
+            virtualThreadExecutorService.close(); // Java ExecutorService AutoCloseable
+        }
+    }
+
+Usage : @Async("virtualThreadExecutor”)
 
 2. Record patterns
 ==============================
