@@ -185,6 +185,14 @@ Java 11
 String :: isBlank, lines, strip, stripLeading, stripTrailing, and repeat
 -----------------------------------------------------------------------------------
 
+Blank = null, "", or  " “ 
+
+Empty = null or ""
+
+StringUtils.isEmpty("")   // true  - only checks null or ""
+StringUtils.isBlank("")   // true  - checks null, "" or whitespace " "
+StringUtils.isNotBlank("") // false
+
 //String :: isEmpty/isBlank
 String strTest = " ";
 System.out.println("isEmpty :: " + strTest.isEmpty()); //false
