@@ -279,13 +279,9 @@ Java 14
 
 record
 --------------------------
-Record is an immutable data transfer object
-- Constructor
-  Getters (without the “get” prefix)
-  equals(), hashCode(), and toString() implementations
+Record is an Immutable object
 
-record NewPerson (@NotNull String name, @NotNull String address){
-}
+public record NewPerson (String name, String address){}
 
 //Record ex
 NewPerson newPerson = new NewPerson("John", "little avenue");
