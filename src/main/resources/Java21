@@ -1749,13 +1749,10 @@ Common Problems in Multi-threading :
     Livelocks: Threads keep changing their states in response to each other but do no productive work.
     Starvation: A thread is perpetually denied access to resources.
 
+Solutions : 
+
 1. Critical section locking
 -----------------------------------
-
-public synchronized void transfer(Account from, Account to, int amount) {
-    from.withdraw(amount);
-    to.deposit(amount);
-}
 
 public void transfer(Account from, Account to, int amount) {
     synchronized (from) {
@@ -1765,6 +1762,11 @@ public void transfer(Account from, Account to, int amount) {
         to.deposit(amount);
     }
 }
+
+		public synchronized void transfer(Account from, Account to, int amount) {
+   			 from.withdraw(amount);
+    		 to.deposit(amount);
+        }
 
 2. ReentrantReadWriteLock
 ------------------------------------
@@ -1801,6 +1803,7 @@ class JointAccount extends Thread {
     private Semaphore semaphore;
     private String threadName;
 
+   // class having critical method of which a Thread will be created will have the Semaphore
     public void increment(Integer sum) {
         BALANCE = BALANCE + sum;
     }
@@ -1832,7 +1835,7 @@ public class RaceConditionEx {
         JointAccount jointAccountA = new JointAccount(semaphore, "tA");
         JointAccount jointAccountB = new JointAccount(semaphore, "tB");
 
-          // If any ordering of jointAccountA, jointAccountB to run b ut whichever runs wil complete and then the other will run
+        // If any ordering of jointAccountA, jointAccountB to run but whichever runs will complete and then the other will run
 
          jointAccountA.start();
          jointAccountB.start();
