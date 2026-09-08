@@ -551,6 +551,46 @@ public class SealedInterfaceEx {
     }
 }
 
+String format
+=======================
+
+//1. String.format
+String msg = "User '%s" has '%d' items";
+msg = String.format(msg, name, items);
+
+//2. String concat (+)
+String msg = "User " + name + " has " + count + " items";
+
+//3. StringBuilder - append
+StringBuilder sb = new StringBuilder();
+sb.append("User ").append(name).append(" has ").append(count);
+String msg = sb.toString();
+
+//4. MessageFormat
+String msg = MessageFormat.format("User {0} has {1} items", name, count);
+
+//5. Text blocks
+String msg = """
+    User %s
+    has %d items
+    """.formatted(name, count);
+
+StringBuilder - append
+-------------------------------
+Performance frinedly
+
+// BAD — creates a new String object on every iteration
+String result = "";
+for (String item : items) {
+    result += item;   // O(n²) — reallocates and copies each time
+}
+
+// GOOD — single buffer, reused
+StringBuilder sb = new StringBuilder();
+for (String item : items) {
+    sb.append(item);  // O(n) — amortized
+}
+String result = sb.toString();
 
 
 SOLID Principles in Java
