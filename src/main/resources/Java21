@@ -592,6 +592,18 @@ for (String item : items) {
 }
 String result = sb.toString();
 
+Advantages of String being immutable
+===========================================
+Thread-safe
+Hashmap-key
+Class.forName(“X”).newInstance()
+StringPool
+
+String          vs      StringBuffer            vs     StringBuilder
+======================================================================================
+immutable               synchronized                    fastest , reverse()
+String Constant Pool        heap                           heap               
+
 
 SOLID Principles in Java
 ===============================
