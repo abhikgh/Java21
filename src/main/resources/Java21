@@ -371,8 +371,73 @@ public class ChildIntImpl implements ChildInt{
 
 }
 
+ExecutorService
+==========================================
+
+ExecutorService in Java is a framework for running tasks asynchronously using a Pool of Threads.
+
+Instead of creating a new thread yourself every time : 
+
+new Thread(() -> doSomething()).start();
+
+you can give the task to an ExecutorService, which manages the threads for you.
+
+ExecutorService executor = Executors.newFixedThreadPool(3);
+
+executor.submit(() -> {
+    System.out.println("Task is running");
+});
+
+executor.shutdown();
+
+Your application
+      |
+      | submit(task)
+      ↓
+ExecutorService
+      |
+      ├── Thread 1 → Task A
+      ├── Thread 2 → Task B
+      └── Thread 3 → Task C
+
+Why use it?
+Suppose you have 100 tasks.
+Creating 100 threads is usually a bad idea:     
+
+for (int i = 0; i < 100; i++) {
+    new Thread(() -> doTask()).start();
+}
+
+Instead:
+ExecutorService executor =Executors.newFixedThreadPool(10);
+for (int i = 0; i < 100; i++) {
+    executor.submit(() -> doTask());
+}
+executor.shutdown();
+
+Now you have 10 worker threads processing the 100 tasks.
+
+The remaining tasks wait in a queue until a thread becomes available.
+
+Important methods 
+
+1.  execute() :: void return
+    executor.execute(() -> doSomething());
+
+2.  submit() :: Future return
+    Future<String> future = executor.submit(() -> "Hello");
+    String result = future.get();  //future.get() waits until the task finishes.
+
+
+Common ExecutorService types ::
+    Executors.newFixedThreadPool(5);     //5 threads can run 5 tasks at a time
+    Executors.newSingleThreadExecutor(); //1 thread can run 1 task at a time 
+    Executors.newCachedThreadPool();     //Creates Threads dynamically
+
+
 Java 21
 ======================
+
 
 1. Virtual Threads
 ==============================
