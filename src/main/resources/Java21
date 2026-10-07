@@ -495,7 +495,7 @@ Virtual thread
 
 private ExecutorService virtualThreadExecutorService;
 
-    @Bean(name = "virtualThreadExecutor")
+    @Bean(name = "virtualThreadExecutorService")
     public Executor virtualThreadExecutor() {
         virtualThreadExecutorService = Executors.newVirtualThreadPerTaskExecutor(); 
         // Creates a Virtual-Thread ExecutorService (Java 21+) — each submitted task runs on its own lightweight virtual thread, instead of on platform (OS) thread.
@@ -516,7 +516,7 @@ private ExecutorService virtualThreadExecutorService;
         }
     }
 
-Usage : @Async("virtualThreadExecutor”)
+Usage : @Async("virtualThreadExecutorService”)
 
 2. Record patterns
 ==============================
