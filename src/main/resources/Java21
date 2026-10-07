@@ -492,10 +492,13 @@ VirtualThreadPerTaskExecutor
    ↓
 Virtual thread
 
-  @Bean(name = "virtualThreadExecutor")
+
+private ExecutorService virtualThreadExecutorService;
+
+    @Bean(name = "virtualThreadExecutor")
     public Executor virtualThreadExecutor() {
         virtualThreadExecutorService = Executors.newVirtualThreadPerTaskExecutor(); 
-        // Creates a Virtual Thread executor (Java 21+) — each submitted task runs on its own lightweight virtual thread, instead of on platform (OS) thread.
+        // Creates a Virtual-Thread ExecutorService (Java 21+) — each submitted task runs on its own lightweight virtual thread, instead of on platform (OS) thread.
 		// Enables high concurrency with low overhead.
         
         var contextSnapshotFactory = ContextSnapshotFactory.builder().build();
