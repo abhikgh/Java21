@@ -374,7 +374,7 @@ public class ChildIntImpl implements ChildInt{
 ExecutorService
 ==========================================
 
-ExecutorService in Java is a framework for running tasks asynchronously using a Pool of Threads.
+1. ExecutorService in Java :: is a framework for running tasks asynchronously using a ThreadPool.
 
 Instead of creating a new thread yourself every time : 
 
@@ -434,6 +434,31 @@ Common ExecutorService types ::
     Executors.newSingleThreadExecutor(); //1 thread can run 1 task at a time 
     Executors.newCachedThreadPool();     //Creates Threads dynamically
 
+
+2. ExecutorService in SpringBoot :: No need to create ExecutorService -> Spring manages the thread pool -> @Async → Spring proxy → ThreadPoolTaskExecutor → worker thread
+
+@Configuration
+@EnableAsync
+public class AsyncConfig {
+
+    @Bean(name = "threadPoolTaskExecutor")
+    public ThreadPoolTaskExecutor threadPoolTaskExecutor(){
+        ThreadPoolTaskExecutor threadPoolTaskExecutor = new ThreadPoolTaskExecutor();
+        threadPoolTaskExecutor.setCorePoolSize(200);
+        threadPoolTaskExecutor.setMaxPoolSize(400);
+        threadPoolTaskExecutor.setQueueCapacity(400);
+        threadPoolTaskExecutor.initialize();
+        return threadPoolTaskExecutor;
+    }
+}
+
+
+@Async(value = "threadPoolTaskExecutor")
+private CompletableFuture<List<Employee>> updateAndReturnList(List<Employee> partitionedList){
+    partitionedList.forEach(employee -> employeeRepository.updateEmployeeAccount(randomString(10), employee.getId()));
+    return CompletableFuture.completedFuture(partitionedList.stream().map(employee -> employeeRepository.findById(employee.getId()).get()).toList());
+}
+//@Async can return CompletableFuture
 
 Java 21
 ======================
