@@ -480,22 +480,27 @@ Platform Thread  ::         PT1         PT2         PT3          PT4           P
 OS Thread        ::         OT1         OT2         OT3          OT4           OT5
 
 
-private ExecutorService virtualThreadExecutorService;
-
-Task submitted
-    → TaskDecorator wraps it (Spring context propagation)
-        → Micrometer wraps it (tracing/MDC propagation)
-            → Runs on a new virtual thread
+@Async
+   ↓
+Spring ExecutorService
+   ↓
+TaskDecorator
+   ↓
+Micrometer context propagation
+   ↓
+VirtualThreadPerTaskExecutor
+   ↓
+Virtual thread
 
   @Bean(name = "virtualThreadExecutor")
     public Executor virtualThreadExecutor() {
-        virtualThreadExecutorService = Executors.newVirtualThreadPerTaskExecutor(); // Creates a Virtual Thread executor (Java 21+) — each submitted task runs on its own lightweight virtual thread 
-											instead of a platform (OS) thread.
-										   // Enables high concurrency with low overhead.
+        virtualThreadExecutorService = Executors.newVirtualThreadPerTaskExecutor(); 
+        // Creates a Virtual Thread executor (Java 21+) — each submitted task runs on its own lightweight virtual thread, instead of on platform (OS) thread.
+		// Enables high concurrency with low overhead.
+        
         var contextSnapshotFactory = ContextSnapshotFactory.builder().build();
         Executor delegate = ContextExecutorService.wrap(virtualThreadExecutorService, contextSnapshotFactory::captureAll);
-
-//Wraps the executor with Micrometer's context propagation, so things like tracing context (e.g. OpenTelemetry trace IDs), MDC logging values, and security context are automatically carried over from the calling thread to the virtual thread.
+        //Wraps the executor with Micrometer's context propagation, so things like tracing context (e.g. OpenTelemetry trace IDs), MDC logging values, and security context are automatically carried over from the calling thread to the virtual thread.
 
         // preserve your TaskDecorator behavior
         return task -> delegate.execute(applicationContextCustomTaskDecorator.decorate(task));
